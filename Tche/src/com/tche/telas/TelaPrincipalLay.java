@@ -1,7 +1,6 @@
 package com.tche.telas;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +10,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
+import javax.swing.JTextArea;
+
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 public abstract class TelaPrincipalLay extends JFrame {
 
@@ -29,7 +30,11 @@ public abstract class TelaPrincipalLay extends JFrame {
 	private JMenuItem	menuItemNovo;
 	private JMenuItem	menuItemCompilar;
 
-	public JTextPane	textPanel;
+	public JTextArea	txtAreaDesenv;
+	public JTextArea	txtAreaLog;
+
+	public JPanel		pnlLateralDireita;
+	public JPanel		pnlLateralEsquerda;
 
 	public abstract void validarSitaxe();
 
@@ -62,8 +67,16 @@ public abstract class TelaPrincipalLay extends JFrame {
 		// Cria os menus da barra
 		createMenus();
 
+		JPanel pnlPrincipal = new JPanel();
+		pnlPrincipal.setLayout(new FormLayout(
+				"2dlu, pref:grow, 2dlu, pref:grow, 2dlu", "2dlu, pref, 2dlu"));
+
+		CellConstraints cc = new CellConstraints();
+		pnlPrincipal.add(getPnlDireita(), cc.xy(4, 2));
+		pnlPrincipal.add(getPnlEsquerdo(), cc.xy(2, 2));
+
 		Container c = getContentPane();
-		c.add(new JScrollPane(getPnlTxtArea()), BorderLayout.CENTER);
+		c.add(pnlPrincipal);
 
 	}
 
@@ -96,17 +109,6 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 	}
 
-	private JTextPane getPnlTxtArea() {
-
-		if (textPanel == null)
-			textPanel = new JTextPane();
-
-		SimpleAttributeSet aset = new SimpleAttributeSet();
-		StyleConstants.setForeground(aset, Color.BLACK);
-
-		return textPanel;
-	}
-
 	private void addEvents() {
 
 		menuItemSair.addActionListener(new ActionListener() {
@@ -131,4 +133,32 @@ public abstract class TelaPrincipalLay extends JFrame {
 		});
 	}
 
+	private JPanel getPnlEsquerdo() {
+		if (pnlLateralEsquerda != null)
+			return pnlLateralEsquerda;
+
+		pnlLateralEsquerda = new JPanel();
+		txtAreaDesenv = new JTextArea(40, 60);
+
+		JScrollPane scrool = new JScrollPane(txtAreaDesenv);
+
+		pnlLateralEsquerda.add(scrool);
+
+		return pnlLateralEsquerda;
+	}
+
+	private JPanel getPnlDireita() {
+
+		if (pnlLateralDireita != null)
+			return pnlLateralDireita;
+
+		pnlLateralDireita = new JPanel();
+		txtAreaLog = new JTextArea(40, 40);
+
+		JScrollPane scrool = new JScrollPane(txtAreaLog);
+
+		pnlLateralDireita.add(scrool);
+
+		return pnlLateralDireita;
+	}
 }

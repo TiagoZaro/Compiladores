@@ -2,12 +2,15 @@ package com.tche;
 
 import com.tche.telas.TelaPrincipal;
 
-public class DesktopFrameWork {
+public final class DesktopFrameWork {
+
+	private static TelaPrincipal	FC	= new TelaPrincipal();
 
 	public static void main(String[] args) {
-
-		TelaPrincipal fc = new TelaPrincipal();
-		fc.setVisible(true);
+		FC.setVisible(true);
 	}
 
+	public static TelaPrincipal getInstance() {
+		return FC;
+	}
 }
