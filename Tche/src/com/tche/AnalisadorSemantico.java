@@ -5,7 +5,7 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
 /**
  * @author Tiago Colleoni Zaro, Wagner Almeida
  * 
- *         2015
+ *         2014
  * 
  * */
 public class AnalisadorSemantico {
