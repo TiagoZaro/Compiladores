@@ -69,6 +69,8 @@ public abstract class Funcoes {
 	abstract int Par();
 
 	abstract int MaisPar();
+	
+	abstract int MaisPar1();
 
 	abstract int ParVet();
 
@@ -91,6 +93,8 @@ public abstract class Funcoes {
 	abstract int ComandD1();
 
 	abstract int ComandD2();
+	
+	abstract int ComandD3();
 
 	abstract int ComandC();
 

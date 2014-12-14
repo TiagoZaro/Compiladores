@@ -1,5 +1,7 @@
 package com.tche.ver;
 
+
+
 public class Sintatico extends Funcoes {
 
 	public static void main(String[] args) {
@@ -111,6 +113,12 @@ public class Sintatico extends Funcoes {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	int MaisPar1() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	int ParVet() {
@@ -174,6 +182,12 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int ComandD2() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	int ComandD3() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

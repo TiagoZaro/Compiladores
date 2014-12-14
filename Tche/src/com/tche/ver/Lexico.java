@@ -50,6 +50,17 @@ public class Lexico {
 	char car_atual; // ultimo cararter lido
 	int token; // codigo do token identificado
 	char lexema[] = new char[400]; // lexema identificado
+	
+	private static Lexico instance;
+	public static Lexico GetInstance(){
+		if (instance == null)
+			instance = new Lexico();
+		
+		return instance;
+	}
+	public int proximoToken(){
+		return 1;
+	}
 
 	public char lecar() {
 		if (this.post >= this.tamt) {
