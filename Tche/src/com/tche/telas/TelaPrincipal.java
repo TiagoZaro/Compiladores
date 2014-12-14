@@ -17,7 +17,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		// TODO Auto-generated method stub
 	}
 
-	public void addLog(String log) {
+	public void gerarC3E(String log) {
 
 		if (log == null | log.trim().isEmpty())
 			return;
