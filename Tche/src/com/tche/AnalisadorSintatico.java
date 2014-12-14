@@ -1,7 +1,5 @@
 package com.tche;
 
-import java.util.concurrent.Future;
-
 import com.tche.ver.Lexico;
 
 

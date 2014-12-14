@@ -29,6 +29,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 	private JMenuItem	menuItemSair;
 	private JMenuItem	menuItemNovo;
 	private JMenuItem	menuItemCompilar;
+	private JMenuItem   menuItemMapaSimbolos;
 
 	public JTextArea	txtAreaDesenv;
 	public JTextArea	txtAreaLog;
@@ -41,6 +42,8 @@ public abstract class TelaPrincipalLay extends JFrame {
 	public abstract void novoArquivo();
 
 	public abstract void compilar();
+	
+	public abstract void mapaSimbolos();
 
 	public TelaPrincipalLay() {
 		init();
@@ -101,6 +104,9 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 		menuItemCompilar = new JMenuItem("Compilar");
 		menuUtil.add(menuItemCompilar);
+		
+		menuItemMapaSimbolos = new JMenuItem("Mapa de Símbolos");
+		menuUtil.add(menuItemMapaSimbolos);
 
 		menuArquivos.add(menuItemNovo);
 		menuArquivos.add(menuItemAbrir);
@@ -122,6 +128,13 @@ public abstract class TelaPrincipalLay extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				TelaPrincipalLay.this.compilar();
+			}
+		});
+		
+		menuItemMapaSimbolos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				TelaPrincipalLay.this.mapaSimbolos();
 			}
 		});
 

@@ -1,6 +1,5 @@
 package com.tche.telas;
 
-import com.tche.TcheGlobal;
 
 public class TelaPrincipal extends TelaPrincipalLay {
 
@@ -16,26 +15,10 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void compilar() {
-		// TODO Auto-generated method stub
-		
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		System.out.println(TcheGlobal.criarLabel());
-		
-		System.out.println(TcheGlobal.criarTmp());
-		System.out.println(TcheGlobal.criarTmp());
-		System.out.println(TcheGlobal.criarTmp());
-		System.out.println(TcheGlobal.criarTmp());
-		System.out.println(TcheGlobal.criarTmp());
-		System.out.println(TcheGlobal.criarTmp());
-
+		// TODO
 	}
 
-	public void gerarC3E(String log) {
+	public void addLog(String log) {
 
 		if (log == null | log.trim().isEmpty())
 			return;
@@ -46,6 +29,11 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 		txtAreaLog.setText(sb.toString());
 		txtAreaLog.updateUI();
+	}
+
+	@Override
+	public void mapaSimbolos() {
+		TelaExibiMapaSimbolos.exibirMapaSimbolos();
 	}
 
 }
