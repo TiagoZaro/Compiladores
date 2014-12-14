@@ -1,5 +1,7 @@
 package com.tche.ver;
 
+import com.tche.Retorno;
+
 public class Sintatico extends Funcoes {
 
 	public static void main(String[] args) {
@@ -15,26 +17,40 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	int Inicio() {
+	Retorno Inicio() {
+		Retorno mAuxRetorno = new Retorno();
+		mAuxRetorno.setStatus(1);
+		
 		if (lexico.proximoToken() == tk_querencia) {
 			if (lexico.proximoToken() == tk_abrechaves) {
-				if (Q() == 1) {
-					if (lexico.proximoToken() == tk_fechachaves) {
-						if (M() == 1) {
-							return 1;
-						}
+				mAuxRetorno = Q();
+			
+				if (mAuxRetorno.getStatus() == 1) {
+					if (lexico.proximoToken() != tk_fechachaves) {
+						mAuxRetorno.setStatus(0);
+						mAuxRetorno.setDescricaoErro("Falta fecha chaves no querencia");					
 					}
 				}
 			}
-		} else if (M() == 1) {
-			return 1;
+			else{ 
+				mAuxRetorno.setStatus(0);
+				mAuxRetorno.setDescricaoErro("Falta abre chaves no querencia");
+			}
+				
 		}
-		return 0;
+		
+		if (mAuxRetorno.getStatus() == 1){
+			mAuxRetorno = M();
+		}
+			
+		return mAuxRetorno;
 	}
 
 	@Override
-	int Q() {
-		if (IVet() == 1) {
+	Retorno Q() {
+		Retorno mAuxRetorno = null;
+		
+		/*if (IVet() == 1) {
 			if (Q() == 1) {
 				return 1;
 			}
@@ -48,13 +64,36 @@ public class Sintatico extends Funcoes {
 			}
 		} else {
 			// vazio //TODO
+		}		
+		
+		return 0;*/
+		
+		mAuxRetorno = IVet();
+		if (mAuxRetorno.getStatus() == 1){
+			mAuxRetorno = Q();					
 		}
-		return 0;
+		else{
+			mAuxRetorno = IProt();
+			if (mAuxRetorno.getStatus() == 1){
+				mAuxRetorno = Q();
+			}
+			else {
+				mAuxRetorno = FuncProt();
+				if (mAuxRetorno.getStatus() == 1){
+					mAuxRetorno = Q();
+				}
+				else{
+					// vazio //TODO
+				}					
+			}
+		}
+		
+		return mAuxRetorno;
 	}
 
 	@Override
-	int FuncProt() {
-		if (lexico.proximoToken() == tk_indiada) {
+	Retorno FuncProt() {
+		/*if (lexico.proximoToken() == tk_indiada) {
 			if (V() == 1) {
 				if (lexico.proximoToken() == tk_abreparenteses) {
 					if (Par() == 1) {
@@ -69,11 +108,45 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		}
-		return 0;
+		return 0;*/
+		Retorno mAuxRetorno = new Retorno();
+		
+		if (lexico.proximoToken() == tk_indiada) {
+			mAuxRetorno = V();
+			
+			if (mAuxRetorno.getStatus() == 1) {
+				if (lexico.proximoToken() == tk_abreparenteses) {
+					mAuxRetorno = Par();
+					if (mAuxRetorno.getStatus() == 1) {
+						if (lexico.proximoToken() == tk_fechaparenteses) {
+							mAuxRetorno = FuncRet();
+							if (mAuxRetorno.getStatus() == 1) {
+								if (lexico.proximoToken() != tk_ponto_e_virgula) {
+									mAuxRetorno.setStatus(0);
+									mAuxRetorno.setDescricaoErro("Falta ponto e virgula no indiada");
+								}
+							}
+						}
+						else{
+							mAuxRetorno.setStatus(0);
+							mAuxRetorno.setDescricaoErro("Falta fecha parenteses para a indiada");
+						}
+					}
+				}
+				else{
+					mAuxRetorno.setStatus(0);
+					mAuxRetorno.setDescricaoErro("Falta abre parenteses para a indiada");
+				}					
+			}
+		}
+		
+		return mAuxRetorno;		
 	}
 
 	@Override
-	int IProt() {
+	Retorno IProt() {
+		/*Retorno mAuxRetorno = new Retorno();
+		
 		if (TVar() == 1) {
 			if (V() == 1) {
 				if (IProt1() == 1) {
@@ -81,12 +154,22 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		}
-		return 0;
+		return 0;*/
+		Retorno mAuxRetorno = new Retorno();
+		
+		mAuxRetorno = TVar();
+		if (mAuxRetorno.getStatus() == 1) {
+			mAuxRetorno = V();
+			if (mAuxRetorno.getStatus() == 1) {
+				mAuxRetorno = IProt1();
+			}
+		}
+		return mAuxRetorno;
 	}
 
 	@Override
-	int IProt1() {
-		if (lexico.proximoToken() == tk_virgula) {
+	Retorno IProt1() {
+		/*if (lexico.proximoToken() == tk_virgula) {
 			if (V() == 1) {
 				if (IProt1() == 1) {
 					return 1;
@@ -95,12 +178,26 @@ public class Sintatico extends Funcoes {
 		} else if (AProt() == 1) {
 			return 1;
 		}
-		return 0;
+		return 0;*/
+		// IProt1 -> , V Iprot1| AProt
+		Retorno mAuxRetorno = new Retorno();
+		
+		if (lexico.proximoToken() == tk_virgula) {
+			mAuxRetorno = V();
+			
+			if (mAuxRetorno.getStatus() == 1) {
+				mAuxRetorno = IProt1();
+			}
+		} else{
+			mAuxRetorno = AProt();
+		}
+		
+		return mAuxRetorno;
 	}
 
 	@Override
-	int IVet() {
-		if (TVet() == 1) {
+	Retorno IVet() {
+		/*if (TVet() == 1) {
 			if (V() == 1) {
 				if (lexico.proximoToken() == tk_igual) {
 					if (IVetDime() == 1) {
@@ -111,12 +208,36 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		}
-		return 0;
+		return 0;*/
+		//IVet -> TVet V = IVetDime;
+		Retorno mAuxRetorno = new Retorno();
+		
+		mAuxRetorno = TVet();
+		if (mAuxRetorno.getStatus() == 1) {
+			mAuxRetorno = V();
+			
+			if (mAuxRetorno.getStatus() == 1) {
+				if (lexico.proximoToken() == tk_igual) {
+					mAuxRetorno = IVetDime();
+					if (mAuxRetorno.getStatus() == 1) {
+						if (lexico.proximoToken() != tk_ponto_e_virgula) {
+							mAuxRetorno.setStatus(0);
+							mAuxRetorno.setDescricaoErro("Falta o ponto e virgula no TVet");
+						}
+					}
+				} else{
+					mAuxRetorno.setStatus(0);
+					mAuxRetorno.setDescricaoErro("Falta o sinal de igual TVet");
+				}					
+			}
+		}
+		
+		return mAuxRetorno;		
 	}
 
 	@Override
-	int IVetDime() {
-		if (lexico.proximoToken() == tk_abrecolchetes) {
+	Retorno IVetDime() {
+		/*if (lexico.proximoToken() == tk_abrecolchetes) {
 			if (C() == 1) {
 				if (lexico.proximoToken() == tk_fechecolchetes) {
 					if (IVetDimeLinha() == 1) {
@@ -125,11 +246,33 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		}
-		return 0;
+		return 0;*/
+		// IVetDime -> [ C ] IvetDime’
+		Retorno mAuxRetorno = new Retorno();
+		
+		if (lexico.proximoToken() == tk_abrecolchetes) {
+			mAuxRetorno = C();
+			if (mAuxRetorno.getStatus() == 1) {
+				if (lexico.proximoToken() == tk_fechecolchetes) {
+					if (IVetDimeLinha() == 1) {
+						return 1;
+					}
+				} else {
+					mAuxRetorno.setStatus(0);
+					mAuxRetorno.setDescricaoErro("Faltou fecha colchetes IVetDime");
+				}
+			}
+		} else {
+			mAuxRetorno.setStatus(0);
+			mAuxRetorno.setDescricaoErro("Faltou abre colchetes IVetDime");
+		}
+		
+		
+		return mAuxRetorno;
 	}
 
 	@Override
-	int IVetDimeLinha() {
+	Retorno IVetDimeLinha() {
 		if (lexico.proximoToken() == tk_abrecolchetes) {
 			if (C() == 1) {
 				if (lexico.proximoToken() == tk_fechecolchetes) {
@@ -143,7 +286,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	int AProt() {
+	Retorno AProt() {
 		if (lexico.proximoToken() == tk_igual) {
 			if (C() == 1) {
 				return 1;
@@ -156,7 +299,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	int M() {
+	Retorno M() {
 		if (lexico.proximoToken() == tk_tche) {
 			if (lexico.proximoToken() == tk_abrechaves) {
 				if (IniCod() == 1) {

@@ -1,5 +1,7 @@
 package com.tche.ver;
 
+import com.tche.Retorno;
+
 public abstract class Funcoes {
 	static final int tk_EOF = -1;
 	static final int tk_naoreconhecido = 0;
@@ -48,25 +50,25 @@ public abstract class Funcoes {
 	static final int tk_dois_pontos = 85;
 	static final int tk_virgula = 86;
 
-	abstract int Inicio();
+	abstract Retorno Inicio();
 
-	abstract int Q();
+	abstract Retorno Q();
 
-	abstract int FuncProt();
+	abstract Retorno FuncProt();
 
-	abstract int IProt();
+	abstract Retorno IProt();
 
-	abstract int IProt1();
+	abstract Retorno IProt1();
 
-	abstract int IVet();
+	abstract Retorno IVet();
 
-	abstract int IVetDime();
+	abstract Retorno IVetDime();
 
-	abstract int IVetDimeLinha();
+	abstract Retorno IVetDimeLinha();
 
-	abstract int AProt();
+	abstract Retorno AProt();
 
-	abstract int M();
+	abstract Retorno M();
 
 	abstract int Func();
 
