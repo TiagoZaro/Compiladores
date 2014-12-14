@@ -128,7 +128,11 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int ParVar() {
-		// TODO Auto-generated method stub
+		if (TVar() == 1) {
+			if (VVar() == 1) {
+
+			}
+		}
 		return 0;
 	}
 
@@ -194,16 +198,6 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int ComandC() {
-		// if (lexico.proximoToken() == 79) {
-		// if (lexio.promoTOken() == paranet) {
-		// ident();
-		// if (lexico.proximoToken() == paranetresfecha) {
-		// if (leximo.promimoToken() == pontovirgula) {
-		// return 1;
-		// }
-		// }
-		// }
-		// }
 		// ComandC -> trova(Ident); | voltear(Log){Cod} | largatear (IniComand)
 		// hasta Ident {Cod}
 		return 0;
@@ -211,171 +205,224 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int IniComand() {
-		// TODO Auto-generated method stub
+		// IniComand -> ComandA | V
 		return 0;
 	}
 
 	@Override
 	int ComandA() {
-		// TODO Auto-generated method stub
+		// ComandA -> ComandALINHA = ACod1 | aprochegar ComandALINHA | arregar
+		// ComandALINHA
 		return 0;
 	}
 
 	@Override
 	int ComandALinha() {
-		// TODO Auto-generated method stub
+		// ComandALINHA -> V | Vet
 		return 0;
 	}
 
 	@Override
 	int FuncCall() {
-		// TODO Auto-generated method stub
+		// FuncCall -> V(FuncPar);
 		return 0;
 	}
 
 	@Override
 	int FuncPar() {
-		// TODO Auto-generated method stub
+		// FuncPar-> Ident MaisFuncPar
 		return 0;
 	}
 
 	@Override
 	int MaisFuncPar() {
-		// TODO Auto-generated method stub
+		// MaisFuncPar -> , Ident MaisFuncPar | &
 		return 0;
 	}
 
 	@Override
 	int Log() {
-		// TODO Auto-generated method stub
+		// Log -> Op1 LogLINHA
 		return 0;
 	}
 
 	@Override
 	int LogLinha() {
-		// TODO Auto-generated method stub
+		// LogLINHA -> && Op1 LogLINHA | || Op1 LogLINHA | &
 		return 0;
 	}
 
 	@Override
 	int Op1() {
-		// TODO Auto-generated method stub
+		// Op1 -> Op2 Op1LINHA
 		return 0;
 	}
 
 	@Override
 	int Op1Linha() {
-		// TODO Auto-generated method stub
+		// Op1LINHA -> == Op2 Op1LINHA | != Op2 Op1LINHA | &
 		return 0;
 	}
 
 	@Override
 	int Op2() {
-		// TODO Auto-generated method stub
+		// Op2 -> Op3 Op2LINHA
 		return 0;
 	}
 
 	@Override
 	int Op2Linha() {
-		// TODO Auto-generated method stub
+		// Op2LINHA -> > Op3 Op2LINHA | < Op3 Op2LINHA | >= Op3 Op2LINHA | <=
+		// Op3 Op2LINHA | &
 		return 0;
 	}
 
 	@Override
 	int Op3() {
-		// TODO Auto-generated method stub
+		// Op3 -> Op4 Op3LINHA
 		return 0;
 	}
 
 	@Override
 	int Op3Linha() {
-		// TODO Auto-generated method stub
+		// Op3LINHA -> + Op4 Op3LINHA | - Op4 Op3LINHA | &
 		return 0;
 	}
 
 	@Override
 	int Op4() {
-		// TODO Auto-generated method stub
+		// Op4 -> Un Op4LINHA
 		return 0;
 	}
 
 	@Override
 	int Op4Linha() {
-		// TODO Auto-generated method stub
+		// Op4LINHA-> * Un Op4LINHA | / Un Op4LINHA | &
 		return 0;
 	}
 
 	@Override
 	int Un() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_subtr) {
+			if (V() == 1) {
+
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int P() {
-		// TODO Auto-generated method stub
+		if (Ident() == 1) {
+			if (PLinha() == 1) {
+				return 1;
+			}
+		} else if (lexico.proximoToken() == tk_abreparenteses) {
+			if (Log() == 1) {
+				if (lexico.proximoToken() == tk_fechaparenteses) {
+					return 1;
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int PLinha() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (lexico.proximoToken() == tk_abreparenteses) {
+			if (Log() == 1) {
+				if (lexico.proximoToken() == tk_fechaparenteses) {
+					return 1;
+				}
+			}
+		}
+		return 0;// TODO aceita vazio VER
 	}
 
 	@Override
 	int Ident() {
-		// TODO Auto-generated method stub
+		if (V() == 1) {
+			return 1;
+		} else if (C() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int V() {
-		// TODO Auto-generated method stub
+		if (VVar() == 1) {
+			return 1;
+		} else if (VVet() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int VVet() {
-		// TODO Auto-generated method stub
+		if (VVar() == 1) {
+			if (Vet() == 1) {
+				if (Vet() == 1) {
+					return 1;
+				}
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Vet() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_abrecolchetes) {
+			if (Ident() == 1) {
+				if (lexico.proximoToken() == tk_fechecolchetes) {
+					return 1;
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int VVar() {
-		// TODO Auto-generated method stub
+		// if (lexico.proximoToken() == tk_id) { // TODO
+		// return 1;
+		// }
 		return 0;
 	}
 
 	@Override
 	int C() {
 		if (lexico.proximoToken() == tk_numero || lexico.proximoToken() == tk_apas) {
-
+			return 1;
 		}
 		return 0;
 	}
 
 	@Override
 	int T() {
-		// TODO Auto-generated method stub
+		if (TVar() == 1) {
+			if (TVet() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int TVet() {
-		// TODO Auto-generated method stub
+		if ((lexico.proximoToken() == tk_borracho && TVar() == 1) || (lexico.proximoToken() == tk_bolicho && TVar() == 1)) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int TVar() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_bueno || lexico.proximoToken() == tk_pia || lexico.proximoToken() == tk_pila) {
+			return 1;
+		}
 		return 0;
 	}
 
