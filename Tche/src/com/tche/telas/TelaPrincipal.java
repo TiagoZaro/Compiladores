@@ -1,5 +1,7 @@
 package com.tche.telas;
 
+import com.tche.TcheGlobal;
+
 public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
@@ -15,6 +17,22 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	@Override
 	public void compilar() {
 		// TODO Auto-generated method stub
+		
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		System.out.println(TcheGlobal.criarLabel());
+		
+		System.out.println(TcheGlobal.criarTmp());
+		System.out.println(TcheGlobal.criarTmp());
+		System.out.println(TcheGlobal.criarTmp());
+		System.out.println(TcheGlobal.criarTmp());
+		System.out.println(TcheGlobal.criarTmp());
+		System.out.println(TcheGlobal.criarTmp());
+
 	}
 
 	public void gerarC3E(String log) {

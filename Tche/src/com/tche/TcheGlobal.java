@@ -5,10 +5,20 @@ import static com.tche.TipoVariaveis.CHAR;
 import static com.tche.TipoVariaveis.INTEGER;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class TcheGlobal {
 
 	private static HashMap<String, Tipagem>	mapaSimbolos;
+	
+	private static HashSet<Integer> lstLabels = new HashSet<Integer>();
+	
+	private static Integer controlaLabels = 0;
+	
+	private static HashSet<Integer> lstVarTmps = new HashSet<Integer>();
+	
+	private static Integer controlaVarTmps = 0;
+	
 
 	public static HashMap<String, Tipagem> getMapaSimbolos() {
 		if (mapaSimbolos == null)
@@ -38,4 +48,32 @@ public class TcheGlobal {
 		TcheGlobal.mapaTipagem = mapaTipagem;
 	}
 
+	
+	public static String criarTmp() {
+		while(lstVarTmps.contains(controlaVarTmps)){
+			controlaVarTmps++;
+		}
+		
+		lstVarTmps.add(controlaVarTmps);
+		
+		// iniciando criacao de novo labal
+		StringBuilder sb = new StringBuilder();
+		sb.append("VAR_TMP_").append(controlaVarTmps);
+		
+		return sb.toString();
+	}
+	
+	public static String criarLabel() {
+		while(lstLabels.contains(controlaLabels)){
+			controlaLabels++;
+		}
+		
+		lstLabels.add(controlaLabels);
+		
+		// iniciando criacao de novo labal
+		StringBuilder sb = new StringBuilder();
+		sb.append("LABEL_").append(controlaLabels);
+		
+		return sb.toString();
+	}
 }
