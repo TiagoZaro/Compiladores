@@ -6,7 +6,7 @@ public class Sintatico extends Funcoes {
 	public Lexico lexico;
 
 	@Override
-	Retorno Inicio() {
+	public Retorno Inicio() {
 		Retorno mAuxRetorno = new Retorno();
 		mAuxRetorno.setStatus(1);
 
@@ -121,6 +121,16 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetorno.getStatus() == 1) {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
+				
+//				// Exemplo adiciona na tabela de simbolos
+//				Tipagem t = new Tipagem();
+//				t.setDesNomeTipoVal("Pila");
+//				t.setVlrVariavel(0);
+//				t.setTipoEntrada(TipoEntrada.VARIAVEL);
+//				String nome = "val";
+//
+//				addTable(t, nome);
+					
 				mAuxRetorno = this.IProt1();
 			}
 		}

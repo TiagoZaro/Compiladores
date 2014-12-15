@@ -1,5 +1,7 @@
 package com.tche.ver;
 
+import com.tche.DesktopFrameWork;
+
 public class Lexico {
 
 	static final int tk_EOF = -1;
@@ -48,12 +50,16 @@ public class Lexico {
 	static final int tk_hasta = 84;
 	static final int tk_dois_pontos = 85;
 	static final int tk_virgula = 86;
+	static final int tk_variavel = 87;
 
 	String strt; // string com a sentenca
 	int post, tamt; // posicao atual e tamanho da sentenca
 	char car_atual; // ultimo cararter lido
 	int token; // codigo do token identificado
-	char lexema[] = new char[400]; // lexema identificado
+	// char lexema[] = new char[400];
+
+	// lexema identificado
+	StringBuilder sbLexema = new StringBuilder();
 
 	private static Lexico instance;
 
@@ -90,13 +96,11 @@ public class Lexico {
 			switch (estado) {
 			case -2:
 				this.token = this.tk_naoreconhecido;
-				this.lexema[p] = '\0';
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case -1:
 				this.token = this.tk_EOF;
-				this.lexema[p] = '\0';
 				fim = 1;
 				break;
 
@@ -133,108 +137,216 @@ public class Lexico {
 				case ':':
 					estado = this.tk_dois_pontos;
 					break;
-
+				case '{':
+					estado = 20;
+					break;
+				case '}':
+					estado = 21;
+					break;
 				default:
 					if (this.car_atual >= '0' && this.car_atual <= '9') {
 						estado = 100;
 					} else
 
 					if (this.car_atual == 'a') {
-						if (this.strt.substring(this.post, this.post + 11).equals("aprochegar")) {
-							estado = this.tk_aprochegar;
-						} else if (this.strt.substring(this.post, this.post + 7).equals("arregar")) {
-							estado = this.tk_arregar;
+						if (this.strt.substring(this.post, this.post + 10)
+								.equals("prochegar")) {
+							token = this.tk_aprochegar;
+							fim = 1;
+							post += 10;
+							car_atual = lecar();
+							sbLexema.append("aprochegar");
+						} else if (this.strt
+								.substring(this.post, this.post + 6).equals(
+										"rregar")) {
+							token = this.tk_arregar;
+							fim = 1;
+							post += 6;
+							car_atual = lecar();
+							sbLexema.append("arregar");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'b') {
-						if (this.strt.substring(this.post, this.post + 7).equals("bolicho")) {
-							estado = this.tk_bolicho;
-						} else if (this.strt.substring(this.post, this.post + 8).equals("borracho")) {
-							estado = this.tk_borracho;
-						} else if (this.strt.substring(this.post, this.post + 5).equals("bueno")) {
-							estado = this.tk_bueno;
+						if (this.strt.substring(this.post, this.post + 6)
+								.equals("olicho")) {
+							token = this.tk_bolicho;
+							fim = 1;
+							post += 6;
+							car_atual = lecar();
+							sbLexema.append("bolicho");
+						} else if (this.strt
+								.substring(this.post, this.post + 7).equals(
+										"orracho")) {
+							token = this.tk_borracho;
+							fim = 1;
+							post += 7;
+							car_atual = lecar();
+						} else if (this.strt
+								.substring(this.post, this.post + 4).equals(
+										"ueno")) {
+							token = this.tk_bueno;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("bueno");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'c') {
-						if (this.strt.substring(this.post, this.post + 5).equals("capaz")) {
-							estado = this.tk_capaz;
+						if (this.strt.substring(this.post, this.post + 4)
+								.equals("apaz")) {
+							token = this.tk_capaz;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("capaz");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'd') {
-						if (this.strt.substring(this.post, this.post + 8).equals("despacho")) {
-							estado = this.tk_despacho;
+						if (this.strt.substring(this.post, this.post + 7)
+								.equals("espacho")) {
+							token = this.tk_despacho;
+							fim = 1;
+							post += 7;
+							car_atual = lecar();
+							sbLexema.append("despacho");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'h') {
-						if (this.strt.substring(this.post, this.post + 5).equals("hasta")) {
-							estado = this.tk_hasta;
+						if (this.strt.substring(this.post, this.post + 4)
+								.equals("asta")) {
+							token = this.tk_hasta;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("hasta");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'i') {
-						if (this.strt.substring(this.post, this.post + 7).equals("indiada")) {
-							estado = this.tk_indiada;
+						if (this.strt.substring(this.post, this.post + 6)
+								.equals("ndiada")) {
+							token = this.tk_indiada;
+							fim = 1;
+							sbLexema.append("indiada");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'l') {
-						if (this.strt.substring(this.post, this.post + 9).equals("largatear")) {
-							estado = this.tk_largatear;
+						if (this.strt.substring(this.post, this.post + 8)
+								.equals("argatear")) {
+							token = this.tk_largatear;
+							fim = 1;
+							post += 8;
+							car_atual = lecar();
+							sbLexema.append("lagartear");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'p') {
-						if (this.strt.substring(this.post, this.post + 3).equals("pia")) {
-							estado = this.tk_pia;
-						} else if (this.strt.substring(this.post, this.post + 4).equals("pila")) {
-							estado = this.tk_pila;
+						if (this.strt.substring(this.post, this.post + 2)
+								.equals("ia")) {
+							token = this.tk_pia;
+							fim = 1;
+							post += 2;
+							car_atual = lecar();
+							sbLexema.append("pia");
+						} else if (this.strt
+								.substring(this.post, this.post + 3).equals(
+										"ila")) {
+							token = this.tk_pila;
+							fim = 1;
+							post += 3;
+							car_atual = lecar();
+							sbLexema.append("pila");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'q') {
-//						if (this.strt.substring(this.post, this.post + 0).equals("querencia")) {
-						if (this.strt.substring(this.post, this.post + 8).equals("uerencia")) {
-							estado = this.tk_querencia;
-//						} else if (this.strt.substring(this.post, this.post + 6).equals("quetal")) {
-						} else if (this.strt.substring(this.post, this.post + 5).equals("uetal")) {
-							estado = this.tk_quetal;
+						if (this.strt.substring(this.post, this.post + 7)
+								.equals("erencia")) {
+							token = this.tk_querencia;
+							fim = 1;
+							post += 7;
+							car_atual = lecar();
+							sbLexema.append("querenceia");
+						} else if (this.strt
+								.substring(this.post, this.post + 4).equals(
+										"etal")) {
+							token = this.tk_quetal;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("quetal");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 't') {
-						if (this.strt.substring(this.post, this.post + 4).equals("tche")) {
-							estado = this.tk_tche;
-						} else if (this.strt.substring(this.post, this.post + 5).equals("trova")) {
-							estado = this.tk_trova;
+						if (this.strt.substring(this.post, this.post + 3)
+								.equals("che")) {
+							token = this.tk_tche;
+							fim = 1;
+							post += 3;
+							car_atual = lecar();
+							sbLexema.append("tche");
+						} else if (this.strt
+								.substring(this.post, this.post + 4).equals(
+										"rova")) {
+							token = this.tk_trova;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("trova");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'v') {
-						if (this.strt.substring(this.post, this.post + 7).equals("voltear")) {
-							estado = this.tk_voltear;
+						if (this.strt.substring(this.post, this.post + 6)
+								.equals("oltear")) {
+							token = this.tk_voltear;
+							fim = 1;
+							post += 6;
+							car_atual = lecar();
+							sbLexema.append("voltear");
 						} else {
 							// erro
+							estado = 101;
 						}
 
 					} else if (this.car_atual == 'x') {
-						if (this.strt.substring(this.post, this.post + 5).equals("xispa")) {
-							estado = this.tk_xispa;
+						if (this.strt.substring(this.post, this.post + 5)
+								.equals("ispa")) {
+							token = this.tk_xispa;
+							fim = 1;
+							post += 5;
+							car_atual = lecar();
+							sbLexema.append("xispa");
 						} else {
 							// erro
+							estado = 101;
 						}
 					}
 
@@ -246,66 +358,79 @@ public class Lexico {
 				break;
 			case 1:
 				this.token = this.tk_adicao;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 2:
 				this.token = this.tk_subtr;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 3:
 				this.token = this.tk_mult;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 6:
 				this.token = this.tk_potencia;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 7:
 				this.token = this.tk_abreparenteses;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 20:
+				this.token = tk_abrechaves;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 21:
+				this.token = tk_fechachaves;
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 17:
-				this.lexema[p++] = this.car_atual;
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				this.token = this.tk_fatorial;
 				fim = 1;
 				break;
 			case 14:
 				this.token = this.tk_igual;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 8:
 				this.token = this.tk_fechaparenteses;
-				this.lexema[p++] = this.car_atual;
-				this.lexema[p] = '\0';
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
 			case 100:
-				this.lexema[p++] = this.car_atual;
+				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				if (this.car_atual < '0' || this.car_atual > '9') {
-					this.lexema[p] = '\0';
 					fim = 1;
 					this.token = this.tk_numero;
+				}
+				break;
+			case 101:
+				sbLexema.append(car_atual);
+				car_atual = lecar();
+				if (!((car_atual >= 'a' && car_atual <= 'z')
+						|| (car_atual >= 'A' && car_atual <= 'Z') || (car_atual >= '0' && car_atual <= '9'))) {
+					token = tk_variavel;
+					fim = 1;
 				}
 				break;
 			}
@@ -316,9 +441,21 @@ public class Lexico {
 	public void listatokens(String s) {
 		this.iniciageradortokens(s);
 		this.proximotoken();
+		
 		while (this.token != this.tk_EOF) {
-			System.out.println(String.format("token=%s lexema='%s'\n", this.token, this.lexema[0]));
-			this.proximotoken();
+			try {
+				if (token == 0)
+					continue;
+
+				DesktopFrameWork.getInstance().addLog(
+						String.format("token=%s lexema='%s'\n", this.token,
+								sbLexema.toString()));
+
+				sbLexema.setLength(0);
+
+			} finally {
+				this.proximotoken();
+			}
 		}
 	}
 }

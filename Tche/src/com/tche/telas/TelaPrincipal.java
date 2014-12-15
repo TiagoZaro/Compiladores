@@ -21,6 +21,9 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		Sintatico mAuxSintatico = new Sintatico();
 		mAuxSintatico.lexico = new Lexico();
 		mAuxSintatico.lexico.listatokens(txtAreaDesenv.getText());
+		
+		// Efetua a analise seintatica
+		mAuxSintatico.Inicio();
 	}
 
 	public void addLog(String log) {

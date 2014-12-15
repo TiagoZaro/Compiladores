@@ -50,7 +50,7 @@ public abstract class Funcoes {
 	static final int tk_dois_pontos = 85;
 	static final int tk_virgula = 86;
 
-	abstract Retorno Inicio();
+	public abstract Retorno Inicio();
 
 	abstract Retorno Q();
 
