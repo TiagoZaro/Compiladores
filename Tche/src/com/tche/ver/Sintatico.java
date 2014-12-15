@@ -16,111 +16,239 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int Inicio() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_querencia) {
+			if (lexico.proximoToken() == tk_abrechaves) {
+				if (Q() == 1) {
+					if (lexico.proximoToken() == tk_fechachaves) {
+						if (M() == 1) {
+							return 1;
+						}
+					}
+				}
+			}
+		} else if (M() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int Q() {
-		// TODO Auto-generated method stub
+		if (IVet() == 1) {
+			if (Q() == 1) {
+				return 1;
+			}
+		} else if (IProt() == 1) {
+			if (Q() == 1) {
+				return 1;
+			}
+		} else if (FuncProt() == 1) {
+			if (Q() == 1) {
+				return 1;
+			}
+		} else {
+			// vazio //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int FuncProt() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_indiada) {
+			if (V() == 1) {
+				if (lexico.proximoToken() == tk_abreparenteses) {
+					if (Par() == 1) {
+						if (lexico.proximoToken() == tk_fechaparenteses) {
+							if (FuncRet() == 1) {
+								if (lexico.proximoToken() == tk_ponto_e_virgula) {
+									return 1;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int IProt() {
-		if (lexico.proximoToken() == tk_bolicho) {
+		if (TVar() == 1) {
 			if (V() == 1) {
 				if (IProt1() == 1) {
 					return 1;
 				}
 			}
 		}
-
-		// if (lexico.proximoToken() == 79) {
-		// if (lexio.promoTOken() == paranet) {
-		// ident();
-		// if (lexico.proximoToken() == paranetresfecha) {
-		// if (leximo.promimoToken() == pontovirgula) {
-		// return 1;
-		// }
-		// }
-		// }
-		// }
-		// ComandC -> trova(Ident); | voltear(Log){Cod} | largatear (IniComand)
-		// hasta Ident {Cod}
-
 		return 0;
 	}
 
 	@Override
 	int IProt1() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_virgula) {
+			if (V() == 1) {
+				if (IProt1() == 1) {
+					return 1;
+				}
+			}
+		} else if (AProt() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int IVet() {
-		// TODO Auto-generated method stub
+		if (TVet() == 1) {
+			if (V() == 1) {
+				if (lexico.proximoToken() == tk_igual) {
+					if (IVetDime() == 1) {
+						if (lexico.proximoToken() == tk_ponto_e_virgula) {
+							return 1;
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int IVetDime() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_abrecolchetes) {
+			if (C() == 1) {
+				if (lexico.proximoToken() == tk_fechecolchetes) {
+					if (IVetDimeLinha() == 1) {
+						return 1;
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int IVetDimeLinha() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_abrecolchetes) {
+			if (C() == 1) {
+				if (lexico.proximoToken() == tk_fechecolchetes) {
+					return 1;
+				}
+			}
+		} else {
+			// vazio //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int AProt() {
+		if (lexico.proximoToken() == tk_igual) {
+			if (C() == 1) {
+				return 1;
+			}
+		} else {
+			// Vazio //TODO
+		}
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	int M() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_tche) {
+			if (lexico.proximoToken() == tk_abrechaves) {
+				if (IniCod() == 1) {
+					if (lexico.proximoToken() == tk_fechachaves) {
+						if (Func() == 1) {
+							return 1;
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Func() {
+		if (lexico.proximoToken() == tk_indiada) {
+			if (V() == 1) {
+				if (lexico.proximoToken() == tk_abreparenteses) {
+					if (Par() == 1) {
+						if (lexico.proximoToken() == tk_fechaparenteses) {
+							if (FuncRet() == 1) {
+								if (lexico.proximoToken() == tk_abrechaves) {
+									if (IniCod() == 1) {
+										if (lexico.proximoToken() == tk_fechachaves) {
+											if (Func() == 1) {
+												return 1;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	int Par() {
-		// TODO Auto-generated method stub
+		if (ParVet() == 1) {
+			if (MaisPar() == 1) {
+				return 1;
+			}
+		} else if (ParVar() == 1) {
+			if (MaisPar() == 1) {
+				return 1;
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int MaisPar() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_virgula) {
+			if (MaisPar1() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int MaisPar1() {
-		// TODO Auto-generated method stub
+		if (ParVet() == 1) {
+			if (MaisPar() == 1) {
+				return 1;
+			}
+		} else if (ParVar() == 1) {
+			if (MaisPar() == 1) {
+				return 1;
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int ParVet() {
-		// TODO Auto-generated method stub
+		if (TVar() == 1) {
+			if (VVet() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
@@ -128,7 +256,7 @@ public class Sintatico extends Funcoes {
 	int ParVar() {
 		if (TVar() == 1) {
 			if (VVar() == 1) {
-
+				return 1;
 			}
 		}
 		return 0;
@@ -136,43 +264,120 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int FuncRet() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_dois_pontos) {
+			if (T() == 1) {
+				return 1;
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int IniCod() {
-		// TODO Auto-generated method stub
+		if (ICod() == 1) {
+			if (IniCod() == 1) {
+				return 1;
+			}
+		} else if (Cod() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int ICod() {
-		// TODO Auto-generated method stub
+		if (T() == 1) {
+			if (V() == 1) {
+				if (ACod1() == 1) {
+					return 1;
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int ACod() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_igual) {
+			if (ACod1() == 1) {
+				return 1;
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int ACod1() {
-		// TODO Auto-generated method stub
+		if (Ident() == 1) {
+			return 1;
+		} else if (Op3() == 1) {
+			return 1;
+		} else if (FuncCall() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int Cod() {
-		// TODO Auto-generated method stub
+		if (ComandC() == 1) {
+			if (Cod() == 1) {
+				return 1;
+			}
+		} else if (ComandD() == 1) {
+			if (Cod() == 1) {
+				return 1;
+			}
+		} else if (ComandA() == 1) {
+			if (lexico.proximoToken() == tk_ponto_e_virgula) {
+				if (Cod() == 1) {
+					return 1;
+				}
+			}
+		} else if (FuncCall() == 1) {
+			if (lexico.proximoToken() == tk_ponto_e_virgula) {
+				if (Cod() == 1) {
+					return 1;
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
+
 		return 0;
 	}
 
 	@Override
 	int ComandD() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_quetal) {
+			if (lexico.proximoToken() == tk_abreparenteses) {
+				if (Log() == 1) {
+					if (lexico.proximoToken() == tk_fechaparenteses) {
+						if (lexico.proximoToken() == tk_abrechaves) {
+							if (Cod() == 1) {
+								if (lexico.proximoToken() == tk_fechachaves) {
+									if (ComandD1() == 1) {
+										return 1;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} else if (lexico.proximoToken() == tk_xispa) {
+			if (lexico.proximoToken() == tk_ponto_e_virgula) {
+				return 1;
+			}
+		} else if (lexico.proximoToken() == tk_despacho) {
+			if (ComandD2() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
