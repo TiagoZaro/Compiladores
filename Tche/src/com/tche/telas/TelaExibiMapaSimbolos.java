@@ -20,28 +20,42 @@ public class TelaExibiMapaSimbolos extends TelaExibiMapaSimbolosLay{
 	@Override
 	public void defaultValues() {
 		
-		tableModelSimbolos.clear();
-		
-		Set<String> lstKeys =  getMapaSimbolos().keySet();
-		
-		for (String k : lstKeys) {
-			ItemTableSimbolos item = new ItemTableSimbolos();
-			
-			Tipagem tipagem = getMapaSimbolos().get(k);
-			
-			item.setNome(k);
-			item.setNomeTipoVal(tipagem.getDesNomeTipoVal().toUpperCase());
-			item.setValorVal(tipagem.getVlrVariavel().toString());
+		Thread thr = new Thread(){
+			public void run(){
 				
-			if(tipagem.getTipoEntrada().equals(TipoEntrada.FUNCAO)){
-				item.setTipoEntrada("FUNC√ÉO");
-			}else{
-				item.setTipoEntrada("VARI√ÅVEL");
+				while(true){
+					tableModelSimbolos.clear();
+					
+					Set<String> lstKeys =  getMapaSimbolos().keySet();
+					
+					for (String k : lstKeys) {
+						ItemTableSimbolos item = new ItemTableSimbolos();
+						
+						Tipagem tipagem = getMapaSimbolos().get(k);
+						
+						item.setNome(k);
+						item.setNomeTipoVal(tipagem.getDesNomeTipoVal().toUpperCase());
+						item.setValorVal(tipagem.getVlrVariavel().toString());
+							
+						if(tipagem.getTipoEntrada().equals(TipoEntrada.FUNCAO)){
+							item.setTipoEntrada("FUN«√ÉO");
+						}else{
+							item.setTipoEntrada("VARI¡VEL");
+						}
+						
+						tableModelSimbolos.addBean(item);
+						pnlTable.updateUI();
+						tbl.updateUI();
+					}
+					
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+					}
+				}
 			}
-			
-			tableModelSimbolos.addBean(item);
-		}
-		
+		};
+		thr.start();	
 	}
 
 }

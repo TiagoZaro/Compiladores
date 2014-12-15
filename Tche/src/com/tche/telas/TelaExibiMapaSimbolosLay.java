@@ -12,7 +12,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 public abstract class TelaExibiMapaSimbolosLay extends JFrame{
 	
-	private JPanel pnlTable;
+	protected JPanel pnlTable;
 	protected JTable tbl;
 	protected TableModelSimbolos tableModelSimbolos;
 	
