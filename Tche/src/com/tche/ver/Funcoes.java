@@ -1,14 +1,17 @@
 package com.tche.ver;
+
 public abstract class Funcoes {
 	static final int tk_EOF = -1;
 	static final int tk_naoreconhecido = 0;
 	static final int tk_adicao = 1;
 	static final int tk_subtr = 2;
 	static final int tk_mult = 3;
+	static final int tk_divisao = 4;
 	static final int tk_potencia = 6;
 	static final int tk_abreparenteses = 7;
 	static final int tk_fechaparenteses = 8;
 	static final int tk_maior = 9;
+	static final int tk_menor = 11;
 	static final int tk_diferente = 13;
 	static final int tk_igual = 14;
 	static final int tk_fatorial = 17;
@@ -43,6 +46,7 @@ public abstract class Funcoes {
 	static final int tk_largatear = 83;
 	static final int tk_hasta = 84;
 	static final int tk_dois_pontos = 85;
+	static final int tk_virgula = 86;
 
 	abstract int Inicio();
 
@@ -69,7 +73,7 @@ public abstract class Funcoes {
 	abstract int Par();
 
 	abstract int MaisPar();
-	
+
 	abstract int MaisPar1();
 
 	abstract int ParVet();
@@ -93,7 +97,7 @@ public abstract class Funcoes {
 	abstract int ComandD1();
 
 	abstract int ComandD2();
-	
+
 	abstract int ComandD3();
 
 	abstract int ComandC();

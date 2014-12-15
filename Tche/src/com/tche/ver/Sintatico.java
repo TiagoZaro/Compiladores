@@ -1,7 +1,5 @@
 package com.tche.ver;
 
-
-
 public class Sintatico extends Funcoes {
 
 	public static void main(String[] args) {
@@ -113,7 +111,7 @@ public class Sintatico extends Funcoes {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	int MaisPar1() {
 		// TODO Auto-generated method stub
@@ -180,69 +178,185 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int ComandD1() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_capaz) {
+			if (ComandD3() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int ComandD2() {
-		// TODO Auto-generated method stub
+		if (Log() == 1) {
+			return 1;
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
-	
+
 	@Override
 	int ComandD3() {
-		// TODO Auto-generated method stub
+		if (lexico.proximoToken() == tk_abrechaves) {
+			if (Cod() == 1) {
+				if (lexico.proximoToken() == tk_fechachaves) {
+					return 1;
+				}
+			}
+		} else if (lexico.proximoToken() == tk_abreparenteses) {
+			if (Log() == 1) {
+				if (lexico.proximoToken() == tk_fechaparenteses) {
+					if (lexico.proximoToken() == tk_abreparenteses) {
+						if (Cod() == 1) {
+							if (lexico.proximoToken() == tk_fechaparenteses) {
+								if (ComandD1() == 1) {
+									return 1;
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int ComandC() {
-		// ComandC -> trova(Ident); | voltear(Log){Cod} | largatear (IniComand)
-		// hasta Ident {Cod}
+		if (lexico.proximoToken() == tk_trova) {
+			if (lexico.proximoToken() == tk_abreparenteses) {
+				if (Ident() == 1) {
+					if (lexico.proximoToken() == tk_fechaparenteses) {
+						if (lexico.proximoToken() == tk_ponto_e_virgula) {
+							return 1;
+						}
+					}
+				}
+			}
+		} else if (lexico.proximoToken() == tk_voltear) {
+			if (lexico.proximoToken() == tk_abreparenteses) {
+				if (Log() == 1) {
+					if (lexico.proximoToken() == tk_fechaparenteses) {
+						if (lexico.proximoToken() == tk_abrechaves) {
+							if (Cod() == 1) {
+								if (lexico.proximoToken() == tk_fechachaves) {
+									return 1;
+								}
+							}
+						}
+					}
+				}
+			}
+		} else if (lexico.proximoToken() == tk_largatear) {
+			if (lexico.proximoToken() == tk_abreparenteses) {
+				if (IniComand() == 1) {
+					if (lexico.proximoToken() == tk_fechaparenteses) {
+						if (lexico.proximoToken() == tk_hasta) {
+							if (Ident() == 1) {
+								if (lexico.proximoToken() == tk_abrechaves) {
+									if (Cod() == 1) {
+										if (lexico.proximoToken() == tk_fechachaves) {
+											return 1;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int IniComand() {
-		// IniComand -> ComandA | V
+		if (ComandA() == 1) {
+			return 1;
+		} else if (V() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int ComandA() {
-		// ComandA -> ComandALINHA = ACod1 | aprochegar ComandALINHA | arregar
-		// ComandALINHA
+		if (ComandALinha() == 1) {
+			if (lexico.proximoToken() == tk_igual) {
+				if (ACod1() == 1) {
+					return 1;
+				}
+			}
+		} else if (lexico.proximoToken() == tk_aprochegar) {
+			if (ComandALinha() == 1) {
+				return 1;
+			}
+		} else if (lexico.proximoToken() == tk_arregar) {
+			if (ComandALinha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int ComandALinha() {
-		// ComandALINHA -> V | Vet
+		if (V() == 1) {
+			return 1;
+		} else if (Vet() == 1) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	int FuncCall() {
-		// FuncCall -> V(FuncPar);
+		if (V() == 1) {
+			if (lexico.proximoToken() == tk_abreparenteses) {
+				if (FuncPar() == 1) {
+					if (lexico.proximoToken() == tk_fechaparenteses) {
+						return 1;
+					}
+				}
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int FuncPar() {
-		// FuncPar-> Ident MaisFuncPar
+		if (Ident() == 1) {
+			if (MaisFuncPar() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int MaisFuncPar() {
-		// MaisFuncPar -> , Ident MaisFuncPar | &
+		if (lexico.proximoToken() == tk_virgula) {
+			if (Ident() == 1) {
+				if (MaisFuncPar() == 1) {
+					return 1;
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int Log() {
-		// Log -> Op1 LogLINHA
+		if (Op1() == 1) {
+			if (LogLinha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
@@ -254,50 +368,132 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	int Op1() {
-		// Op1 -> Op2 Op1LINHA
+		if (Op2() == 1) {
+			if (Op1Linha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Op1Linha() {
-		// Op1LINHA -> == Op2 Op1LINHA | != Op2 Op1LINHA | &
+		if (lexico.proximoToken() == tk_igual) {
+			if (lexico.proximoToken() == tk_igual) {
+				if (Op2() == 1) {
+					if (Op1Linha() == 1) {
+						return 1;
+					}
+				}
+			}
+		} else if (lexico.proximoToken() == tk_fatorial) {
+			if (lexico.proximoToken() == tk_igual) {
+				if (Op2() == 1) {
+					if (Op1Linha() == 1) {
+						return 1;
+					}
+				}
+			}
+		} else {
+			// vazio //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int Op2() {
-		// Op2 -> Op3 Op2LINHA
+		if (Op3() == 1) {
+			if (Op2Linha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Op2Linha() {
-		// Op2LINHA -> > Op3 Op2LINHA | < Op3 Op2LINHA | >= Op3 Op2LINHA | <=
-		// Op3 Op2LINHA | &
+		if (lexico.proximoToken() == tk_maior) {
+			if (Op3() == 1) {
+				if (Op2Linha() == 1) {
+					return 1;
+				}
+			} else if (lexico.proximoToken() == tk_igual) {
+				if (Op2Linha() == 1) {
+					return 1;
+				}
+			}
+		} else if (lexico.proximoToken() == tk_menor) {
+			if (Op3() == 1) {
+				if (Op2Linha() == 1) {
+					return 1;
+				}
+			} else if (lexico.proximoToken() == tk_igual) {
+				if (Op2Linha() == 1) {
+					return 1;
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int Op3() {
-		// Op3 -> Op4 Op3LINHA
+		if (Op4() == 1) {
+			if (Op3Linha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Op3Linha() {
-		// Op3LINHA -> + Op4 Op3LINHA | - Op4 Op3LINHA | &
+
+		if (lexico.proximoToken() == tk_adicao) {
+			if (Op4() == 1) {
+				if (Op3Linha() == 1) {
+					return 1;
+				}
+			}
+		} else if (lexico.proximoToken() == tk_subtr) {
+			if (Op4() == 1) {
+				if (Op3Linha() == 1) {
+					return 1;
+				}
+			}
+		} else {
+			// VAZIO //TODO
+		}
 		return 0;
 	}
 
 	@Override
 	int Op4() {
-		// Op4 -> Un Op4LINHA
+		if (Un() == 1) {
+			if (Op4Linha() == 1) {
+				return 1;
+			}
+		}
 		return 0;
 	}
 
 	@Override
 	int Op4Linha() {
-		// Op4LINHA-> * Un Op4LINHA | / Un Op4LINHA | &
+		if (lexico.proximoToken() == tk_mult) {
+			if (Un() == 1) {
+				if (Op4Linha() == 1) {
+					return 1;
+				}
+			}
+		} else if (lexico.proximoToken() == tk_divisao) {
+			if (Un() == 1) {
+				if (Op4Linha() == 1) {
+					return 1;
+				}
+			}
+		}
 		return 0;
 	}
 

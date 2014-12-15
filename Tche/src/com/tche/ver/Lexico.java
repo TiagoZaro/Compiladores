@@ -1,4 +1,5 @@
 package com.tche.ver;
+
 public class Lexico {
 
 	static final int tk_EOF = -1;
@@ -6,10 +7,12 @@ public class Lexico {
 	static final int tk_adicao = 1;
 	static final int tk_subtr = 2;
 	static final int tk_mult = 3;
+	static final int tk_divisao = 4;
 	static final int tk_potencia = 6;
 	static final int tk_abreparenteses = 7;
 	static final int tk_fechaparenteses = 8;
 	static final int tk_maior = 9;
+	static final int tk_menor = 11;
 	static final int tk_diferente = 13;
 	static final int tk_igual = 14;
 	static final int tk_fatorial = 17;
@@ -44,21 +47,24 @@ public class Lexico {
 	static final int tk_largatear = 83;
 	static final int tk_hasta = 84;
 	static final int tk_dois_pontos = 85;
+	static final int tk_virgula = 86;
 
 	String strt; // string com a sentenca
 	int post, tamt; // posicao atual e tamanho da sentenca
 	char car_atual; // ultimo cararter lido
 	int token; // codigo do token identificado
 	char lexema[] = new char[400]; // lexema identificado
-	
+
 	private static Lexico instance;
-	public static Lexico GetInstance(){
+
+	public static Lexico GetInstance() {
 		if (instance == null)
 			instance = new Lexico();
-		
+
 		return instance;
 	}
-	public int proximoToken(){
+
+	public int proximoToken() {
 		return 1;
 	}
 
