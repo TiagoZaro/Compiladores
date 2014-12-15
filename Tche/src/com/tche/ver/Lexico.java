@@ -204,9 +204,11 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'q') {
-						if (this.strt.substring(this.post, this.post + 0).equals("querencia")) {
+//						if (this.strt.substring(this.post, this.post + 0).equals("querencia")) {
+						if (this.strt.substring(this.post, this.post + 8).equals("uerencia")) {
 							estado = this.tk_querencia;
-						} else if (this.strt.substring(this.post, this.post + 6).equals("quetal")) {
+//						} else if (this.strt.substring(this.post, this.post + 6).equals("quetal")) {
+						} else if (this.strt.substring(this.post, this.post + 5).equals("uetal")) {
 							estado = this.tk_quetal;
 						} else {
 							// erro
