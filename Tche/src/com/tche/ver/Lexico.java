@@ -1,5 +1,8 @@
 package com.tche.ver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tche.DesktopFrameWork;
 
 public class Lexico {
@@ -59,7 +62,12 @@ public class Lexico {
 	// char lexema[] = new char[400];
 
 	// lexema identificado
-	StringBuilder sbLexema = new StringBuilder();
+	private StringBuilder sbLexema = new StringBuilder();
+
+	public List<Integer> lstTokens = new ArrayList<Integer>();
+	
+	private Lexico() {
+	}
 
 	private static Lexico instance;
 
@@ -441,7 +449,7 @@ public class Lexico {
 	public void listatokens(String s) {
 		this.iniciageradortokens(s);
 		this.proximotoken();
-		
+
 		while (this.token != this.tk_EOF) {
 			try {
 				if (token == 0)
@@ -452,7 +460,7 @@ public class Lexico {
 								sbLexema.toString()));
 
 				sbLexema.setLength(0);
-
+				lstTokens.add(token);
 			} finally {
 				this.proximotoken();
 			}

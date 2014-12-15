@@ -19,7 +19,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	@Override
 	public void compilar() {
 		Sintatico mAuxSintatico = new Sintatico();
-		mAuxSintatico.lexico = new Lexico();
+		mAuxSintatico.lexico =  Lexico.GetInstance();
 		mAuxSintatico.lexico.listatokens(txtAreaDesenv.getText());
 		
 		// Efetua a analise seintatica
