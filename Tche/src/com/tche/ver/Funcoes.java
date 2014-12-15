@@ -70,93 +70,93 @@ public abstract class Funcoes {
 
 	abstract Retorno M();
 
-	abstract int Func();
+	abstract Retorno Func();
 
-	abstract int Par();
+	abstract Retorno Par();
 
-	abstract int MaisPar();
+	abstract Retorno MaisPar();
 
-	abstract int MaisPar1();
+	abstract Retorno MaisPar1();
 
-	abstract int ParVet();
+	abstract Retorno ParVet();
 
-	abstract int ParVar();
+	abstract Retorno ParVar();
 
-	abstract int FuncRet();
+	abstract Retorno FuncRet();
 
-	abstract int IniCod();
+	abstract Retorno IniCod();
 
-	abstract int ICod();
+	abstract Retorno ICod();
 
-	abstract int ACod();
+	abstract Retorno ACod();
 
-	abstract int ACod1();
+	abstract Retorno ACod1();
 
-	abstract int Cod();
+	abstract Retorno Cod();
 
-	abstract int ComandD();
+	abstract Retorno ComandD();
 
-	abstract int ComandD1();
+	abstract Retorno ComandD1();
 
-	abstract int ComandD2();
+	abstract Retorno ComandD2();
 
-	abstract int ComandD3();
+	abstract Retorno ComandD3();
 
-	abstract int ComandC();
+	abstract Retorno ComandC();
 
-	abstract int IniComand();
+	abstract Retorno IniComand();
 
-	abstract int ComandA();
+	abstract Retorno ComandA();
 
-	abstract int ComandALinha();
+	abstract Retorno ComandALinha();
 
-	abstract int FuncCall();
+	abstract Retorno FuncCall();
 
-	abstract int FuncPar();
+	abstract Retorno FuncPar();
 
-	abstract int MaisFuncPar();
+	abstract Retorno MaisFuncPar();
 
-	abstract int Log();
+	abstract Retorno Log();
 
-	abstract int LogLinha();
+	abstract Retorno LogLinha();
 
-	abstract int Op1();
+	abstract Retorno Op1();
 
-	abstract int Op1Linha();
+	abstract Retorno Op1Linha();
 
-	abstract int Op2();
+	abstract Retorno Op2();
 
-	abstract int Op2Linha();
+	abstract Retorno Op2Linha();
 
-	abstract int Op3();
+	abstract Retorno Op3();
 
-	abstract int Op3Linha();
+	abstract Retorno Op3Linha();
 
-	abstract int Op4();
+	abstract Retorno Op4();
 
-	abstract int Op4Linha();
+	abstract Retorno Op4Linha();
 
-	abstract int Un();
+	abstract Retorno Un();
 
-	abstract int P();
+	abstract Retorno P();
 
-	abstract int PLinha();
+	abstract Retorno PLinha();
 
-	abstract int Ident();
+	abstract Retorno Ident();
 
-	abstract int V();
+	abstract Retorno V();
 
-	abstract int VVet();
+	abstract Retorno VVet();
 
-	abstract int Vet();
+	abstract Retorno Vet();
 
-	abstract int VVar();
+	abstract Retorno VVar();
 
-	abstract int C();
+	abstract Retorno C();
 
-	abstract int T();
+	abstract Retorno T();
 
-	abstract int TVet();
+	abstract Retorno TVet();
 
-	abstract int TVar();
+	abstract Retorno TVar();
 }
