@@ -1,5 +1,8 @@
 package com.tche.telas;
 
+import com.tche.ver.Lexico;
+import com.tche.ver.Sintatico;
+
 
 public class TelaPrincipal extends TelaPrincipalLay {
 
@@ -15,7 +18,9 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void compilar() {
-		// TODO
+		Sintatico mAuxSintatico = new Sintatico();
+		mAuxSintatico.lexico = new Lexico();
+		mAuxSintatico.lexico.listatokens(txtAreaDesenv.getText());
 	}
 
 	public void addLog(String log) {

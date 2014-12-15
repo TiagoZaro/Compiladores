@@ -3,18 +3,7 @@ package com.tche.ver;
 import com.tche.Retorno;
 
 public class Sintatico extends Funcoes {
-
-	public static void main(String[] args) {
-		String s = "aaa";
-	}
-
-	Lexico lexico;
-
-	private class Lexico {
-		int proximoToken() {
-			return 1;
-		}
-	}
+	public Lexico lexico;
 
 	@Override
 	Retorno Inicio() {

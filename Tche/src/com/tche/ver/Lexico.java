@@ -204,7 +204,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'q') {
-						if (this.strt.substring(this.post, this.post + 9).equals("querencia")) {
+						if (this.strt.substring(this.post, this.post + 0).equals("querencia")) {
 							estado = this.tk_querencia;
 						} else if (this.strt.substring(this.post, this.post + 6).equals("quetal")) {
 							estado = this.tk_quetal;
@@ -319,10 +319,4 @@ public class Lexico {
 			this.proximotoken();
 		}
 	}
-
-	public static void main(String[] args) {
-		String s = "(48+5)";
-		new Lexico().listatokens(s);
-	}
-
 }
