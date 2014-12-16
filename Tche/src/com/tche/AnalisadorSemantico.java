@@ -11,18 +11,6 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
  * */
 public class AnalisadorSemantico {
 
-	public static void main(String[] args) {
-
-		// Exemplo adiciona na tabela de simbolos
-		Tipagem t = new Tipagem();
-		t.setDesNomeTipoVal("Pila");
-		t.setVlrVariavel(0);
-		t.setTipoEntrada(TipoEntrada.VARIAVEL);
-		String nome = "val";
-
-		addTable(t, nome);
-	}
-
 	public static boolean addTable(Tipagem tipagem, String nomeVal) {
 
 		// Caso uma váriavel
@@ -37,8 +25,7 @@ public class AnalisadorSemantico {
 			case INTEGER:
 				try {
 					if (tipagem.getVlrVariavel() != null) {
-						tipagem.setVlrVariavel(new Integer((Integer) tipagem
-								.getVlrVariavel()));
+						tipagem.setVlrVariavel(Integer.valueOf((String) tipagem.getVlrVariavel()));
 					}
 				} catch (Exception e) {
 					return false;
