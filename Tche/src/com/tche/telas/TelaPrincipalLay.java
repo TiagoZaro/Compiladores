@@ -33,6 +33,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 	public JTextArea	txtAreaDesenv;
 	public JTextArea	txtAreaLog;
+	public JTextArea	txtTokens;
 
 	public JPanel		pnlLateralDireita;
 	public JPanel		pnlLateralEsquerda;
@@ -53,7 +54,8 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 	private void init() {
 		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-		this.setSize(toolkit.getScreenSize());
+//		this.setSize(toolkit.getScreenSize());
+		this.setSize(1200, 800);
 
 		this.setResizable(true);
 
@@ -174,4 +176,8 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 		return pnlLateralDireita;
 	}
+	
+//	private JPanel getPnlTokens(){
+//		return null;
+//	}
 }

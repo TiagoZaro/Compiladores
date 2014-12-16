@@ -91,6 +91,7 @@ public class Sintatico extends Funcoes {
 		 * if (lexico.proximoToken() == tk_ponto_e_virgula) { return 1; } } } }
 		 * } } } return 0;
 		 */
+		// FuncProt -> indiada V (Par) FuncRet;
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_indiada) {
@@ -109,12 +110,12 @@ public class Sintatico extends Funcoes {
 							getInstance().consumirToken();
 							mAuxRetorno = this.FuncRet();
 							if (mAuxRetorno.getStatus() == 1) {
-								if (Lexico.getInstance().proximoToken() != tk_ponto_e_virgula) {
+								if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
 									getInstance().consumirLexema();
-									getInstance().consumirToken();
+									getInstance().consumirToken();									
+								} else{
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno
-											.setDescricaoErro("Falta ponto e virgula no indiada");
+									mAuxRetorno.setDescricaoErro("Falta ponto e virgula no indiada");
 								}
 							}
 						} else {
@@ -285,7 +286,8 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		} else {
-			// vazio //TODO
+			// vazio
+			mAuxRetorno.setStatus(1);
 		}
 
 		return mAuxRetorno;
@@ -306,7 +308,8 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirToken();
 			mAuxRetorno = this.C();
 		} else {
-			// Vazio //TODO
+			// Vazio
+			mAuxRetorno.setStatus(1);
 		}
 
 		return mAuxRetorno;
@@ -438,7 +441,7 @@ public class Sintatico extends Funcoes {
 		 * if (lexico.proximoToken() == tk_virgula) { if (MaisPar1() == 1) {
 		 * return 1; } } return 0;
 		 */
-		// MaisPar ->, MaisPar1
+		// MaisPar ->, MaisPar1 | &
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_virgula) {
@@ -446,9 +449,8 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirToken();
 			mAuxRetorno = this.MaisPar1();
 		} else {
-			mAuxRetorno.setStatus(0);
-			mAuxRetorno
-					.setDescricaoErro("Faltou a virgula dos parametros MaisPar");
+			// VAZIO
+			mAuxRetorno.setStatus(1);
 		}
 
 		return mAuxRetorno;
@@ -461,7 +463,7 @@ public class Sintatico extends Funcoes {
 		 * (ParVar() == 1) { if (MaisPar() == 1) { return 1; } } else { // VAZIO
 		 * //TODO } return 0;
 		 */
-		// MaisPar1 -> ParVet MaisPar | ParVar MaisPar | &
+		// MaisPar1 -> ParVet MaisPar | ParVar MaisPar
 		Retorno mAuxRetorno = new Retorno();
 
 		mAuxRetorno = this.ParVet();
@@ -471,9 +473,7 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.ParVar();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.MaisPar();
-			} else {
-				// VAZIO //TODO
-			}
+			} 
 		}
 
 		return mAuxRetorno;
@@ -525,7 +525,8 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirToken();
 			mAuxRetorno = this.T();
 		} else {
-			// VAZIO //TODO
+			// VAZIO
+			mAuxRetorno.setStatus(1);
 		}
 		return mAuxRetorno;
 	}
@@ -1213,7 +1214,8 @@ public class Sintatico extends Funcoes {
 				retorno.setDescricaoErro("Depois do fatorial tem q vir um simbolo de IGUAL.");
 			}
 		} else {
-			// vazio //TODO
+			// vazio
+			retorno.setStatus(1);
 		}
 		return retorno;
 	}
@@ -1267,7 +1269,8 @@ public class Sintatico extends Funcoes {
 				retorno.setDescricaoErro("eh esperado um sinal de igual ou operando.");
 			}
 		} else {
-			// VAZIO //TODO
+			// VAZIO
+			retorno.setStatus(1);
 		}
 		return retorno;
 	}
@@ -1305,7 +1308,8 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		} else {
-			// VAZIO //TODO
+			// VAZIO
+			retorno.setStatus(1);
 		}
 		return retorno;
 	}
@@ -1403,6 +1407,7 @@ public class Sintatico extends Funcoes {
 		} else {
 			retorno.setDescricaoErro("Faltou abrir parenteses");
 		}
+		
 		return retorno;// TODO aceita vazio VER
 	}
 
