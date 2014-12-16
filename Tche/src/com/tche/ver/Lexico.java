@@ -192,6 +192,15 @@ public class Lexico {
 				case ';':
 					estado = 22;
 					break;
+				case '[':
+					estado = 24;
+					break;
+				case ']':
+					estado = 25;
+					break;
+				case ',':
+					estado = 26;
+					break;
 				default:
 					if (this.car_atual >= '0' && this.car_atual <= '9') {
 						estado = 100;
@@ -233,6 +242,7 @@ public class Lexico {
 							fim = 1;
 							post += 7;
 							car_atual = lecar();
+							sbLexema.append("borracho");
 						} else if (this.strt
 								.substring(this.post, this.post + 4).equals(
 										"ueno")) {
@@ -333,11 +343,11 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'q') {
-						if (this.strt.substring(this.post, this.post + 7)
-								.equals("erencia")) {
+						if (this.strt.substring(this.post, this.post + 8)
+								.equals("uerencia")) {
 							token = this.tk_querencia;
 							fim = 1;
-							post += 7;
+							post += 8;
 							car_atual = lecar();
 							sbLexema.append("querenceia");
 						} else if (this.strt
@@ -457,6 +467,24 @@ public class Lexico {
 				break;
 			case 23:
 				this.token = tk_dois_pontos;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 24:
+				this.token = tk_abrecolchetes;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 25:
+				this.token = tk_fechachaves;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 26:
+				this.token = tk_virgula;
 				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;

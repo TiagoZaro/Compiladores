@@ -19,6 +19,8 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void compilar() {
+		//limparLog();
+		
 		Sintatico mAuxSintatico = new Sintatico();
 		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
 
@@ -51,6 +53,10 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		txtAreaLog.setText(sb.toString());
 		txtAreaLog.updateUI();
 		//this.update(getRootPane().getGraphics());
+	}
+	private void limparLog(){
+		txtAreaLog.setText("");
+		txtAreaLog.updateUI();
 	}
 
 	@Override

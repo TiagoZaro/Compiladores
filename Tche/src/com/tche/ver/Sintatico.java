@@ -1486,7 +1486,7 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno C() {
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_numero
 				|| Lexico.getInstance().proximoToken() == tk_apas) {
 
@@ -1502,17 +1502,19 @@ public class Sintatico extends Funcoes {
 		} else {
 			retorno.setDescricaoErro("eh esperado um numero ou aspas.");
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno T() {
+		// T -> TVar | TVet
 		Retorno retorno = TVar();
 
 		// nome val vvar
 		// valor dela no c
 		// se for variavel no tvar
-
+		
 		boolean isVar = retorno.getStatus() == 1;
 		boolean isVetor = false;
 
@@ -1540,16 +1542,19 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno TVet() {
+		// TVet -> borracho TVar | bolicho TVar
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if ((Lexico.getInstance().proximoToken() == tk_borracho && this.TVar()
-				.getStatus() == 1)
-				|| (Lexico.getInstance().proximoToken() == tk_bolicho && this
-						.TVar().getStatus() == 1)) {
+		
+		if (Lexico.getInstance().proximoToken() == tk_borracho){
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
-			retorno.setStatus(1);
+			retorno = this.TVar();
+		} else if (getInstance().proximoToken() == tk_bolicho){
+			getInstance().consumirLexema();
+			getInstance().consumirToken();
+			retorno = this.TVar();
 		}
+		
 		return retorno;
 	}
 
