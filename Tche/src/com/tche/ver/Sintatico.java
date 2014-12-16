@@ -330,7 +330,7 @@ public class Sintatico extends Funcoes {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
 				mAuxRetorno = this.IniCod();
-				if (mAuxRetorno.getStatus() == 0) { // TODO 1) VERIFICAR PQ NAO
+				if (mAuxRetorno.getStatus() == 1) { // TODO 1) VERIFICAR PQ NAO
 													// RETORNA 1
 					if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
 						getInstance().consumirLexema();
@@ -563,6 +563,15 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.ACod();
+				if (mAuxRetorno.getStatus() == 1){
+					if (getInstance().proximoToken() == tk_ponto_e_virgula){
+						getInstance().consumirLexema();
+						getInstance().consumirToken();
+					} else{
+						mAuxRetorno.setStatus(0);
+						mAuxRetorno.setDescricaoErro("Faltou o ponto e vírgula na inicialização da variavel");
+					}					
+				}
 			}
 		}
 
@@ -657,7 +666,7 @@ public class Sintatico extends Funcoes {
 									.setDescricaoErro("Faltou ponto e virgula FuncCall");
 						}
 					} else {
-						// VAZIO //TODO
+						mAuxRetorno.setStatus(1);
 					}
 				}
 			}
