@@ -28,12 +28,12 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno = this.Q();
 
 				if (mAuxRetorno.getStatus() == 1) {
-					if (getInstance().proximoToken() != tk_fechachaves) {
+					if (getInstance().proximoToken() == tk_fechachaves) {
 						getInstance().consumirToken();
-						getInstance().consumirLexema();
+						getInstance().consumirLexema();						
+					} else{
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Falta fecha chaves no querencia");
+						mAuxRetorno.setDescricaoErro("Falta fecha chaves no querencia");
 					}
 				}
 			} else {
