@@ -181,7 +181,7 @@ public class Lexico {
 					estado = 14;
 					break;
 				case ':':
-					estado = this.tk_dois_pontos;
+					estado = 23;
 					break;
 				case '{':
 					estado = 20;
@@ -290,6 +290,8 @@ public class Lexico {
 								.equals("ndiada")) {
 							token = this.tk_indiada;
 							fim = 1;
+							post += 6;
+							car_atual = lecar();
 							sbLexema.append("indiada");
 						} else {
 							// erro
@@ -449,6 +451,12 @@ public class Lexico {
 				break;
 			case 22:
 				this.token = tk_ponto_e_virgula;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 23:
+				this.token = tk_dois_pontos;
 				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
