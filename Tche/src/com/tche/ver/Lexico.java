@@ -65,13 +65,13 @@ public class Lexico {
 	private StringBuilder sbLexema = new StringBuilder();
 
 	public List<Integer> lstTokens = new ArrayList<Integer>();
-	
+
 	private Lexico() {
 	}
 
 	private static Lexico instance;
 
-	public static Lexico GetInstance() {
+	public static Lexico getInstance() {
 		if (instance == null)
 			instance = new Lexico();
 
@@ -79,7 +79,11 @@ public class Lexico {
 	}
 
 	public int proximoToken() {
-		return 1;
+		return lstTokens.get(0);
+	}
+	
+	public void consumirToken(){
+		lstTokens.remove(0);
 	}
 
 	public char lecar() {

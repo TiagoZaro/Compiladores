@@ -1,23 +1,32 @@
 package com.tche.ver;
 
+import static com.tche.ver.Lexico.getInstance;
+
 import com.tche.Retorno;
 
 public class Sintatico extends Funcoes {
-	public Lexico lexico;
 
 	@Override
 	public Retorno Inicio() {
 		Retorno mAuxRetorno = new Retorno();
 		mAuxRetorno.setStatus(1);
 
-		if (this.lexico.proximoToken() == tk_querencia) {
-			if (this.lexico.proximoToken() == tk_abrechaves) {
+		if (getInstance().proximoToken() == tk_querencia) {
+
+			getInstance().consumirToken();
+
+			if (getInstance().proximoToken() == tk_abrechaves) {
+
+				getInstance().consumirToken();
+
 				mAuxRetorno = this.Q();
 
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() != tk_fechachaves) {
+					if (getInstance().proximoToken() != tk_fechachaves) {
+						getInstance().consumirToken();
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Falta fecha chaves no querencia");
+						mAuxRetorno
+								.setDescricaoErro("Falta fecha chaves no querencia");
 					}
 				}
 			} else {
@@ -77,29 +86,36 @@ public class Sintatico extends Funcoes {
 		 */
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_indiada) {
+		if (Lexico.getInstance().proximoToken() == tk_indiada) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.V();
 
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_abreparenteses) {
+				if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+					getInstance().consumirToken();
 					mAuxRetorno = this.Par();
 					if (mAuxRetorno.getStatus() == 1) {
-						if (this.lexico.proximoToken() == tk_fechaparenteses) {
+						if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.FuncRet();
 							if (mAuxRetorno.getStatus() == 1) {
-								if (this.lexico.proximoToken() != tk_ponto_e_virgula) {
+								if (Lexico.getInstance().proximoToken() != tk_ponto_e_virgula) {
+									getInstance().consumirToken();
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno.setDescricaoErro("Falta ponto e virgula no indiada");
+									mAuxRetorno
+											.setDescricaoErro("Falta ponto e virgula no indiada");
 								}
 							}
 						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Falta fecha parenteses para a indiada");
+							mAuxRetorno
+									.setDescricaoErro("Falta fecha parenteses para a indiada");
 						}
 					}
 				} else {
 					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Falta abre parenteses para a indiada");
+					mAuxRetorno
+							.setDescricaoErro("Falta abre parenteses para a indiada");
 				}
 			}
 		}
@@ -121,16 +137,16 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetorno.getStatus() == 1) {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
-				
-//				// Exemplo adiciona na tabela de simbolos
-//				Tipagem t = new Tipagem();
-//				t.setDesNomeTipoVal("Pila");
-//				t.setVlrVariavel(0);
-//				t.setTipoEntrada(TipoEntrada.VARIAVEL);
-//				String nome = "val";
-//
-//				addTable(t, nome);
-					
+
+				// // Exemplo adiciona na tabela de simbolos
+				// Tipagem t = new Tipagem();
+				// t.setDesNomeTipoVal("Pila");
+				// t.setVlrVariavel(0);
+				// t.setTipoEntrada(TipoEntrada.VARIAVEL);
+				// String nome = "val";
+				//
+				// addTable(t, nome);
+
 				mAuxRetorno = this.IProt1();
 			}
 		}
@@ -147,7 +163,8 @@ public class Sintatico extends Funcoes {
 		// IProt1 -> , V Iprot1| AProt
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_virgula) {
+		if (Lexico.getInstance().proximoToken() == tk_virgula) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.V();
 
 			if (mAuxRetorno.getStatus() == 1) {
@@ -175,12 +192,15 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.V();
 
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_igual) {
+				if (Lexico.getInstance().proximoToken() == tk_igual) {
+					getInstance().consumirToken();
 					mAuxRetorno = this.IVetDime();
 					if (mAuxRetorno.getStatus() == 1) {
-						if (this.lexico.proximoToken() != tk_ponto_e_virgula) {
+						if (Lexico.getInstance().proximoToken() != tk_ponto_e_virgula) {
+							getInstance().consumirToken();
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Falta o ponto e virgula no TVet");
+							mAuxRetorno
+									.setDescricaoErro("Falta o ponto e virgula no TVet");
 						}
 					}
 				} else {
@@ -203,14 +223,17 @@ public class Sintatico extends Funcoes {
 		// IVetDime -> [ C ] IvetDime?
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_abrecolchetes) {
+		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.C();
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_fechecolchetes) {
+				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
+					getInstance().consumirToken();
 					mAuxRetorno = this.IVetDimeLinha();
 				} else {
 					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Faltou fecha colchetes IVetDime");
+					mAuxRetorno
+							.setDescricaoErro("Faltou fecha colchetes IVetDime");
 				}
 			}
 		} else {
@@ -231,12 +254,16 @@ public class Sintatico extends Funcoes {
 		// IvetDime? -> [ C ] | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_abrecolchetes) {
+		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.C();
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() != tk_fechecolchetes) {
+				if (Lexico.getInstance().proximoToken() != tk_fechecolchetes) {
 					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Faltou fecha colchetes IVetDimeLinha");
+					mAuxRetorno
+							.setDescricaoErro("Faltou fecha colchetes IVetDimeLinha");
+				} else {
+					getInstance().consumirToken();
 				}
 			}
 		} else {
@@ -256,7 +283,8 @@ public class Sintatico extends Funcoes {
 		// AProt -> = C | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_igual) {
+		if (Lexico.getInstance().proximoToken() == tk_igual) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.C();
 		} else {
 			// Vazio //TODO
@@ -275,15 +303,21 @@ public class Sintatico extends Funcoes {
 		// M -> tche{ IniCod } Func
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_tche) {
-			if (this.lexico.proximoToken() == tk_abrechaves) {
+		if (getInstance().proximoToken() == tk_tche) {
+
+			getInstance().consumirToken();
+
+			if (getInstance().proximoToken() == tk_abrechaves) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.IniCod();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_fechachaves) {
+					if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
+						getInstance().consumirToken();
 						mAuxRetorno = this.Func();
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fecha chaves do tche");
+						mAuxRetorno
+								.setDescricaoErro("Faltou fecha chaves do tche");
 					}
 				}
 			} else {
@@ -312,19 +346,24 @@ public class Sintatico extends Funcoes {
 		// Func -> indiada V (Par) FuncRet { IniCod } Func | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_indiada) {
+		if (Lexico.getInstance().proximoToken() == tk_indiada) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_abreparenteses) {
+				if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+					getInstance().consumirToken();
 					mAuxRetorno = this.Par();
 					if (mAuxRetorno.getStatus() == 1) {
-						if (this.lexico.proximoToken() == tk_fechaparenteses) {
+						if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.FuncRet();
 							if (mAuxRetorno.getStatus() == 1) {
-								if (this.lexico.proximoToken() == tk_abrechaves) {
+								if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+									getInstance().consumirToken();
 									mAuxRetorno = this.IniCod();
 									if (mAuxRetorno.getStatus() == 1) {
-										if (this.lexico.proximoToken() == tk_fechachaves) {
+										if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
+											getInstance().consumirToken();
 											mAuxRetorno = this.Func();
 										}
 									}
@@ -375,11 +414,13 @@ public class Sintatico extends Funcoes {
 		// MaisPar ->, MaisPar1
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_virgula) {
+		if (Lexico.getInstance().proximoToken() == tk_virgula) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.MaisPar1();
 		} else {
 			mAuxRetorno.setStatus(0);
-			mAuxRetorno.setDescricaoErro("Faltou a virgula dos parametros MaisPar");
+			mAuxRetorno
+					.setDescricaoErro("Faltou a virgula dos parametros MaisPar");
 		}
 
 		return mAuxRetorno;
@@ -451,7 +492,8 @@ public class Sintatico extends Funcoes {
 		// FuncRet -> :T | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_dois_pontos) {
+		if (Lexico.getInstance().proximoToken() == tk_dois_pontos) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.T();
 		} else {
 			// VAZIO //TODO
@@ -507,7 +549,8 @@ public class Sintatico extends Funcoes {
 		// ACod -> = ACod1 | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_igual) {
+		if (Lexico.getInstance().proximoToken() == tk_igual) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.ACod1();
 		} else {
 			mAuxRetorno.setStatus(1);
@@ -562,20 +605,24 @@ public class Sintatico extends Funcoes {
 			} else {
 				mAuxRetorno = this.ComandA();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_ponto_e_virgula) {
+					if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
+						getInstance().consumirToken();
 						mAuxRetorno = this.Cod();
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou ponto e virgula ComandA");
+						mAuxRetorno
+								.setDescricaoErro("Faltou ponto e virgula ComandA");
 					}
 				} else {
 					mAuxRetorno = this.FuncCall();
 					if (mAuxRetorno.getStatus() == 1) {
-						if (this.lexico.proximoToken() == tk_ponto_e_virgula) {
+						if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.Cod();
 						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Faltou ponto e virgula FuncCall");
+							mAuxRetorno
+									.setDescricaoErro("Faltou ponto e virgula FuncCall");
 						}
 					} else {
 						// VAZIO //TODO
@@ -602,39 +649,50 @@ public class Sintatico extends Funcoes {
 		// ComandD -> quetal(Log){Cod} ComandD1 | xispa; | despacho ComandD2;
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_quetal) {
-			if (this.lexico.proximoToken() == tk_abreparenteses) {
+		if (Lexico.getInstance().proximoToken() == tk_quetal) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.Log();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_fechaparenteses) {
-						if (this.lexico.proximoToken() == tk_abrechaves) {
+					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+						getInstance().consumirToken();
+						if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.Cod();
 							if (mAuxRetorno.getStatus() == 1) {
-								if (this.lexico.proximoToken() == tk_fechachaves) {
+								if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
+									getInstance().consumirToken();
 									mAuxRetorno = this.ComandD1();
 								} else {
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno.setDescricaoErro("Faltou fehca chaves no quetal");
+									mAuxRetorno
+											.setDescricaoErro("Faltou fehca chaves no quetal");
 								}
 							}
 						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Faltou abre chaves no quetal");
+							mAuxRetorno
+									.setDescricaoErro("Faltou abre chaves no quetal");
 						}
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou o fecha parenteses no quetal");
+						mAuxRetorno
+								.setDescricaoErro("Faltou o fecha parenteses no quetal");
 					}
 				}
 			} else {
 				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abre parenteses no quetal");
+				mAuxRetorno
+						.setDescricaoErro("Faltou abre parenteses no quetal");
 			}
-		} else if (this.lexico.proximoToken() == tk_xispa) {
-			if (this.lexico.proximoToken() == tk_ponto_e_virgula) {
+		} else if (Lexico.getInstance().proximoToken() == tk_xispa) {
+			if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
+				getInstance().consumirToken();
 				mAuxRetorno.setStatus(1);
 			}
-		} else if (this.lexico.proximoToken() == tk_despacho) {
+		} else if (Lexico.getInstance().proximoToken() == tk_despacho) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.ComandD2();
 		}
 
@@ -650,7 +708,8 @@ public class Sintatico extends Funcoes {
 		// ComandD1 -> capaz ComandD3
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_capaz) {
+		if (Lexico.getInstance().proximoToken() == tk_capaz) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.ComandD3();
 		}
 
@@ -687,35 +746,45 @@ public class Sintatico extends Funcoes {
 		// ComandD3 -> {Cod} | (log){Cod} ComandD1 | &
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_abrechaves) {
+		if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.Cod();
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() != tk_fechachaves) {
+				if (Lexico.getInstance().proximoToken() != tk_fechachaves) {
+					getInstance().consumirToken();
 					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Falta fecha chaves no capaz ComandD3");
+					mAuxRetorno
+							.setDescricaoErro("Falta fecha chaves no capaz ComandD3");
 				}
 			}
-		} else if (this.lexico.proximoToken() == tk_abreparenteses) {
+		} else if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.Log();
 			if (mAuxRetorno.getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_fechaparenteses) {
-					if (this.lexico.proximoToken() == tk_abrechaves) {
+				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+					getInstance().consumirToken();
+					if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+						getInstance().consumirToken();
 						mAuxRetorno = this.Cod();
 						if (mAuxRetorno.getStatus() == 1) {
-							if (this.lexico.proximoToken() == tk_fechachaves) {
+							if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
+								getInstance().consumirToken();
 								mAuxRetorno = this.ComandD1();
 							} else {
 								mAuxRetorno.setStatus(0);
-								mAuxRetorno.setDescricaoErro("Faltou fecha chaves no capaz ComandD3");
+								mAuxRetorno
+										.setDescricaoErro("Faltou fecha chaves no capaz ComandD3");
 							}
 						}
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou abre chaves no capaz ComandD3");
+						mAuxRetorno
+								.setDescricaoErro("Faltou abre chaves no capaz ComandD3");
 					}
 				} else {
 					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Faltou fecha parentes no capaz ComandD3");
+					mAuxRetorno
+							.setDescricaoErro("Faltou fecha parentes no capaz ComandD3");
 				}
 			}
 		} else {
@@ -749,83 +818,112 @@ public class Sintatico extends Funcoes {
 		// hasta Ident {Cod}
 		Retorno mAuxRetorno = new Retorno();
 
-		if (this.lexico.proximoToken() == tk_trova) {
-			if (this.lexico.proximoToken() == tk_abreparenteses) {
+		if (Lexico.getInstance().proximoToken() == tk_trova) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.Ident();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_fechaparenteses) {
-						if (this.lexico.proximoToken() != tk_ponto_e_virgula) {
+					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+						getInstance().consumirToken();
+						if (Lexico.getInstance().proximoToken() != tk_ponto_e_virgula) {
+							getInstance().consumirToken();
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Faltou ponto e virgula no trova ComandC");
+							mAuxRetorno
+									.setDescricaoErro("Faltou ponto e virgula no trova ComandC");
 						}
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fechar parenteses no trova ComandC");
+						mAuxRetorno
+								.setDescricaoErro("Faltou fechar parenteses no trova ComandC");
 					}
 				}
 			} else {
 				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abrir parenteses no trova ComandC");
+				mAuxRetorno
+						.setDescricaoErro("Faltou abrir parenteses no trova ComandC");
 			}
-		} else if (this.lexico.proximoToken() == tk_voltear) {
-			if (this.lexico.proximoToken() == tk_abreparenteses) {
+		} else if (Lexico.getInstance().proximoToken() == tk_voltear) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.Log();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_fechaparenteses) {
-						if (this.lexico.proximoToken() == tk_abrechaves) {
+					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+						getInstance().consumirToken();
+						if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.Cod();
 							if (mAuxRetorno.getStatus() == 1) {
-								if (this.lexico.proximoToken() != tk_fechachaves) {
+								if (Lexico.getInstance().proximoToken() != tk_fechachaves) {
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno.setDescricaoErro("Faltou fecha chaves no voltear");
+									mAuxRetorno
+											.setDescricaoErro("Faltou fecha chaves no voltear");
+								} else {
+									getInstance().consumirToken();
 								}
 							}
 						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Faltou abre chaves no voltear");
+							mAuxRetorno
+									.setDescricaoErro("Faltou abre chaves no voltear");
 						}
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fecha parenteses no voltear");
+						mAuxRetorno
+								.setDescricaoErro("Faltou fecha parenteses no voltear");
 					}
 				}
 			} else {
 				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abre parenteses no voltear");
+				mAuxRetorno
+						.setDescricaoErro("Faltou abre parenteses no voltear");
 			}
-		} else if (this.lexico.proximoToken() == tk_largatear) {
-			if (this.lexico.proximoToken() == tk_abreparenteses) {
+		} else if (Lexico.getInstance().proximoToken() == tk_largatear) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.IniComand();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() == tk_fechaparenteses) {
-						if (this.lexico.proximoToken() == tk_hasta) {
+					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+						getInstance().consumirToken();
+						if (Lexico.getInstance().proximoToken() == tk_hasta) {
+							getInstance().consumirToken();
 							mAuxRetorno = this.Ident();
 							if (this.Ident().getStatus() == 1) {
-								if (this.lexico.proximoToken() == tk_abrechaves) {
+								if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
+									getInstance().consumirToken();
 									mAuxRetorno = this.Cod();
 									if (mAuxRetorno.getStatus() == 1) {
-										if (this.lexico.proximoToken() != tk_fechachaves) {
+										if (Lexico.getInstance().proximoToken() != tk_fechachaves) {
 											mAuxRetorno.setStatus(0);
-											mAuxRetorno.setDescricaoErro("Faltou fecha chaves no largatear");
+											mAuxRetorno
+													.setDescricaoErro("Faltou fecha chaves no largatear");
+										} else {
+											getInstance().consumirToken();
 										}
 									}
 								} else {
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno.setDescricaoErro("Faltou abre chaves no largatear");
+									mAuxRetorno
+											.setDescricaoErro("Faltou abre chaves no largatear");
 								}
 							}
 						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Faltou o hasta no largatear");
+							mAuxRetorno
+									.setDescricaoErro("Faltou o hasta no largatear");
 						}
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fecha parenteses no largatear");
+						mAuxRetorno
+								.setDescricaoErro("Faltou fecha parenteses no largatear");
 					}
 				}
 			} else {
 				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abre parenteses no largatear");
+				mAuxRetorno
+						.setDescricaoErro("Faltou abre parenteses no largatear");
 			}
 		}
 
@@ -863,15 +961,18 @@ public class Sintatico extends Funcoes {
 
 		mAuxRetorno = this.ComandALinha();
 		if (mAuxRetorno.getStatus() == 1) {
-			if (this.lexico.proximoToken() == tk_igual) {
+			if (Lexico.getInstance().proximoToken() == tk_igual) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.ACod1();
 			} else {
 				mAuxRetorno.setStatus(0);
 				mAuxRetorno.setDescricaoErro("Faltou o sinal de atribuicao");
 			}
-		} else if (this.lexico.proximoToken() == tk_aprochegar) {
+		} else if (Lexico.getInstance().proximoToken() == tk_aprochegar) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.ComandALinha();
-		} else if (this.lexico.proximoToken() == tk_arregar) {
+		} else if (Lexico.getInstance().proximoToken() == tk_arregar) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.ComandALinha();
 		}
 		return mAuxRetorno;
@@ -906,17 +1007,22 @@ public class Sintatico extends Funcoes {
 
 		mAuxRetorno = this.V();
 		if (mAuxRetorno.getStatus() == 1) {
-			if (this.lexico.proximoToken() == tk_abreparenteses) {
+			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+				getInstance().consumirToken();
 				mAuxRetorno = this.FuncPar();
 				if (mAuxRetorno.getStatus() == 1) {
-					if (this.lexico.proximoToken() != tk_fechaparenteses) {
+					if (Lexico.getInstance().proximoToken() != tk_fechaparenteses) {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fecha parenteses na chamada da funcao");
+						mAuxRetorno
+								.setDescricaoErro("Faltou fecha parenteses na chamada da funcao");
+					} else {
+						getInstance().consumirToken();
 					}
 				}
 			} else {
 				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abre parenteses na chamada da funcao");
+				mAuxRetorno
+						.setDescricaoErro("Faltou abre parenteses na chamada da funcao");
 			}
 		}
 
@@ -950,7 +1056,8 @@ public class Sintatico extends Funcoes {
 		Retorno mAuxRetorno = new Retorno();
 		Retorno tempRetorno = mAuxRetorno;
 
-		if (this.lexico.proximoToken() == tk_virgula) {
+		if (Lexico.getInstance().proximoToken() == tk_virgula) {
+			getInstance().consumirToken();
 			mAuxRetorno = this.Ident();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.MaisFuncPar();
@@ -999,8 +1106,10 @@ public class Sintatico extends Funcoes {
 	Retorno Op1Linha() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_igual) {
-			if (this.lexico.proximoToken() == tk_igual) {
+		if (Lexico.getInstance().proximoToken() == tk_igual) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_igual) {
+				getInstance().consumirToken();
 				if (this.Op2().getStatus() == 1) {
 					if (this.Op1Linha().getStatus() == 1) {
 						retorno.setStatus(1);
@@ -1009,8 +1118,10 @@ public class Sintatico extends Funcoes {
 			} else {
 				retorno.setDescricaoErro("eh esperado um sinal de igual.");
 			}
-		} else if (this.lexico.proximoToken() == tk_fatorial) {
-			if (this.lexico.proximoToken() == tk_igual) {
+		} else if (Lexico.getInstance().proximoToken() == tk_fatorial) {
+			getInstance().consumirToken();
+			if (Lexico.getInstance().proximoToken() == tk_igual) {
+				getInstance().consumirToken();
 				if (this.Op2().getStatus() == 1) {
 					if (this.Op1Linha().getStatus() == 1) {
 						retorno.setStatus(1);
@@ -1043,24 +1154,28 @@ public class Sintatico extends Funcoes {
 	Retorno Op2Linha() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_maior) {
+		if (Lexico.getInstance().proximoToken() == tk_maior) {
+			getInstance().consumirToken();
 			if (this.Op3().getStatus() == 1) {
 				if (this.Op2Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
-			} else if (this.lexico.proximoToken() == tk_igual) {
+			} else if (Lexico.getInstance().proximoToken() == tk_igual) {
+				getInstance().consumirToken();
 				if (this.Op2Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
 			} else {
 				retorno.setDescricaoErro("eh esperado um sinal de igual ou operando.");
 			}
-		} else if (this.lexico.proximoToken() == tk_menor) {
+		} else if (Lexico.getInstance().proximoToken() == tk_menor) {
+			getInstance().consumirToken();
 			if (this.Op3().getStatus() == 1) {
 				if (this.Op2Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
-			} else if (this.lexico.proximoToken() == tk_igual) {
+			} else if (Lexico.getInstance().proximoToken() == tk_igual) {
+				getInstance().consumirToken();
 				if (this.Op2Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
@@ -1089,13 +1204,15 @@ public class Sintatico extends Funcoes {
 	Retorno Op3Linha() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_adicao) {
+		if (Lexico.getInstance().proximoToken() == tk_adicao) {
+			getInstance().consumirToken();
 			if (this.Op4().getStatus() == 1) {
 				if (this.Op3Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
 			}
-		} else if (this.lexico.proximoToken() == tk_subtr) {
+		} else if (Lexico.getInstance().proximoToken() == tk_subtr) {
+			getInstance().consumirToken();
 			if (this.Op4().getStatus() == 1) {
 				if (this.Op3Linha().getStatus() == 1) {
 					retorno.setStatus(1);
@@ -1123,13 +1240,15 @@ public class Sintatico extends Funcoes {
 	Retorno Op4Linha() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_mult) {
+		if (Lexico.getInstance().proximoToken() == tk_mult) {
+			getInstance().consumirToken();
 			if (this.Un().getStatus() == 1) {
 				if (this.Op4Linha().getStatus() == 1) {
 					retorno.setStatus(1);
 				}
 			}
-		} else if (this.lexico.proximoToken() == tk_divisao) {
+		} else if (Lexico.getInstance().proximoToken() == tk_divisao) {
+			getInstance().consumirToken();
 			if (this.Un().getStatus() == 1) {
 				if (this.Op4Linha().getStatus() == 1) {
 					retorno.setStatus(1);
@@ -1143,7 +1262,8 @@ public class Sintatico extends Funcoes {
 	Retorno Un() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_subtr) {
+		if (Lexico.getInstance().proximoToken() == tk_subtr) {
+			getInstance().consumirToken();
 			if (this.V().getStatus() == 1) {
 				retorno.setStatus(1);
 			}
@@ -1159,9 +1279,11 @@ public class Sintatico extends Funcoes {
 			if (this.PLinha().getStatus() == 1) {
 				retorno.setStatus(1);
 			}
-		} else if (this.lexico.proximoToken() == tk_abreparenteses) {
+		} else if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+			getInstance().consumirToken();
 			if (this.Log().getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_fechaparenteses) {
+				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+					getInstance().consumirToken();
 					retorno.setStatus(1);
 				}
 			}
@@ -1173,9 +1295,11 @@ public class Sintatico extends Funcoes {
 	Retorno PLinha() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_abreparenteses) {
+		if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
+			getInstance().consumirToken();
 			if (this.Log().getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_fechaparenteses) {
+				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
+					getInstance().consumirToken();
 					retorno.setStatus(1);
 				} else {
 					retorno.setDescricaoErro("Faltou fechar parenteses");
@@ -1232,9 +1356,11 @@ public class Sintatico extends Funcoes {
 	Retorno Vet() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_abrecolchetes) {
+		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
+			getInstance().consumirToken();
 			if (this.Ident().getStatus() == 1) {
-				if (this.lexico.proximoToken() == tk_fechecolchetes) {
+				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
+					getInstance().consumirToken();
 					retorno.setStatus(1);
 				} else {
 					retorno.setDescricaoErro("Faltou fechar colchetes");
@@ -1259,7 +1385,9 @@ public class Sintatico extends Funcoes {
 	Retorno C() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if (this.lexico.proximoToken() == tk_numero || this.lexico.proximoToken() == tk_apas) {
+		if (Lexico.getInstance().proximoToken() == tk_numero
+				|| Lexico.getInstance().proximoToken() == tk_apas) {
+			getInstance().consumirToken();
 			retorno.setStatus(1);
 		} else {
 			retorno.setDescricaoErro("eh esperado um numero ou aspas.");
@@ -1269,10 +1397,12 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno T() {
-		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.TVar().getStatus() == 1) {
-			if (this.TVet().getStatus() == 1) {
+		Retorno retorno = TVar();
+		
+		if (retorno.getStatus() == 1) {
+			retorno = TVet();
+
+			if (retorno.getStatus() == 1) {
 				retorno.setStatus(1);
 			}
 		}
@@ -1283,8 +1413,11 @@ public class Sintatico extends Funcoes {
 	Retorno TVet() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
-		if ((this.lexico.proximoToken() == tk_borracho && this.TVar().getStatus() == 1)
-				|| (this.lexico.proximoToken() == tk_bolicho && this.TVar().getStatus() == 1)) {
+		if ((Lexico.getInstance().proximoToken() == tk_borracho && this.TVar()
+				.getStatus() == 1)
+				|| (Lexico.getInstance().proximoToken() == tk_bolicho && this
+						.TVar().getStatus() == 1)) {
+			getInstance().consumirToken();
 			retorno.setStatus(1);
 		}
 		return retorno;
@@ -1294,7 +1427,10 @@ public class Sintatico extends Funcoes {
 	Retorno TVar() {
 		Retorno retorno = new Retorno();
 		retorno.setStatus(1);
-		if (this.lexico.proximoToken() == tk_bueno || this.lexico.proximoToken() == tk_pia || this.lexico.proximoToken() == tk_pila) {
+		if (Lexico.getInstance().proximoToken() == tk_bueno
+				|| Lexico.getInstance().proximoToken() == tk_pia
+				|| Lexico.getInstance().proximoToken() == tk_pila) {
+			getInstance().consumirToken();
 
 		} else {
 			retorno.setStatus(1);

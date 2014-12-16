@@ -1,8 +1,9 @@
 package com.tche.telas;
 
+import com.tche.DesktopFrameWork;
+import com.tche.Retorno;
 import com.tche.ver.Lexico;
 import com.tche.ver.Sintatico;
-
 
 public class TelaPrincipal extends TelaPrincipalLay {
 
@@ -19,11 +20,22 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	@Override
 	public void compilar() {
 		Sintatico mAuxSintatico = new Sintatico();
-		mAuxSintatico.lexico =  Lexico.GetInstance();
-		mAuxSintatico.lexico.listatokens(txtAreaDesenv.getText());
-		
+		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
+
 		// Efetua a analise seintatica
-		mAuxSintatico.Inicio();
+		Retorno retorno = mAuxSintatico.Inicio();
+		if (retorno != null && retorno.getStatus() == 1) {
+			DesktopFrameWork.getInstance().addLog("Compilado!");
+		} else if (retorno != null && retorno.getStatus() == 0) {
+
+			if (retorno.getDescricaoErro() == null
+					|| retorno.getDescricaoErro().trim().isEmpty())
+				DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
+			else
+				DesktopFrameWork.getInstance().addLog(
+						retorno.getDescricaoErro());
+		}
+
 	}
 
 	public void addLog(String log) {

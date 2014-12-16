@@ -11,12 +11,12 @@ public class AnalisadorSintatico extends Gramatica{
 	String Inicio() {
 		String mAuxMensagemRetorno = "";
 		
-		if (Lexico.GetInstance().proximoToken() == Tokens.tk_querencia){
-			if (Lexico.GetInstance().proximoToken() == Tokens.tk_abrechaves){
+		if (Lexico.getInstance().proximoToken() == Tokens.tk_querencia){
+			if (Lexico.getInstance().proximoToken() == Tokens.tk_abrechaves){
 				mAuxMensagemRetorno = Q();
 				
 				if (mAuxMensagemRetorno.equals(""))
-					if (Lexico.GetInstance().proximoToken() != Tokens.tk_fechachaves)
+					if (Lexico.getInstance().proximoToken() != Tokens.tk_fechachaves)
 						mAuxMensagemRetorno =  "Falta fecha chaves para a Querência";
 			}
 			else 
