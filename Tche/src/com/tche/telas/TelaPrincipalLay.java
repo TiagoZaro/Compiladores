@@ -19,31 +19,34 @@ import com.jgoodies.forms.layout.FormLayout;
 
 public abstract class TelaPrincipalLay extends JFrame {
 
-	private JMenuBar	menuBar;
+	private JMenuBar menuBar;
 
-	private JMenu		menuArquivos;
-	private JMenu		menuUtil;
+	private JMenu menuArquivos;
+	private JMenu menuUtil;
 
-	private JMenuItem	menuItemSalvar;
-	private JMenuItem	menuItemAbrir;
-	private JMenuItem	menuItemSair;
-	private JMenuItem	menuItemNovo;
-	private JMenuItem	menuItemCompilar;
-	private JMenuItem   menuItemMapaSimbolos;
+	private JMenuItem menuItemSalvar;
+	private JMenuItem menuItemAbrir;
+	private JMenuItem menuItemSair;
+	private JMenuItem menuItemNovo;
+	private JMenuItem menuItemCompilar;
+	private JMenuItem menuItemMapaSimbolos;
 
-	public JTextArea	txtAreaDesenv;
-	public JTextArea	txtAreaLog;
-	public JTextArea	txtTokens;
+	public JTextArea txtAreaDesenv;
+	public JTextArea txtAreaLog;
+	public JTextArea txtTokens;
+	public JTextArea txtSintatico;
 
-	public JPanel		pnlLateralDireita;
-	public JPanel		pnlLateralEsquerda;
+	public JPanel pnlLateralDireita;
+	public JPanel pnlLateralEsquerda;
+	public JPanel pnlTokens;
+	public JPanel pnlSintatico;
 
 	public abstract void validarSitaxe();
 
 	public abstract void novoArquivo();
 
 	public abstract void compilar();
-	
+
 	public abstract void mapaSimbolos();
 
 	public TelaPrincipalLay() {
@@ -54,7 +57,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 	private void init() {
 		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-//		this.setSize(toolkit.getScreenSize());
+		// this.setSize(toolkit.getScreenSize());
 		this.setSize(1200, 800);
 
 		this.setResizable(true);
@@ -73,12 +76,13 @@ public abstract class TelaPrincipalLay extends JFrame {
 		createMenus();
 
 		JPanel pnlPrincipal = new JPanel();
-		pnlPrincipal.setLayout(new FormLayout(
-				"2dlu, pref:grow, 2dlu, pref:grow, 2dlu", "2dlu, pref, 2dlu"));
+		pnlPrincipal.setLayout(new FormLayout("2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu", "2dlu, pref, 2dlu"));
 
 		CellConstraints cc = new CellConstraints();
 		pnlPrincipal.add(getPnlDireita(), cc.xy(4, 2));
 		pnlPrincipal.add(getPnlEsquerdo(), cc.xy(2, 2));
+		pnlPrincipal.add(getPnlTokens(), cc.xy(6, 2));
+		pnlPrincipal.add(getPnlSintatico(), cc.xy(8, 2));
 
 		Container c = getContentPane();
 		c.add(pnlPrincipal);
@@ -106,7 +110,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 		menuItemCompilar = new JMenuItem("Compilar");
 		menuUtil.add(menuItemCompilar);
-		
+
 		menuItemMapaSimbolos = new JMenuItem("Mapa de Símbolos");
 		menuUtil.add(menuItemMapaSimbolos);
 
@@ -132,7 +136,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 				TelaPrincipalLay.this.compilar();
 			}
 		});
-		
+
 		menuItemMapaSimbolos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -153,7 +157,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 			return pnlLateralEsquerda;
 
 		pnlLateralEsquerda = new JPanel();
-		txtAreaDesenv = new JTextArea(40, 60);
+		txtAreaDesenv = new JTextArea(40, 25);
 
 		JScrollPane scrool = new JScrollPane(txtAreaDesenv);
 
@@ -168,7 +172,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 			return pnlLateralDireita;
 
 		pnlLateralDireita = new JPanel();
-		txtAreaLog = new JTextArea(40, 40);
+		txtAreaLog = new JTextArea(40, 20);
 
 		JScrollPane scrool = new JScrollPane(txtAreaLog);
 
@@ -176,8 +180,22 @@ public abstract class TelaPrincipalLay extends JFrame {
 
 		return pnlLateralDireita;
 	}
-	
-//	private JPanel getPnlTokens(){
-//		return null;
-//	}
+
+	private JPanel getPnlTokens() {
+		txtTokens = new JTextArea(40, 20);
+		JScrollPane scrool = new JScrollPane(txtTokens);
+
+		pnlTokens = new JPanel();
+		pnlTokens.add(scrool);
+		return pnlTokens;
+	}
+
+	private JPanel getPnlSintatico() {
+		txtSintatico = new JTextArea(40, 20);
+		JScrollPane scrool = new JScrollPane(txtSintatico);
+
+		pnlSintatico = new JPanel();
+		pnlSintatico.add(scrool);
+		return pnlSintatico;
+	}
 }
