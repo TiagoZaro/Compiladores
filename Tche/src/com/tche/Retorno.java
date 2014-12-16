@@ -5,9 +5,15 @@ public class Retorno {
 	private int status;
 	private String descricaoErro;
 	
+	private String valor;
+	private String tipo;
+	
 	public Retorno(){
 		status 			= 0;
 		descricaoErro 	= "";
+		
+		valor  			= "";
+		tipo			= "";
 	}
 
 	public void setStatus(int status) {
@@ -24,6 +30,16 @@ public class Retorno {
 		return descricaoErro;
 	}
 	
-	
-	
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+	public String getValor() {
+		return valor;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public String getTipo() {
+		return tipo;
+	}
 }

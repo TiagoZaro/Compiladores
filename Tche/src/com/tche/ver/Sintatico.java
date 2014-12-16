@@ -1492,21 +1492,22 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno C() {
+		// C-> num | “  ”
 		Retorno retorno = new Retorno();
 		
-		if (Lexico.getInstance().proximoToken() == tk_numero
-				|| Lexico.getInstance().proximoToken() == tk_apas) {
-
-			if (tipoVar != null) {
-				tipoVar.setVlrVariavel(getInstance().proximoLexema());
-				AnalisadorSemantico.addTable(tipoVar, tipoVar.getNomeVar());
-				tipoVar = null;
-			}
-
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+		if (Lexico.getInstance().proximoToken() == tk_numero){			
+			retorno.setValor(getInstance().proximoLexema());
 			retorno.setStatus(1);
-		} else {
+			
+			consumirTudo();
+		} else if (Lexico.getInstance().proximoToken() == tk_apas){ 
+			retorno.setValor(getInstance().proximoLexema());
+			retorno.setStatus(1);
+			
+			consumirTudo();
+		}		
+		else {
+			retorno.setStatus(0);
 			retorno.setDescricaoErro("eh esperado um numero ou aspas.");
 		}
 		
@@ -1599,6 +1600,11 @@ public class Sintatico extends Funcoes {
 		}
 
 		return retorno;
+	}
+	
+	private void consumirTudo(){
+		getInstance().consumirToken();
+		getInstance().consumirLexema();
 	}
 
 }
