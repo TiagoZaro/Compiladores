@@ -2,9 +2,10 @@ package com.tche;
 
 public class Tipagem {
 
-	private String		desNomeTipoVal;
-	private TipoEntrada	tipoEntrada;
-	private Object		vlrVariavel;
+	private String desNomeTipoVal;
+	private String nomeVar;
+	private TipoEntrada tipoEntrada;
+	private Object vlrVariavel;
 
 	public TipoEntrada getTipoEntrada() {
 		return tipoEntrada;
@@ -28,6 +29,14 @@ public class Tipagem {
 
 	public void setDesNomeTipoVal(String desNomeTipoVal) {
 		this.desNomeTipoVal = desNomeTipoVal;
+	}
+
+	public String getNomeVar() {
+		return nomeVar;
+	}
+
+	public void setNomeVar(String nomeVar) {
+		this.nomeVar = nomeVar;
 	}
 
 }

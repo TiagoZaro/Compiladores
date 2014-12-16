@@ -65,6 +65,7 @@ public class Lexico {
 	private StringBuilder sbLexema = new StringBuilder();
 
 	public List<Integer> lstTokens = new ArrayList<Integer>();
+	public List<String> lstLexema = new ArrayList<String>();
 
 	private Lexico() {
 	}
@@ -79,10 +80,43 @@ public class Lexico {
 	}
 
 	public int proximoToken() {
+		if (lstTokens.size() == 0)
+			return -1;
+
+		DesktopFrameWork.getInstance().addLog(
+				"Próximo token:" + lstTokens.get(0));
 		return lstTokens.get(0);
 	}
-	
-	public void consumirToken(){
+
+	public String proximoLexema() {
+
+		if (lstLexema.size() == 0)
+			return "-1";
+
+		DesktopFrameWork.getInstance().addLog(
+				"Próximo lexema:" + lstLexema.get(0));
+
+		return lstLexema.get(0);
+	}
+
+	public void consumirLexema() {
+
+		if (lstLexema.size() <= 0)
+			return;
+
+		DesktopFrameWork.getInstance().addLog(
+				"Consumiu o lexema:" + lstLexema.get(0));
+
+		lstLexema.remove(0);
+	}
+
+	public void consumirToken() {
+
+		if (lstTokens.size() <= 0)
+			return;
+
+		DesktopFrameWork.getInstance().addLog(
+				"Consumiu o token:" + lstTokens.get(0));
 		lstTokens.remove(0);
 	}
 
@@ -154,6 +188,9 @@ public class Lexico {
 					break;
 				case '}':
 					estado = 21;
+					break;
+				case ';':
+					estado = 22;
 					break;
 				default:
 					if (this.car_atual >= '0' && this.car_atual <= '9') {
@@ -410,6 +447,12 @@ public class Lexico {
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
+			case 22:
+				this.token = tk_ponto_e_virgula;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
 			case 17:
 				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
@@ -463,8 +506,10 @@ public class Lexico {
 						String.format("token=%s lexema='%s'\n", this.token,
 								sbLexema.toString()));
 
-				sbLexema.setLength(0);
 				lstTokens.add(token);
+				lstLexema.add(sbLexema.toString());
+				
+				sbLexema.setLength(0);
 			} finally {
 				this.proximotoken();
 			}

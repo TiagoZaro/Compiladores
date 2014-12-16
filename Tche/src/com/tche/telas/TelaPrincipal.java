@@ -38,17 +38,19 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	}
 
-	public void addLog(String log) {
+	public void addLog(final String log) {
 
 		if (log == null | log.trim().isEmpty())
 			return;
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(txtAreaLog.getText());
+		sb.append("\n");
 		sb.append(log);
 
 		txtAreaLog.setText(sb.toString());
 		txtAreaLog.updateUI();
+		//this.update(getRootPane().getGraphics());
 	}
 
 	@Override

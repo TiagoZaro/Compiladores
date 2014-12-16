@@ -49,6 +49,8 @@ public abstract class Funcoes {
 	static final int tk_hasta = 84;
 	static final int tk_dois_pontos = 85;
 	static final int tk_virgula = 86;
+	static final int tk_variavel = 87;
+
 
 	public abstract Retorno Inicio();
 
