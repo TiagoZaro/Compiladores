@@ -52,6 +52,7 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno Q() {
+		// Q -> IVet Q | IProt Q | FuncProt Q | &
 		Retorno mAuxRetorno = null;
 
 		/*
@@ -74,7 +75,8 @@ public class Sintatico extends Funcoes {
 				if (mAuxRetorno.getStatus() == 1) {
 					mAuxRetorno = this.Q();
 				} else {
-					// vazio //TODO
+					// vazio
+					mAuxRetorno.setStatus(1);
 				}
 			}
 		}
