@@ -5,7 +5,7 @@ public class Tipagem {
 	private String desNomeTipoVal;
 	private String nomeVar;
 	private TipoEntrada tipoEntrada;
-	private Object vlrVariavel;
+	private Object vlrVariavel;  
 
 	public TipoEntrada getTipoEntrada() {
 		return tipoEntrada;

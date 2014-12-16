@@ -129,10 +129,13 @@ public class Lexico {
 	}
 
 	public void iniciageradortokens(String s) {
+		this.lstTokens.clear();
+		this.lstTokens.clear();
+		
 		this.strt = s;
 		this.post = 0;
 		this.tamt = this.strt.length();
-		this.car_atual = this.lecar();
+		this.car_atual = this.lecar();		
 	}
 
 	public void proximotoken() {
