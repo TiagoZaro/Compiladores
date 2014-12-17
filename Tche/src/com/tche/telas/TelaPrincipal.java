@@ -72,4 +72,34 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		TelaExibiMapaSimbolos.exibirMapaSimbolos();
 	}
 
+	public void addSintatico(final String sintatico) {
+
+		if (sintatico == null | sintatico.trim().isEmpty())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(txtSintatico.getText());
+		sb.append("\n");
+		sb.append(sintatico);
+
+		txtSintatico.setText(sb.toString());
+		txtSintatico.updateUI();
+		this.update(this.getGraphics());
+	}
+
+	public void addTokens(final String token) {
+
+		if (token == null | token.trim().isEmpty())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(txtTokens.getText());
+		sb.append("\n");
+		sb.append(token);
+
+		txtTokens.setText(sb.toString());
+		txtTokens.updateUI();
+		this.update(this.getGraphics());
+	}
+
 }
