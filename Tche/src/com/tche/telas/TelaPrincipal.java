@@ -19,10 +19,18 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void compilar() {
-		//limparLog();
-		
+		// limparLog();
+
 		Sintatico mAuxSintatico = new Sintatico();
-		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
+
+		Thread thread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Lexico.getInstance().listatokens(txtAreaDesenv.getText());
+			}
+		});
+		thread.start();
 
 		// Efetua a analise seintatica
 		Retorno retorno = mAuxSintatico.Inicio();
@@ -30,12 +38,10 @@ public class TelaPrincipal extends TelaPrincipalLay {
 			DesktopFrameWork.getInstance().addLog("Compilado!");
 		} else if (retorno != null && retorno.getStatus() == 0) {
 
-			if (retorno.getDescricaoErro() == null
-					|| retorno.getDescricaoErro().trim().isEmpty())
+			if (retorno.getDescricaoErro() == null || retorno.getDescricaoErro().trim().isEmpty())
 				DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
 			else
-				DesktopFrameWork.getInstance().addLog(
-						retorno.getDescricaoErro());
+				DesktopFrameWork.getInstance().addLog(retorno.getDescricaoErro());
 		}
 
 	}
@@ -52,9 +58,11 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 		txtAreaLog.setText(sb.toString());
 		txtAreaLog.updateUI();
-		//this.update(getRootPane().getGraphics());
+		this.update(this.getGraphics());
+		// this.update(getRootPane().getGraphics());
 	}
-	private void limparLog(){
+
+	private void limparLog() {
 		txtAreaLog.setText("");
 		txtAreaLog.updateUI();
 	}
