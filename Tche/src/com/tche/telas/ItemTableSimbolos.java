@@ -1,6 +1,5 @@
 package com.tche.telas;
 
-
 public class ItemTableSimbolos {
 
 	// pila, bueno
@@ -11,6 +10,10 @@ public class ItemTableSimbolos {
 	private String tipoEntrada;
 	// nome da variavel
 	private String nome;
+	// tipo array
+	private String tipArray;
+	// dimensao
+	private Integer dimensao;
 
 	public String getNomeTipoVal() {
 		return nomeTipoVal;
@@ -43,4 +46,21 @@ public class ItemTableSimbolos {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	public String getTipArray() {
+		return tipArray;
+	}
+
+	public void setTipArray(String tipArray) {
+		this.tipArray = tipArray;
+	}
+
+	public Integer getDimensao() {
+		return dimensao;
+	}
+
+	public void setDimensao(Integer dimensao) {
+		this.dimensao = dimensao;
+	}
+
 }

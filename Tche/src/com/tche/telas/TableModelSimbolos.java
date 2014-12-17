@@ -37,7 +37,7 @@ public class TableModelSimbolos extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return 6;
 	}
 
 	@Override
@@ -47,13 +47,14 @@ public class TableModelSimbolos extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return new String[] { "Entrada", "Tipo", "Nome", "Valor" }[column];
+		return new String[] { "Entrada", "Tipo", "Nome", "Valor", "Tipo Array",
+				"Dimensão" }[column];
 	}
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return new Class<?>[] { String.class, String.class, String.class,
-				String.class }[columnIndex];
+				String.class, String.class, Integer.class }[columnIndex];
 	}
 
 	@Override
@@ -83,6 +84,12 @@ public class TableModelSimbolos extends AbstractTableModel {
 		case 3:
 			bean.setValorVal((String) value);
 			break;
+		case 4:
+			bean.setTipArray((String) value);
+			break;
+		case 5:
+			bean.setDimensao((Integer) value);
+			break;
 		}
 	}
 
@@ -98,7 +105,6 @@ public class TableModelSimbolos extends AbstractTableModel {
 		return false;
 	}
 
-
 	public void addBean(ItemTableSimbolos bean) {
 		getListaBean().add(bean); // Adiciona na lista
 		fireTableDataChanged(); // Atualiza a tabela
@@ -111,12 +117,12 @@ public class TableModelSimbolos extends AbstractTableModel {
 		} catch (Exception e) {
 		}
 	}
-	
-	public void clear(){
-		try {	
+
+	public void clear() {
+		try {
 			for (ItemTableSimbolos itemTableSimbolos : listaBean) {
 				getListaBean().remove(itemTableSimbolos);
-				fireTableDataChanged(); 
+				fireTableDataChanged();
 			}
 		} catch (Exception e) {
 		}

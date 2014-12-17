@@ -2,8 +2,8 @@ package com.tche.ver;
 
 import static com.tche.ver.Lexico.getInstance;
 
-import com.tche.AnalisadorSemantico;
 import com.tche.Retorno;
+import com.tche.TcheGlobal;
 import com.tche.Tipagem;
 import com.tche.TipoEntrada;
 
@@ -30,10 +30,11 @@ public class Sintatico extends Funcoes {
 				if (mAuxRetorno.getStatus() == 1) {
 					if (getInstance().proximoToken() == tk_fechachaves) {
 						getInstance().consumirToken();
-						getInstance().consumirLexema();						
-					} else{
+						getInstance().consumirLexema();
+					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Falta fecha chaves no querencia");
+						mAuxRetorno
+								.setDescricaoErro("Falta fecha chaves no querencia");
 					}
 				}
 			} else {
@@ -114,10 +115,11 @@ public class Sintatico extends Funcoes {
 							if (mAuxRetorno.getStatus() == 1) {
 								if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
 									getInstance().consumirLexema();
-									getInstance().consumirToken();									
-								} else{
+									getInstance().consumirToken();
+								} else {
 									mAuxRetorno.setStatus(0);
-									mAuxRetorno.setDescricaoErro("Falta ponto e virgula no indiada");
+									mAuxRetorno
+											.setDescricaoErro("Falta ponto e virgula no indiada");
 								}
 							}
 						} else {
@@ -153,11 +155,11 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.IProt1();
-				
-				if (mAuxRetorno.getStatus() == 1){
-					if (getInstance().proximoToken() == tk_ponto_e_virgula){
+
+				if (mAuxRetorno.getStatus() == 1) {
+					if (getInstance().proximoToken() == tk_ponto_e_virgula) {
 						consumirTudo();
-						
+
 						// // Exemplo adiciona na tabela de simbolos
 						// Tipagem t = new Tipagem();
 						// t.setDesNomeTipoVal("Pila");
@@ -168,7 +170,8 @@ public class Sintatico extends Funcoes {
 						// addTable(t, nome);
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
+						mAuxRetorno
+								.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
 					}
 				}
 			}
@@ -223,10 +226,11 @@ public class Sintatico extends Funcoes {
 					if (mAuxRetorno.getStatus() == 1) {
 						if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
 							getInstance().consumirToken();
-							getInstance().consumirLexema();							
-						} else{
+							getInstance().consumirLexema();
+						} else {
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno.setDescricaoErro("Falta o ponto e virgula no TVet");
+							mAuxRetorno
+									.setDescricaoErro("Falta o ponto e virgula no TVet");
 						}
 					}
 				} else {
@@ -485,7 +489,7 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.ParVar();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.MaisPar();
-			} 
+			}
 		}
 
 		return mAuxRetorno;
@@ -576,14 +580,15 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
 				mAuxRetorno = this.ACod();
-				if (mAuxRetorno.getStatus() == 1){
-					if (getInstance().proximoToken() == tk_ponto_e_virgula){
+				if (mAuxRetorno.getStatus() == 1) {
+					if (getInstance().proximoToken() == tk_ponto_e_virgula) {
 						getInstance().consumirLexema();
 						getInstance().consumirToken();
-					} else{
+					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou o ponto e vírgula na inicialização da variavel");
-					}					
+						mAuxRetorno
+								.setDescricaoErro("Faltou o ponto e vírgula na inicialização da variavel");
+					}
 				}
 			}
 		}
@@ -1419,7 +1424,7 @@ public class Sintatico extends Funcoes {
 		} else {
 			retorno.setDescricaoErro("Faltou abrir parenteses");
 		}
-		
+
 		return retorno;// TODO aceita vazio VER
 	}
 
@@ -1439,14 +1444,14 @@ public class Sintatico extends Funcoes {
 	Retorno V() {
 		// V -> VVar | VVet
 		Retorno retorno = new Retorno();
-		
-		retorno = this.VVar(); 
+
+		retorno = this.VVar();
 		if (retorno.getStatus() == 1) {
 			retorno.setStatus(1);
-		} else{
-			retorno = this.VVet();			
+		} else {
+			retorno = this.VVet();
 		}
-		
+
 		return retorno;
 	}
 
@@ -1505,25 +1510,31 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno C() {
-		// C-> num | “  ”
+		// C-> num | “ ”
 		Retorno retorno = new Retorno();
-		
-		if (Lexico.getInstance().proximoToken() == tk_numero){			
-			retorno.setValor(getInstance().proximoLexema());
-			retorno.setStatus(1);
+
+		if (Lexico.getInstance().proximoToken() == tk_numero) {
 			
-			consumirTudo();
-		} else if (Lexico.getInstance().proximoToken() == tk_apas){ 
-			retorno.setValor(getInstance().proximoLexema());
+			Tipagem tipagem = new Tipagem();
+			tipagem.setVlrVariavel(getInstance().proximoLexema());
+			retorno.setTipagem(tipagem);
+
 			retorno.setStatus(1);
-			
+
 			consumirTudo();
-		}		
-		else {
+		} else if (Lexico.getInstance().proximoToken() == tk_apas) {
+			
+			Tipagem tipagem = new Tipagem();
+			tipagem.setVlrVariavel(getInstance().proximoLexema());
+			retorno.setTipagem(tipagem);
+			retorno.setStatus(1);
+
+			consumirTudo();
+		} else {
 			retorno.setStatus(0);
 			retorno.setDescricaoErro("eh esperado um numero ou aspas.");
 		}
-		
+
 		return retorno;
 	}
 
@@ -1535,7 +1546,7 @@ public class Sintatico extends Funcoes {
 		// nome val vvar
 		// valor dela no c
 		// se for variavel no tvar
-		
+
 		boolean isVar = retorno.getStatus() == 1;
 		boolean isVetor = false;
 
@@ -1556,7 +1567,7 @@ public class Sintatico extends Funcoes {
 		if (isVar || isVetor) {
 			if (tipoVar != null)
 				tipoVar.setTipoEntrada(TipoEntrada.VARIAVEL);
-		} 
+		}
 
 		return retorno;
 	}
@@ -1565,17 +1576,21 @@ public class Sintatico extends Funcoes {
 	Retorno TVet() {
 		// TVet -> borracho TVar | bolicho TVar
 		Retorno retorno = new Retorno();
-		
-		if (Lexico.getInstance().proximoToken() == tk_borracho){
+
+		if (Lexico.getInstance().proximoToken() == tk_borracho) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno = this.TVar();
-		} else if (getInstance().proximoToken() == tk_bolicho){
+
+			if (tipoVar != null) {
+				tipoVar.setTipoEntrada(TipoEntrada.VARIAVEL);
+			}
+		} else if (getInstance().proximoToken() == tk_bolicho) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno = this.TVar();
 		}
-		
+
 		return retorno;
 	}
 
@@ -1585,37 +1600,38 @@ public class Sintatico extends Funcoes {
 		retorno.setStatus(0);
 		if (Lexico.getInstance().proximoToken() == tk_bueno) {
 
-			tipoVar = new Tipagem();
-			tipoVar.setDesNomeTipoVal(getInstance().proximoLexema());
-
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno.setStatus(1);
+			Tipagem tipagem = new Tipagem();
+			tipagem.setDesNomeTipoVal("bueno");
+			retorno.setTipagem(tipagem);
 		}
 		if (Lexico.getInstance().proximoToken() == tk_pia) {
-
-			tipoVar = new Tipagem();
-			tipoVar.setDesNomeTipoVal(getInstance().proximoLexema());
-
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno.setStatus(1);
+
+			Tipagem tipagem = new Tipagem();
+			tipagem.setDesNomeTipoVal("pia");
+			retorno.setTipagem(tipagem);
 		}
 
 		if (Lexico.getInstance().proximoToken() == tk_pila) {
 
-			tipoVar = new Tipagem();
-			tipoVar.setDesNomeTipoVal(getInstance().proximoLexema());
-
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno.setStatus(1);
+
+			Tipagem tipagem = new Tipagem();
+			tipagem.setDesNomeTipoVal("pila");
+			retorno.setTipagem(tipagem);
 		}
 
 		return retorno;
 	}
-	
-	private void consumirTudo(){
+
+	private void consumirTudo() {
 		getInstance().consumirToken();
 		getInstance().consumirLexema();
 	}

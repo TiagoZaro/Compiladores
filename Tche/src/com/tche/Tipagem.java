@@ -6,6 +6,8 @@ public class Tipagem {
 	private String nomeVar;
 	private TipoEntrada tipoEntrada;
 	private Object vlrVariavel;
+	private Integer dimensao;
+	private String TipoArray;
 
 	public TipoEntrada getTipoEntrada() {
 		return tipoEntrada;
@@ -39,4 +41,19 @@ public class Tipagem {
 		this.nomeVar = nomeVar;
 	}
 
+	public Integer getDimensao() {
+		return dimensao;
+	}
+
+	public void setDimensao(Integer dimensao) {
+		this.dimensao = dimensao;
+	}
+
+	public String getTipoArray() {
+		return TipoArray;
+	}
+
+	public void setTipoArray(String tipoArray) {
+		TipoArray = tipoArray;
+	}
 }
