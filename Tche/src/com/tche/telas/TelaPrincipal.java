@@ -14,7 +14,16 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void novoArquivo() {
+		txtAreaDesenv.setText("");
+		txtAreaLog.setText("");
+		txtTokens.setText("");
+		txtSintatico.setText("");
 
+		txtAreaDesenv.updateUI();
+		txtAreaLog.updateUI();
+		txtTokens.updateUI();
+		txtSintatico.updateUI();
+		this.update(this.getGraphics());
 	}
 
 	@Override
