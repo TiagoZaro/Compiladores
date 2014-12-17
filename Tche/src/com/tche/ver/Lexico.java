@@ -62,7 +62,7 @@ public class Lexico {
 	// char lexema[] = new char[400];
 
 	// lexema identificado
-	private StringBuilder sbLexema = new StringBuilder();
+	private final StringBuilder sbLexema = new StringBuilder();
 
 	public List<Integer> lstTokens = new ArrayList<Integer>();
 	public List<String> lstLexema = new ArrayList<String>();
@@ -83,8 +83,7 @@ public class Lexico {
 		if (lstTokens.size() == 0)
 			return -1;
 
-		DesktopFrameWork.getInstance().addLog(
-				"Próximo token:" + lstTokens.get(0));
+		DesktopFrameWork.getInstance().addLog("Próximo token:" + lstTokens.get(0));
 		return lstTokens.get(0);
 	}
 
@@ -93,8 +92,7 @@ public class Lexico {
 		if (lstLexema.size() == 0)
 			return "-1";
 
-		DesktopFrameWork.getInstance().addLog(
-				"Próximo lexema:" + lstLexema.get(0));
+		DesktopFrameWork.getInstance().addLog("Próximo lexema:" + lstLexema.get(0));
 
 		return lstLexema.get(0);
 	}
@@ -104,8 +102,7 @@ public class Lexico {
 		if (lstLexema.size() <= 0)
 			return;
 
-		DesktopFrameWork.getInstance().addLog(
-				"Consumiu o lexema:" + lstLexema.get(0));
+		DesktopFrameWork.getInstance().addLog("Consumiu o lexema:" + lstLexema.get(0));
 
 		lstLexema.remove(0);
 	}
@@ -115,9 +112,9 @@ public class Lexico {
 		if (lstTokens.size() <= 0)
 			return;
 
-		DesktopFrameWork.getInstance().addLog(
-				"Consumiu o token:" + lstTokens.get(0));
+		DesktopFrameWork.getInstance().addLog("Consumiu o token:" + lstTokens.get(0));
 		lstTokens.remove(0);
+		imprimirTokens(lstTokens);
 	}
 
 	public char lecar() {
@@ -130,12 +127,12 @@ public class Lexico {
 
 	public void iniciageradortokens(String s) {
 		this.lstTokens.clear();
-		this.lstTokens.clear();
-		
+		imprimirTokens(lstTokens);
+
 		this.strt = s;
 		this.post = 0;
 		this.tamt = this.strt.length();
-		this.car_atual = this.lecar();		
+		this.car_atual = this.lecar();
 	}
 
 	public void proximotoken() {
@@ -210,16 +207,13 @@ public class Lexico {
 					} else
 
 					if (this.car_atual == 'a') {
-						if (this.strt.substring(this.post, this.post + 10)
-								.equals("prochegar")) {
+						if (this.strt.substring(this.post, this.post + 10).equals("prochegar")) {
 							token = this.tk_aprochegar;
 							fim = 1;
 							post += 10;
 							car_atual = lecar();
 							sbLexema.append("aprochegar");
-						} else if (this.strt
-								.substring(this.post, this.post + 6).equals(
-										"rregar")) {
+						} else if (this.strt.substring(this.post, this.post + 6).equals("rregar")) {
 							token = this.tk_arregar;
 							fim = 1;
 							post += 6;
@@ -231,24 +225,19 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'b') {
-						if (this.strt.substring(this.post, this.post + 6)
-								.equals("olicho")) {
+						if (this.strt.substring(this.post, this.post + 6).equals("olicho")) {
 							token = this.tk_bolicho;
 							fim = 1;
 							post += 6;
 							car_atual = lecar();
 							sbLexema.append("bolicho");
-						} else if (this.strt
-								.substring(this.post, this.post + 7).equals(
-										"orracho")) {
+						} else if (this.strt.substring(this.post, this.post + 7).equals("orracho")) {
 							token = this.tk_borracho;
 							fim = 1;
 							post += 7;
 							car_atual = lecar();
 							sbLexema.append("borracho");
-						} else if (this.strt
-								.substring(this.post, this.post + 4).equals(
-										"ueno")) {
+						} else if (this.strt.substring(this.post, this.post + 4).equals("ueno")) {
 							token = this.tk_bueno;
 							fim = 1;
 							post += 4;
@@ -260,8 +249,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'c') {
-						if (this.strt.substring(this.post, this.post + 4)
-								.equals("apaz")) {
+						if (this.strt.substring(this.post, this.post + 4).equals("apaz")) {
 							token = this.tk_capaz;
 							fim = 1;
 							post += 4;
@@ -273,8 +261,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'd') {
-						if (this.strt.substring(this.post, this.post + 7)
-								.equals("espacho")) {
+						if (this.strt.substring(this.post, this.post + 7).equals("espacho")) {
 							token = this.tk_despacho;
 							fim = 1;
 							post += 7;
@@ -286,8 +273,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'h') {
-						if (this.strt.substring(this.post, this.post + 4)
-								.equals("asta")) {
+						if (this.strt.substring(this.post, this.post + 4).equals("asta")) {
 							token = this.tk_hasta;
 							fim = 1;
 							post += 4;
@@ -299,8 +285,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'i') {
-						if (this.strt.substring(this.post, this.post + 6)
-								.equals("ndiada")) {
+						if (this.strt.substring(this.post, this.post + 6).equals("ndiada")) {
 							token = this.tk_indiada;
 							fim = 1;
 							post += 6;
@@ -312,8 +297,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'l') {
-						if (this.strt.substring(this.post, this.post + 8)
-								.equals("argatear")) {
+						if (this.strt.substring(this.post, this.post + 8).equals("argatear")) {
 							token = this.tk_largatear;
 							fim = 1;
 							post += 8;
@@ -325,16 +309,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'p') {
-						if (this.strt.substring(this.post, this.post + 2)
-								.equals("ia")) {
+						if (this.strt.substring(this.post, this.post + 2).equals("ia")) {
 							token = this.tk_pia;
 							fim = 1;
 							post += 2;
 							car_atual = lecar();
 							sbLexema.append("pia");
-						} else if (this.strt
-								.substring(this.post, this.post + 3).equals(
-										"ila")) {
+						} else if (this.strt.substring(this.post, this.post + 3).equals("ila")) {
 							token = this.tk_pila;
 							fim = 1;
 							post += 3;
@@ -346,16 +327,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'q') {
-						if (this.strt.substring(this.post, this.post + 8)
-								.equals("uerencia")) {
+						if (this.strt.substring(this.post, this.post + 8).equals("uerencia")) {
 							token = this.tk_querencia;
 							fim = 1;
 							post += 8;
 							car_atual = lecar();
 							sbLexema.append("querenceia");
-						} else if (this.strt
-								.substring(this.post, this.post + 4).equals(
-										"etal")) {
+						} else if (this.strt.substring(this.post, this.post + 4).equals("etal")) {
 							token = this.tk_quetal;
 							fim = 1;
 							post += 4;
@@ -367,16 +345,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 't') {
-						if (this.strt.substring(this.post, this.post + 3)
-								.equals("che")) {
+						if (this.strt.substring(this.post, this.post + 3).equals("che")) {
 							token = this.tk_tche;
 							fim = 1;
 							post += 3;
 							car_atual = lecar();
 							sbLexema.append("tche");
-						} else if (this.strt
-								.substring(this.post, this.post + 4).equals(
-										"rova")) {
+						} else if (this.strt.substring(this.post, this.post + 4).equals("rova")) {
 							token = this.tk_trova;
 							fim = 1;
 							post += 4;
@@ -388,8 +363,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'v') {
-						if (this.strt.substring(this.post, this.post + 6)
-								.equals("oltear")) {
+						if (this.strt.substring(this.post, this.post + 6).equals("oltear")) {
 							token = this.tk_voltear;
 							fim = 1;
 							post += 6;
@@ -401,8 +375,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'x') {
-						if (this.strt.substring(this.post, this.post + 5)
-								.equals("ispa")) {
+						if (this.strt.substring(this.post, this.post + 5).equals("ispa")) {
 							token = this.tk_xispa;
 							fim = 1;
 							post += 5;
@@ -521,8 +494,7 @@ public class Lexico {
 			case 101:
 				sbLexema.append(car_atual);
 				car_atual = lecar();
-				if (!((car_atual >= 'a' && car_atual <= 'z')
-						|| (car_atual >= 'A' && car_atual <= 'Z') || (car_atual >= '0' && car_atual <= '9'))) {
+				if (!((car_atual >= 'a' && car_atual <= 'z') || (car_atual >= 'A' && car_atual <= 'Z') || (car_atual >= '0' && car_atual <= '9'))) {
 					token = tk_variavel;
 					fim = 1;
 				}
@@ -541,17 +513,180 @@ public class Lexico {
 				if (token == 0)
 					continue;
 
-				DesktopFrameWork.getInstance().addLog(
-						String.format("token=%s lexema='%s'\n", this.token,
-								sbLexema.toString()));
+				DesktopFrameWork.getInstance().addLog(String.format("token=%s lexema='%s'\n", this.token, sbLexema.toString()));
 
 				lstTokens.add(token);
 				lstLexema.add(sbLexema.toString());
-				
+
+				imprimirTokens(lstTokens);
+
 				sbLexema.setLength(0);
 			} finally {
 				this.proximotoken();
 			}
 		}
+	}
+
+	void imprimirTokens(List<Integer> lstTokens) {
+		DesktopFrameWork.getInstance().txtTokens.setText("");
+		if (lstTokens != null && !lstTokens.isEmpty()) {
+			for (Integer aux : lstTokens) {
+				imprimirToken(aux);
+			}
+
+		}
+	}
+
+	void imprimirToken(Integer aux) {
+		String tokenName = "NULL";
+
+		switch (aux) {
+		case tk_EOF:
+			tokenName = "tk_EOF";
+			break;
+		case tk_naoreconhecido:
+			tokenName = "tk_naoreconhecido ";
+			break;
+		case tk_adicao:
+			tokenName = "tk_adicao         ";
+			break;
+		case tk_subtr:
+			tokenName = "tk_subtr          ";
+			break;
+		case tk_mult:
+			tokenName = "tk_mult           ";
+			break;
+		case tk_divisao:
+			tokenName = "tk_divisao        ";
+			break;
+		case tk_potencia:
+			tokenName = "tk_potencia       ";
+			break;
+		case tk_abreparenteses:
+			tokenName = "tk_abreparenteses ";
+			break;
+		case tk_fechaparenteses:
+			tokenName = "tk_fechaparenteses";
+			break;
+		case tk_maior:
+			tokenName = "tk_maior          ";
+			break;
+		case tk_menor:
+			tokenName = "tk_menor          ";
+			break;
+		case tk_diferente:
+			tokenName = "tk_diferente      ";
+			break;
+		case tk_igual:
+			tokenName = "tk_igual          ";
+			break;
+		case tk_fatorial:
+			tokenName = "tk_fatorial       ";
+			break;
+		case tk_numero:
+			tokenName = "tk_numero         ";
+			break;
+		case tk_abrechaves:
+			tokenName = "tk_abrechaves     ";
+			break;
+		case tk_fechachaves:
+			tokenName = "tk_fechachaves    ";
+			break;
+		case tk_abrecolchetes:
+			tokenName = "tk_abrecolchetes  ";
+			break;
+		case tk_fechecolchetes:
+			tokenName = "tk_fechecolchetes ";
+			break;
+		case tk_ponto:
+			tokenName = "tk_ponto          ";
+			break;
+		case tk_ponto_e_virgula:
+			tokenName = "tk_ponto_e_virgula";
+			break;
+		case tk_true:
+			tokenName = "tk_true           ";
+			break;
+		case tk_false:
+			tokenName = "tk_false          ";
+			break;
+		case tk_apas:
+			tokenName = "tk_apas           ";
+			break;
+		case tk_barras:
+			tokenName = "tk_barras         ";
+			break;
+		case tk_e_comm:
+			tokenName = "tk_e_comm         ";
+			break;
+		case tk_querencia:
+			tokenName = "tk_querencia      ";
+			break;
+		case tk_tche:
+			tokenName = "tk_tche           ";
+			break;
+		case tk_pila:
+			tokenName = "tk_pila           ";
+			break;
+		case tk_pia:
+			tokenName = "tk_pia            ";
+			break;
+		case tk_borracho:
+			tokenName = "tk_borracho       ";
+			break;
+		case tk_bueno:
+			tokenName = "tk_bueno          ";
+			break;
+		case tk_bolicho:
+			tokenName = "tk_bolicho        ";
+			break;
+		case tk_indiada:
+			tokenName = "tk_indiada        ";
+			break;
+		case tk_despacho:
+			tokenName = "tk_despacho       ";
+			break;
+		case tk_xispa:
+			tokenName = "tk_xispa          ";
+			break;
+		case tk_quetal:
+			tokenName = "tk_quetal         ";
+			break;
+		case tk_capaz:
+			tokenName = "tk_capaz          ";
+			break;
+		case tk_trova:
+			tokenName = "tk_trova          ";
+			break;
+		case tk_voltear:
+			tokenName = "tk_voltear        ";
+			break;
+		case tk_aprochegar:
+			tokenName = "tk_aprochegar     ";
+			break;
+		case tk_arregar:
+			tokenName = "tk_arregar        ";
+			break;
+		case tk_largatear:
+			tokenName = "tk_largatear      ";
+			break;
+		case tk_hasta:
+			tokenName = "tk_hasta          ";
+			break;
+		case tk_dois_pontos:
+			tokenName = "tk_dois_pontos    ";
+			break;
+		case tk_virgula:
+			tokenName = "tk_virgula        ";
+			break;
+		case tk_variavel:
+			tokenName = "tk_variavel       ";
+			break;
+		default:
+			tokenName = "FUDEUU       ";
+			break;
+		}
+
+		DesktopFrameWork.getInstance().addTokens(aux + " " + tokenName + "\n");
 	}
 }
