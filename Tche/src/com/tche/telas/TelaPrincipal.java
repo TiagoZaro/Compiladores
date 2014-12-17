@@ -32,14 +32,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 		Sintatico mAuxSintatico = new Sintatico();
 
-		Thread thread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				Lexico.getInstance().listatokens(txtAreaDesenv.getText());
-			}
-		});
-		thread.start();
+		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
 
 		// Efetua a analise seintatica
 		Retorno retorno = mAuxSintatico.Inicio();
