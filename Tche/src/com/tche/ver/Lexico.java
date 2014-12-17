@@ -481,7 +481,7 @@ public class Lexico {
 				fim = 1;
 				break;
 			case 25:
-				this.token = tk_fechachaves;
+				this.token = tk_fechecolchetes;
 				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;

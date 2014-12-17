@@ -14,14 +14,24 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	@Override
 	public void novoArquivo() {
+		txtAreaDesenv.setText("");
+		txtAreaLog.setText("");
+		txtTokens.setText("");
+		txtSintatico.setText("");
 
+		txtAreaDesenv.updateUI();
+		txtAreaLog.updateUI();
+		txtTokens.updateUI();
+		txtSintatico.updateUI();
+		this.update(this.getGraphics());
 	}
 
 	@Override
 	public void compilar() {
-		//limparLog();
-		
+		// limparLog();
+
 		Sintatico mAuxSintatico = new Sintatico();
+
 		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
 
 		// Efetua a analise seintatica
@@ -30,12 +40,10 @@ public class TelaPrincipal extends TelaPrincipalLay {
 			DesktopFrameWork.getInstance().addLog("Compilado!");
 		} else if (retorno != null && retorno.getStatus() == 0) {
 
-			if (retorno.getDescricaoErro() == null
-					|| retorno.getDescricaoErro().trim().isEmpty())
+			if (retorno.getDescricaoErro() == null || retorno.getDescricaoErro().trim().isEmpty())
 				DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
 			else
-				DesktopFrameWork.getInstance().addLog(
-						retorno.getDescricaoErro());
+				DesktopFrameWork.getInstance().addLog(retorno.getDescricaoErro());
 		}
 
 	}
@@ -52,9 +60,11 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 		txtAreaLog.setText(sb.toString());
 		txtAreaLog.updateUI();
-		//this.update(getRootPane().getGraphics());
+		this.update(this.getGraphics());
+		// this.update(getRootPane().getGraphics());
 	}
-	private void limparLog(){
+
+	private void limparLog() {
 		txtAreaLog.setText("");
 		txtAreaLog.updateUI();
 	}
@@ -62,6 +72,36 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	@Override
 	public void mapaSimbolos() {
 		TelaExibiMapaSimbolos.exibirMapaSimbolos();
+	}
+
+	public void addSintatico(final String sintatico) {
+
+		if (sintatico == null | sintatico.trim().isEmpty())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(txtSintatico.getText());
+		sb.append("\n");
+		sb.append(sintatico);
+
+		txtSintatico.setText(sb.toString());
+		txtSintatico.updateUI();
+		this.update(this.getGraphics());
+	}
+
+	public void addTokens(final String token) {
+
+		if (token == null | token.trim().isEmpty())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(txtTokens.getText());
+		sb.append("\n");
+		sb.append(token);
+
+		txtTokens.setText(sb.toString());
+		txtTokens.updateUI();
+		this.update(this.getGraphics());
 	}
 
 }

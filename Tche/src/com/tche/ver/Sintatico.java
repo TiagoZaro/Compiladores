@@ -144,23 +144,32 @@ public class Sintatico extends Funcoes {
 		 * if (TVar() == 1) { if (V() == 1) { if (IProt1() == 1) { return 1; } }
 		 * } return 0;
 		 */
+		// IProt -> TVar V IProt1;
 		Retorno mAuxRetorno = new Retorno();
 
 		mAuxRetorno = this.TVar();
 		if (mAuxRetorno.getStatus() == 1) {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
-
-				// // Exemplo adiciona na tabela de simbolos
-				// Tipagem t = new Tipagem();
-				// t.setDesNomeTipoVal("Pila");
-				// t.setVlrVariavel(0);
-				// t.setTipoEntrada(TipoEntrada.VARIAVEL);
-				// String nome = "val";
-				//
-				// addTable(t, nome);
-
 				mAuxRetorno = this.IProt1();
+				
+				if (mAuxRetorno.getStatus() == 1){
+					if (getInstance().proximoToken() == tk_ponto_e_virgula){
+						consumirTudo();
+						
+						// // Exemplo adiciona na tabela de simbolos
+						// Tipagem t = new Tipagem();
+						// t.setDesNomeTipoVal("Pila");
+						// t.setVlrVariavel(0);
+						// t.setTipoEntrada(TipoEntrada.VARIAVEL);
+						// String nome = "val";
+						//
+						// addTable(t, nome);
+					} else {
+						mAuxRetorno.setStatus(0);
+						mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
+					}
+				}
 			}
 		}
 		return mAuxRetorno;
@@ -211,12 +220,12 @@ public class Sintatico extends Funcoes {
 					getInstance().consumirToken();
 					mAuxRetorno = this.IVetDime();
 					if (mAuxRetorno.getStatus() == 1) {
-						if (Lexico.getInstance().proximoToken() != tk_ponto_e_virgula) {
+						if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
 							getInstance().consumirToken();
-							getInstance().consumirLexema();
+							getInstance().consumirLexema();							
+						} else{
 							mAuxRetorno.setStatus(0);
-							mAuxRetorno
-									.setDescricaoErro("Falta o ponto e virgula no TVet");
+							mAuxRetorno.setDescricaoErro("Falta o ponto e virgula no TVet");
 						}
 					}
 				} else {
@@ -237,6 +246,7 @@ public class Sintatico extends Funcoes {
 		 * 1) { return 1; } } } } return 0;
 		 */
 		// IVetDime -> [ C ] IvetDime?
+		// IVetDime -> [ C ] IvetDime’
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
@@ -1426,13 +1436,16 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno V() {
+		// V -> VVar | VVet
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.VVar().getStatus() == 1) {
+		
+		retorno = this.VVar(); 
+		if (retorno.getStatus() == 1) {
 			retorno.setStatus(1);
-		} else if (this.VVet().getStatus() == 1) {
-			retorno.setStatus(1);
+		} else{
+			retorno = this.VVet();			
 		}
+		
 		return retorno;
 	}
 
