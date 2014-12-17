@@ -1586,14 +1586,21 @@ public class Sintatico extends Funcoes {
 		Retorno retorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_borracho) {
+			
+			Tipagem tipagem = new Tipagem();
+			tipagem.setTipoArray(getInstance().proximoLexema());
+			retorno.setTipagem(tipagem);
+			
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno = this.TVar();
 
-			if (tipoVar != null) {
-				tipoVar.setTipoEntrada(TipoEntrada.VARIAVEL);
-			}
 		} else if (getInstance().proximoToken() == tk_bolicho) {
+			
+			Tipagem tipagem = new Tipagem();
+			tipagem.setTipoArray(getInstance().proximoLexema());
+			retorno.setTipagem(tipagem);
+			
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno = this.TVar();
