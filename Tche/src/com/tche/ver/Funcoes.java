@@ -107,6 +107,8 @@ public abstract class Funcoes {
 	abstract Retorno ComandC();
 
 	abstract Retorno IniComand();
+	
+	abstract Retorno IniComandLinha();
 
 	abstract Retorno ComandA();
 
