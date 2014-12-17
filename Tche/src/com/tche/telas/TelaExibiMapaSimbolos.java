@@ -30,6 +30,8 @@ public class TelaExibiMapaSimbolos extends TelaExibiMapaSimbolosLay {
 			item.setNome(k);
 			item.setNomeTipoVal(tipagem.getDesNomeTipoVal().toUpperCase());
 			item.setValorVal(tipagem.getVlrVariavel().toString());
+			item.setTipArray(tipagem.getTipoArray());
+			item.setDimensao(tipagem.getDimensao());
 
 			if (tipagem.getTipoEntrada().equals(TipoEntrada.FUNCAO)) {
 				item.setTipoEntrada("FUN«√ÉO");
