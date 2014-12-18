@@ -319,6 +319,8 @@ public class Lexico {
 							estado = 101;
 						}
 
+					} else if(this.car_atual == 'y'){
+						    estado = 101;
 					} else if (this.car_atual == 'l') {
 						if ((this.strt.length() >= this.post + 8) && this.strt.substring(this.post, this.post + 8).equals("argatear")) {
 							token = this.tk_largatear;
@@ -391,6 +393,8 @@ public class Lexico {
 							estado = 101;
 						}
 
+					}else if(this.car_atual == 'y'){
+						estado = 101;	
 					} else if (this.car_atual == 'v') {
 						if ((this.strt.length() >= this.post + 6) && this.strt.substring(this.post, this.post + 6).equals("oltear")) {
 							token = this.tk_voltear;
