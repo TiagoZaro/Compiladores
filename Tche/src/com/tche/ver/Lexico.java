@@ -278,6 +278,17 @@ public class Lexico {
 							estado = 101;
 						}
 
+					} else if (this.car_atual == 'f'){
+						if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("alse")) {
+							token = this.tk_false;
+							fim = 1;
+							post += 4;
+							car_atual = lecar();
+							sbLexema.append("false");
+						} else {
+							// erro
+							estado = 101;
+						}
 					} else if (this.car_atual == 'h') {
 						if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("asta")) {
 							token = this.tk_hasta;
@@ -363,6 +374,12 @@ public class Lexico {
 							post += 4;
 							car_atual = lecar();
 							sbLexema.append("trova");
+						} else if ((this.strt.length() >= this.post + 3) && this.strt.substring(this.post, this.post + 3).equals("rue")) {
+							token = this.tk_true;
+							fim = 1;
+							post += 3;
+							car_atual = lecar();
+							sbLexema.append("true");
 						} else {
 							// erro
 							estado = 101;
