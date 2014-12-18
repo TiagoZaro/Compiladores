@@ -1489,50 +1489,54 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno P() {
 		DesktopFrameWork.getInstance().addSintatico("P");
+//		P -> Ident P’ | (Log)
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Ident().getStatus() == 1) {
-			if (this.PLinha().getStatus() == 1) {
-				retorno.setStatus(1);
-			}
-		} else if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Log().getStatus() == 1) {
+		
+		if (getInstance().proximoToken() == tk_abreparenteses) {
+			consumirTudo();
+			retorno = this.Log();
+			if (retorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
-					getInstance().consumirLexema();
-					getInstance().consumirToken();
+					consumirTudo();
 					retorno.setStatus(1);
+				} else{
+					retorno.setStatus(0);
+					retorno.setDescricaoErro("Faltou fechar o parentese");
 				}
 			}
+		} else{
+			retorno = this.Ident(); 
+			if (retorno.getStatus() == 1) {
+				retorno = this.PLinha();
+			}
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno PLinha() {
 		DesktopFrameWork.getInstance().addSintatico("PLinha");
+//		P’ -> (Log) | &
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Log().getStatus() == 1) {
+			consumirTudo();
+			retorno = this.Log(); 
+			if (retorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
-					getInstance().consumirLexema();
-					getInstance().consumirToken();
+					consumirTudo();
 					retorno.setStatus(1);
 				} else {
 					retorno.setDescricaoErro("Faltou fechar parenteses");
 				}
-			} else {
-				retorno.setDescricaoErro("Erro Log()");
 			}
 		} else {
-			retorno.setDescricaoErro("Faltou abrir parenteses");
+//			VAZIO
+			retorno.setStatus(1);
 		}
 
-		return retorno;// TODO aceita vazio VER
+		return retorno;
 	}
 
 	@Override
