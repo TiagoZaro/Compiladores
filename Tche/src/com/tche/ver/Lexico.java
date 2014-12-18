@@ -408,8 +408,29 @@ public class Lexico {
 							// erro
 							estado = 101;
 						}
+					} else if (this.car_atual == '&'){
+						if ((this.strt.length() >= this.post + 1) && this.strt.substring(this.post, this.post + 1).equals("&")) {
+							token = this.tk_e_comm;
+							fim = 1;
+							post += 1;
+							car_atual = lecar();
+							sbLexema.append("&&");
+						} else {
+							// erro
+							estado = 101;
+						}
+					} else if (this.car_atual == '|'){
+						if ((this.strt.length() >= this.post + 1) && this.strt.substring(this.post, this.post + 1).equals("|")) {
+							token = this.tk_barras;
+							fim = 1;
+							post += 1;
+							car_atual = lecar();
+							sbLexema.append("||");
+						} else {
+							// erro
+							estado = 101;
+						}
 					}
-
 					else {
 						estado = -2;
 					}

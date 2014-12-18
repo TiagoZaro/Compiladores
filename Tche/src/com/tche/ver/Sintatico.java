@@ -1242,40 +1242,56 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno LogLinha() {
 		DesktopFrameWork.getInstance().addSintatico("LogLinha");
-		Retorno retorno = new Retorno();
-		retorno.setStatus(1); // TODO
 		// LogLINHA -> && Op1 LogLINHA | || Op1 LogLINHA | &
+		Retorno retorno = new Retorno();		
+
+		if (getInstance().proximoToken() == tk_e_comm){
+			retorno = Op1();
+			if (retorno.getStatus() == 1){
+				retorno = LogLinha();
+			}
+		} else if (getInstance().proximoToken() == tk_barras){
+			retorno = Op1();
+			if (retorno.getStatus() == 1){
+				retorno = LogLinha();
+			}
+		} else{		
+//			VAZIO
+			retorno.setStatus(1);
+		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op1() {
 		DesktopFrameWork.getInstance().addSintatico("Op1");
+		// Op1 -> Op2 Op1’
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Op2().getStatus() == 1) {
-			if (this.Op1Linha().getStatus() == 1) {
-				retorno.setStatus(1);
-			}
+		
+		retorno = this.Op2(); 
+		if (retorno.getStatus() == 1) {
+			retorno = this.Op1Linha();
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op1Linha() {
 		DesktopFrameWork.getInstance().addSintatico("Op1Linha");
+		// Op1’ -> == Op2 Op1’ | != Op2 Op1’ | &
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
-				if (this.Op2().getStatus() == 1) {
-					if (this.Op1Linha().getStatus() == 1) {
-						retorno.setStatus(1);
-					}
+				retorno = this.Op2(); 				
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op1Linha();
 				}
 			} else {
 				retorno.setDescricaoErro("eh esperado um sinal de igual.");
@@ -1286,12 +1302,9 @@ public class Sintatico extends Funcoes {
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
-				if (this.Op2().getStatus() == 1) {
-					if (this.Op1Linha().getStatus() == 1) {
-						retorno.setStatus(1);
-					}
-				} else {
-					retorno.setDescricaoErro("Esperando operacao.");
+				retorno = this.Op2(); 
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op1Linha();
 				}
 			} else {
 				retorno.setDescricaoErro("Depois do fatorial tem q vir um simbolo de IGUAL.");
@@ -1300,99 +1313,100 @@ public class Sintatico extends Funcoes {
 			// vazio
 			retorno.setStatus(1);
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op2() {
 		DesktopFrameWork.getInstance().addSintatico("Op2");
+		// Op2 -> Op3 Op2’
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Op3().getStatus() == 1) {
-			if (this.Op2Linha().getStatus() == 1) {
-				retorno.setStatus(1);
-			}
+		
+		retorno = this.Op3(); 
+		if (retorno.getStatus() == 1) {
+			retorno = this.Op2Linha();
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op2Linha() {
 		DesktopFrameWork.getInstance().addSintatico("Op2Linha");
+		// Op2’ -> > Op3 Op2’ | < Op3 Op2’ | >= Op3 Op2’ | <= Op3 Op2’ | &
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (Lexico.getInstance().proximoToken() == tk_maior) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Op3().getStatus() == 1) {
-				if (this.Op2Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
-			} else if (Lexico.getInstance().proximoToken() == tk_igual) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				if (this.Op2Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
-			} else {
-				retorno.setDescricaoErro("eh esperado um sinal de igual ou operando.");
+		
+//		VAZIO
+		retorno.setStatus(1); 
+
+		if (getInstance().lookAhead() == tk_igual){
+			if (Lexico.getInstance().proximoToken() == tk_maior) {
+				consumirTudo();
+				consumirTudo(); // consome o igual
+				retorno = this.Op3(); 
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op2Linha();
+				} 
+			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
+				consumirTudo();
+				consumirTudo(); // consome o igual
+				retorno = this.Op3(); 
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op2Linha();
+				} 
 			}
-		} else if (Lexico.getInstance().proximoToken() == tk_menor) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Op3().getStatus() == 1) {
-				if (this.Op2Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
-			} else if (Lexico.getInstance().proximoToken() == tk_igual) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				if (this.Op2Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
-			} else {
-				retorno.setDescricaoErro("eh esperado um sinal de igual ou operando.");
+		} else{
+			if (Lexico.getInstance().proximoToken() == tk_maior) {
+				consumirTudo();
+				retorno = this.Op3(); 
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op2Linha();
+				} 
+			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
+				consumirTudo();
+				retorno = this.Op3(); 
+				if (retorno.getStatus() == 1) {
+					retorno = this.Op2Linha();
+				} 
 			}
-		} else {
-			// VAZIO
-			retorno.setStatus(1);
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op3() {
 		DesktopFrameWork.getInstance().addSintatico("Op3");
+		// Op3 -> Op4 Op3’
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Op4().getStatus() == 1) {
-			if (this.Op3Linha().getStatus() == 1) {
-				retorno.setStatus(1);
-			}
+		
+		retorno = this.Op4();
+		
+		if (retorno.getStatus() == 1) {
+			retorno = this.Op3Linha();
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op3Linha() {
 		DesktopFrameWork.getInstance().addSintatico("Op3Linha");
+//		Op3’ -> + Op4 Op3’ | - Op4 Op3’ | &
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_adicao) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Op4().getStatus() == 1) {
-				if (this.Op3Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
+			consumirTudo();
+			retorno = this.Op4(); 
+			if (retorno.getStatus() == 1) {
+				retorno = this.Op3Linha();
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_subtr) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Op4().getStatus() == 1) {
-				if (this.Op3Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
+			consumirTudo();
+			retorno = this.Op4(); 
+			if (retorno.getStatus() == 1) {
+				retorno = this.Op3Linha();						
 			}
 		} else {
 			// VAZIO
@@ -1404,38 +1418,40 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno Op4() {
 		DesktopFrameWork.getInstance().addSintatico("Op4");
+//		Op4 -> Un Op4’
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Un().getStatus() == 1) {
-			if (this.Op4Linha().getStatus() == 1) {
-				retorno.setStatus(1);
-			}
+		
+		retorno = Un();
+		if (retorno.getStatus() == 1) {
+			retorno = Op4Linha();
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno Op4Linha() {
 		DesktopFrameWork.getInstance().addSintatico("Op4Linha");
+//		Op4’-> * Un Op4’ | / Un Op4’ | &
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_mult) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Un().getStatus() == 1) {
-				if (this.Op4Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
+			consumirTudo();
+			retorno = this.Un();
+			if (retorno.getStatus() == 1) {
+				retorno = this.Op4Linha();
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_divisao) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.Un().getStatus() == 1) {
-				if (this.Op4Linha().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
+			consumirTudo();
+			retorno = this.Un(); 
+			if (retorno.getStatus() == 1) {
+				retorno = this.Op4Linha();
 			}
-		}
+		} else{
+//			VAZIO
+			retorno.setStatus(1);
+		}			
+		
 		return retorno;
 	}
 
