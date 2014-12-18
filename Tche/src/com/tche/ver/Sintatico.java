@@ -2,6 +2,7 @@ package com.tche.ver;
 
 import static com.tche.ver.Lexico.getInstance;
 
+import com.tche.AnalisadorSemantico;
 import com.tche.DesktopFrameWork;
 import com.tche.Retorno;
 import com.tche.TcheGlobal;
@@ -155,10 +156,15 @@ public class Sintatico extends Funcoes {
 		// IProt -> TVar V IProt1;
 		Retorno mAuxRetorno = new Retorno();
 
-		mAuxRetorno = this.TVar();
-		if (mAuxRetorno.getStatus() == 1) {
-			mAuxRetorno = this.V();
-			if (mAuxRetorno.getStatus() == 1) {
+		Retorno mAuxRetornoTVar = this.TVar();
+		if (mAuxRetornoTVar.getStatus() == 1) {
+			Retorno mAuxRetornoV = this.V();
+			if (mAuxRetornoV.getStatus() == 1) {
+				
+				mAuxRetorno.setTipagem(mAuxRetornoTVar.getTipagem());
+				mAuxRetorno.getTipagem().setNomeVar(mAuxRetornoV.getTipagem().getNomeVar());
+				
+				AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
 				mAuxRetorno = this.IProt1();
 
 				if (mAuxRetorno.getStatus() == 1) {
@@ -175,8 +181,7 @@ public class Sintatico extends Funcoes {
 						// addTable(t, nome);
 					} else {
 						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
+						mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
 					}
 				}
 			}
@@ -1580,7 +1585,7 @@ public class Sintatico extends Funcoes {
 		Retorno retorno = new Retorno();
 
 		if (getInstance().lookAhead() == tk_abrecolchetes){
-			retorno = this.VVet();
+			retorno = this.VVet();			
 		} else{
 			retorno = this.VVar();
 		}
@@ -1646,12 +1651,16 @@ public class Sintatico extends Funcoes {
 		Retorno retorno = new Retorno();
 		if (getInstance().proximoToken() == tk_variavel) {
 
-			if (tipoVar != null) {
-				tipoVar.setNomeVar(getInstance().proximoLexema());
-			}
-
+//			if (tipoVar != null) {
+//				tipoVar.setNomeVar(getInstance().proximoLexema());
+//			}
+			
+			Tipagem mAuxTipagem = new Tipagem();
+			mAuxTipagem.setNomeVar(getInstance().proximoLexema());	
+			
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
+			retorno.setTipagem(mAuxTipagem);
 			retorno.setStatus(1);
 		}
 		return retorno;
@@ -1764,7 +1773,8 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirToken();
 			retorno.setStatus(1);
 			Tipagem tipagem = new Tipagem();
-			tipagem.setDesNomeTipoVal("bueno");
+			tipagem.setDesNomeTipoVal("bueno");	
+			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
 		}
 		if (Lexico.getInstance().proximoToken() == tk_pia) {
@@ -1774,6 +1784,7 @@ public class Sintatico extends Funcoes {
 
 			Tipagem tipagem = new Tipagem();
 			tipagem.setDesNomeTipoVal("pia");
+			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
 		}
 
@@ -1785,6 +1796,7 @@ public class Sintatico extends Funcoes {
 
 			Tipagem tipagem = new Tipagem();
 			tipagem.setDesNomeTipoVal("pila");
+			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
 		}
 

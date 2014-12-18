@@ -8,6 +8,15 @@ public class Tipagem {
 	private Object vlrVariavel;
 	private Integer dimensao;
 	private String TipoArray;
+	
+	public Tipagem(){
+		this.desNomeTipoVal = "";
+		this.nomeVar		= "";
+		this.tipoEntrada	= TipoEntrada.NAO_DEFINIDO;
+		this.vlrVariavel 	= "0";
+		this.dimensao		= 0;
+		this.TipoArray		= "";
+	}
 
 	public TipoEntrada getTipoEntrada() {
 		return tipoEntrada;
