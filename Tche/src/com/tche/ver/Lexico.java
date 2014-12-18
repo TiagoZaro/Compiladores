@@ -404,10 +404,10 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'x') {
-						if ((this.strt.length() >= this.post + 5) && this.strt.substring(this.post, this.post + 5).equals("ispa")) {
+						if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("ispa")) {
 							token = this.tk_xispa;
 							fim = 1;
-							post += 5;
+							post += 4;
 							car_atual = lecar();
 							sbLexema.append("xispa");
 						} else {
