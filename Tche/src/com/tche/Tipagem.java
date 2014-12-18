@@ -5,18 +5,18 @@ public class Tipagem {
 	private String desNomeTipoVal;
 	private String nomeVar;
 	private TipoEntrada tipoEntrada;
-	private Object vlrVariavel;
+	private Object vlrVariavel = 0;
 	private Integer dimensao;
 	private String TipoArray;
 	
-	public Tipagem(){
+	/*public Tipagem(){
 		this.desNomeTipoVal = "";
 		this.nomeVar		= "";
 		this.tipoEntrada	= TipoEntrada.NAO_DEFINIDO;
 		this.vlrVariavel 	= "0";
 		this.dimensao		= 0;
 		this.TipoArray		= "";
-	}
+	}*/
 
 	public TipoEntrada getTipoEntrada() {
 		return tipoEntrada;

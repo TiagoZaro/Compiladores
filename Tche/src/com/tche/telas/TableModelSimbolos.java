@@ -64,7 +64,7 @@ public class TableModelSimbolos extends AbstractTableModel {
 
 		ItemTableSimbolos bean = getListaBean().get(rowIndex);
 		return new Object[] { bean.getTipoEntrada(), bean.getNomeTipoVal(),
-				bean.getNome(), bean.getValorVal() }[columnIndex];
+				bean.getNome(), bean.getValorVal(), bean.getTipArray(), bean.getDimensao() }[columnIndex];
 	}
 
 	@Override

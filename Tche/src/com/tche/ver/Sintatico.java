@@ -164,25 +164,29 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno.setTipagem(mAuxRetornoTVar.getTipagem());
 				mAuxRetorno.getTipagem().setNomeVar(mAuxRetornoV.getTipagem().getNomeVar());
 				
-				AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
-				mAuxRetorno = this.IProt1();
+				if (AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar())){
+					mAuxRetorno = this.IProt1();
 
-				if (mAuxRetorno.getStatus() == 1) {
-					if (getInstance().proximoToken() == tk_ponto_e_virgula) {
-						consumirTudo();
+					if (mAuxRetorno.getStatus() == 1) {
+						if (getInstance().proximoToken() == tk_ponto_e_virgula) {
+							consumirTudo();
 
-						// // Exemplo adiciona na tabela de simbolos
-						// Tipagem t = new Tipagem();
-						// t.setDesNomeTipoVal("Pila");
-						// t.setVlrVariavel(0);
-						// t.setTipoEntrada(TipoEntrada.VARIAVEL);
-						// String nome = "val";
-						//
-						// addTable(t, nome);
-					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
+							// // Exemplo adiciona na tabela de simbolos
+							// Tipagem t = new Tipagem();
+							// t.setDesNomeTipoVal("Pila");
+							// t.setVlrVariavel(0);
+							// t.setTipoEntrada(TipoEntrada.VARIAVEL);
+							// String nome = "val";
+							//
+							// addTable(t, nome);
+						} else {
+							mAuxRetorno.setStatus(0);
+							mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
+						}
 					}
+
+				} else{
+					mAuxRetorno.setStatus(0);
 				}
 			}
 		}
@@ -1742,6 +1746,7 @@ public class Sintatico extends Funcoes {
 			
 			Tipagem tipagem = new Tipagem();
 			tipagem.setTipoArray(getInstance().proximoLexema());
+			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
 			
 			getInstance().consumirLexema();
@@ -1752,6 +1757,7 @@ public class Sintatico extends Funcoes {
 			
 			Tipagem tipagem = new Tipagem();
 			tipagem.setTipoArray(getInstance().proximoLexema());
+			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
 			
 			getInstance().consumirLexema();

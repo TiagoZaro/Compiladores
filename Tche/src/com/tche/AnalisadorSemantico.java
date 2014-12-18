@@ -25,7 +25,7 @@ public class AnalisadorSemantico {
 			case INTEGER:
 				try {
 					if (tipagem.getVlrVariavel() != null) {
-						String STR = (String) tipagem.getVlrVariavel();
+						String STR = String.valueOf(tipagem.getVlrVariavel());
 						Integer vlr = Integer.valueOf(STR);
 						tipagem.setVlrVariavel((Object)vlr);
 //						tipagem.setVlrVariavel(Integer.valueOf((String) tipagem.getVlrVariavel()));

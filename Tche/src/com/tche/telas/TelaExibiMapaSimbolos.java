@@ -34,7 +34,7 @@ public class TelaExibiMapaSimbolos extends TelaExibiMapaSimbolosLay {
 			item.setDimensao(tipagem.getDimensao());
 
 			if (tipagem.getTipoEntrada().equals(TipoEntrada.FUNCAO)) {
-				item.setTipoEntrada("FUN«√ÉO");
+				item.setTipoEntrada("FUN«√O");
 			} else {
 				item.setTipoEntrada("VARI¡VEL");
 			}
