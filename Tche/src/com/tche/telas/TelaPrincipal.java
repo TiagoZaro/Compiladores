@@ -50,6 +50,8 @@ public class TelaPrincipal extends TelaPrincipalLay {
 
 	public void addLog(final String log) {
 
+		if (true)
+		return;
 		if (log == null | log.trim().isEmpty())
 			return;
 

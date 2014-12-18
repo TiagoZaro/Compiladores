@@ -86,6 +86,12 @@ public class Lexico {
 		DesktopFrameWork.getInstance().addLog("Próximo token:" + lstTokens.get(0));
 		return lstTokens.get(0);
 	}
+	public int lookAhead(){
+		if (lstTokens.size() <= 1)
+			return -1;
+		
+		return lstTokens.get(1);
+	}
 
 	public String proximoLexema() {
 
@@ -207,13 +213,13 @@ public class Lexico {
 					} else
 
 					if (this.car_atual == 'a') {
-						if (this.strt.substring(this.post, this.post + 10).equals("prochegar")) {
+						if ((this.strt.length() >= this.post + 9) && (this.strt.substring(this.post, this.post + 9).equals("prochegar"))) {
 							token = this.tk_aprochegar;
 							fim = 1;
 							post += 10;
 							car_atual = lecar();
 							sbLexema.append("aprochegar");
-						} else if (this.strt.substring(this.post, this.post + 6).equals("rregar")) {
+						} else if ((this.strt.length() >= this.post + 6) && this.strt.substring(this.post, this.post + 6).equals("rregar")) {
 							token = this.tk_arregar;
 							fim = 1;
 							post += 6;
@@ -225,19 +231,19 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'b') {
-						if (this.strt.substring(this.post, this.post + 6).equals("olicho")) {
+						if ((this.strt.length() >= this.post + 6) && this.strt.substring(this.post, this.post + 6).equals("olicho")) {
 							token = this.tk_bolicho;
 							fim = 1;
 							post += 6;
 							car_atual = lecar();
 							sbLexema.append("bolicho");
-						} else if (this.strt.substring(this.post, this.post + 7).equals("orracho")) {
+						} else if ((this.strt.length() >= this.post + 7) && this.strt.substring(this.post, this.post + 7).equals("orracho")) {
 							token = this.tk_borracho;
 							fim = 1;
 							post += 7;
 							car_atual = lecar();
 							sbLexema.append("borracho");
-						} else if (this.strt.substring(this.post, this.post + 4).equals("ueno")) {
+						} else if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("ueno")) {
 							token = this.tk_bueno;
 							fim = 1;
 							post += 4;
@@ -249,7 +255,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'c') {
-						if (this.strt.substring(this.post, this.post + 4).equals("apaz")) {
+						if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("apaz")) {
 							token = this.tk_capaz;
 							fim = 1;
 							post += 4;
@@ -261,7 +267,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'd') {
-						if (this.strt.substring(this.post, this.post + 7).equals("espacho")) {
+						if ((this.strt.length() >= this.post + 7) && this.strt.substring(this.post, this.post + 7).equals("espacho")) {
 							token = this.tk_despacho;
 							fim = 1;
 							post += 7;
@@ -273,7 +279,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'h') {
-						if (this.strt.substring(this.post, this.post + 4).equals("asta")) {
+						if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("asta")) {
 							token = this.tk_hasta;
 							fim = 1;
 							post += 4;
@@ -285,7 +291,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'i') {
-						if (this.strt.substring(this.post, this.post + 6).equals("ndiada")) {
+						if ((this.strt.length() >= this.post + 6) && this.strt.substring(this.post, this.post + 6).equals("ndiada")) {
 							token = this.tk_indiada;
 							fim = 1;
 							post += 6;
@@ -297,7 +303,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'l') {
-						if (this.strt.substring(this.post, this.post + 8).equals("argatear")) {
+						if ((this.strt.length() >= this.post + 8) && this.strt.substring(this.post, this.post + 8).equals("argatear")) {
 							token = this.tk_largatear;
 							fim = 1;
 							post += 8;
@@ -309,13 +315,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'p') {
-						if (this.strt.substring(this.post, this.post + 2).equals("ia")) {
+						if ((this.strt.length() >= this.post + 2) && this.strt.substring(this.post, this.post + 2).equals("ia")) {
 							token = this.tk_pia;
 							fim = 1;
 							post += 2;
 							car_atual = lecar();
 							sbLexema.append("pia");
-						} else if (this.strt.substring(this.post, this.post + 3).equals("ila")) {
+						} else if ((this.strt.length() >= this.post + 3) && this.strt.substring(this.post, this.post + 3).equals("ila")) {
 							token = this.tk_pila;
 							fim = 1;
 							post += 3;
@@ -327,13 +333,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'q') {
-						if (this.strt.substring(this.post, this.post + 8).equals("uerencia")) {
+						if ((this.strt.length() >= this.post + 8) && this.strt.substring(this.post, this.post + 8).equals("uerencia")) {
 							token = this.tk_querencia;
 							fim = 1;
 							post += 8;
 							car_atual = lecar();
 							sbLexema.append("querenceia");
-						} else if (this.strt.substring(this.post, this.post + 4).equals("etal")) {
+						} else if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("etal")) {
 							token = this.tk_quetal;
 							fim = 1;
 							post += 4;
@@ -345,13 +351,13 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 't') {
-						if (this.strt.substring(this.post, this.post + 3).equals("che")) {
+						if ((this.strt.length() >= this.post + 3) && this.strt.substring(this.post, this.post + 3).equals("che")) {
 							token = this.tk_tche;
 							fim = 1;
 							post += 3;
 							car_atual = lecar();
 							sbLexema.append("tche");
-						} else if (this.strt.substring(this.post, this.post + 4).equals("rova")) {
+						} else if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("rova")) {
 							token = this.tk_trova;
 							fim = 1;
 							post += 4;
@@ -363,7 +369,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'v') {
-						if (this.strt.substring(this.post, this.post + 6).equals("oltear")) {
+						if ((this.strt.length() >= this.post + 6) && this.strt.substring(this.post, this.post + 6).equals("oltear")) {
 							token = this.tk_voltear;
 							fim = 1;
 							post += 6;
@@ -375,7 +381,7 @@ public class Lexico {
 						}
 
 					} else if (this.car_atual == 'x') {
-						if (this.strt.substring(this.post, this.post + 5).equals("ispa")) {
+						if ((this.strt.length() >= this.post + 5) && this.strt.substring(this.post, this.post + 5).equals("ispa")) {
 							token = this.tk_xispa;
 							fim = 1;
 							post += 5;

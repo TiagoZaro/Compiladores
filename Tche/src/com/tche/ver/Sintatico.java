@@ -265,7 +265,8 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
 			getInstance().consumirToken();
 			getInstance().consumirLexema();
-			mAuxRetorno = this.C();
+//			mAuxRetorno = this.C();
+			mAuxRetorno = this.Ident();
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
 					getInstance().consumirLexema();
@@ -299,7 +300,8 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
-			mAuxRetorno = this.C();
+//			mAuxRetorno = this.C();
+			mAuxRetorno = this.Ident();
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {					
 					getInstance().consumirLexema();
@@ -1001,7 +1003,7 @@ public class Sintatico extends Funcoes {
 							getInstance().consumirLexema();
 							getInstance().consumirToken();
 							mAuxRetorno = this.Ident();
-							if (this.Ident().getStatus() == 1) {
+							if (mAuxRetorno.getStatus() == 1) {
 								if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
 									getInstance().consumirLexema();
 									getInstance().consumirToken();
@@ -1102,7 +1104,8 @@ public class Sintatico extends Funcoes {
 		DesktopFrameWork.getInstance().addSintatico("ComandA");
 		Retorno mAuxRetorno = new Retorno();
 
-		mAuxRetorno = this.ComandALinha();
+//		mAuxRetorno = this.ComandALinha();
+		mAuxRetorno = this.V();
 		if (mAuxRetorno.getStatus() == 1) {
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				getInstance().consumirLexema();
@@ -1520,7 +1523,7 @@ public class Sintatico extends Funcoes {
 	Retorno V() {
 		DesktopFrameWork.getInstance().addSintatico("V");
 		// V -> VVar | VVet
-		Retorno retorno = new Retorno();
+/*		Retorno retorno = new Retorno();
 
 		retorno = this.VVar();
 		if (retorno.getStatus() == 1) {
@@ -1529,6 +1532,16 @@ public class Sintatico extends Funcoes {
 			retorno = this.VVet();
 		}
 
+		return retorno;*/
+		
+		Retorno retorno = new Retorno();
+
+		if (getInstance().lookAhead() == tk_abrecolchetes){
+			retorno = this.VVet();
+		} else{
+			retorno = this.VVar();
+		}
+		
 		return retorno;
 	}
 
@@ -1538,7 +1551,7 @@ public class Sintatico extends Funcoes {
 		// VVet -> VVar Vet | VVar Vet Vet		
 		Retorno retorno = new Retorno();
 		
-		retorno = this.VVar(); 
+		/*retorno = this.VVar(); 
 		if (retorno.getStatus() == 1) {
 			retorno = this.Vet(); //ERRADO
 			
@@ -1549,6 +1562,15 @@ public class Sintatico extends Funcoes {
 				retorno.setStatus(1);
 			}
 		}
+		return retorno;*/
+		
+		// VVet -> VVar IVetDime
+		retorno = this.VVar(); 
+		
+		if (retorno.getStatus() == 1) {
+			retorno = this.IVetDime();
+		}
+		
 		return retorno;
 	}
 
