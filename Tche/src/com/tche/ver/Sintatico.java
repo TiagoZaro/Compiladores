@@ -1784,14 +1784,15 @@ public class Sintatico extends Funcoes {
 			retorno.setTipagem(tipagem);
 		}
 		if (Lexico.getInstance().proximoToken() == tk_pia) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			retorno.setStatus(1);
-
+			
 			Tipagem tipagem = new Tipagem();
 			tipagem.setDesNomeTipoVal("pia");
 			tipagem.setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setTipagem(tipagem);
+			
+			getInstance().consumirLexema();
+			getInstance().consumirToken();
+			retorno.setStatus(1);
 		}
 
 		if (Lexico.getInstance().proximoToken() == tk_pila) {

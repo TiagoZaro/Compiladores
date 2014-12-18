@@ -28,7 +28,6 @@ public class AnalisadorSemantico {
 						String STR = String.valueOf(tipagem.getVlrVariavel());
 						Integer vlr = Integer.valueOf(STR);
 						tipagem.setVlrVariavel((Object)vlr);
-//						tipagem.setVlrVariavel(Integer.valueOf((String) tipagem.getVlrVariavel()));
 					}
 				} catch (Exception e) {
 					return false;
@@ -39,8 +38,7 @@ public class AnalisadorSemantico {
 				try {
 					if (tipagem.getVlrVariavel() != null) {
 
-						tipagem.setVlrVariavel(new Boolean((Boolean) tipagem
-								.getVlrVariavel()));
+						tipagem.setVlrVariavel(new Boolean((Boolean) tipagem.getVlrVariavel()));
 					}
 				} catch (Exception e) {
 					return false;
@@ -51,8 +49,7 @@ public class AnalisadorSemantico {
 			case CHAR:
 				try {
 					if (tipagem.getVlrVariavel() != null) {
-						tipagem.setVlrVariavel(new Character(
-								(Character) tipagem.getVlrVariavel()));
+						tipagem.setVlrVariavel(Character.valueOf(tipagem.getVlrVariavel().toString().charAt(0)));
 					}
 				} catch (Exception e) {
 					return false;
