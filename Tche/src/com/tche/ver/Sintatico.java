@@ -1442,15 +1442,29 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno Un() {
 		DesktopFrameWork.getInstance().addSintatico("Un");
+		// Un -> -V | +V | !V | true | false | P
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_subtr) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			if (this.V().getStatus() == 1) {
 				retorno.setStatus(1);
 			}
+		} else if (getInstance().proximoToken() == tk_adicao){
+			consumirTudo();
+			retorno = V();
+		} else if (getInstance().proximoToken() == tk_fatorial){
+			consumirTudo();
+			retorno = V();
+		} else if (getInstance().proximoToken() == tk_true){
+			consumirTudo();
+		} else if (getInstance().proximoToken() == tk_false){
+			consumirTudo();
+		} else {
+			retorno = P();
 		}
+		
 		return retorno;
 	}
 
