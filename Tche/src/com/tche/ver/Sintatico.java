@@ -775,10 +775,10 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno
 						.setDescricaoErro("Faltou abre parenteses no quetal");
 			}
-		} else if (Lexico.getInstance().proximoToken() == tk_xispa) {
-			if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
+		} else if (getInstance().proximoToken() == tk_xispa) {
+			consumirTudo();
+			if (getInstance().proximoToken() == tk_ponto_e_virgula) {
+				consumirTudo();
 				mAuxRetorno.setStatus(1);
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_despacho) {

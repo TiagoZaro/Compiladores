@@ -185,7 +185,7 @@ public class Lexico {
 					break;//
 				case '=':
 					estado = 14;
-					break;
+					break;				
 				case ':':
 					estado = 23;
 					break;
@@ -206,6 +206,12 @@ public class Lexico {
 					break;
 				case ',':
 					estado = 26;
+					break;
+				case '>':
+					estado = 27;
+					break;
+				case '<':
+					estado = 28;
 					break;
 				default:
 					if (this.car_atual >= '0' && this.car_atual <= '9') {
@@ -505,6 +511,18 @@ public class Lexico {
 				break;
 			case 26:
 				this.token = tk_virgula;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 27:
+				this.token = tk_maior;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
+			case 28:
+				this.token = tk_menor;
 				sbLexema.append(this.car_atual);
 				this.car_atual = this.lecar();
 				fim = 1;
