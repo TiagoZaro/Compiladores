@@ -1475,8 +1475,10 @@ public class Sintatico extends Funcoes {
 			retorno = V();
 		} else if (getInstance().proximoToken() == tk_true){
 			consumirTudo();
+			retorno.setStatus(1);
 		} else if (getInstance().proximoToken() == tk_false){
 			consumirTudo();
+			retorno.setStatus(1);
 		} else {
 			retorno = P();
 		}

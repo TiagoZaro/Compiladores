@@ -350,10 +350,10 @@ public class Lexico {
 							post += 8;
 							car_atual = lecar();
 							sbLexema.append("querenceia");
-						} else if ((this.strt.length() >= this.post + 4) && this.strt.substring(this.post, this.post + 4).equals("etal")) {
+						} else if ((this.strt.length() >= this.post + 5) && this.strt.substring(this.post, this.post + 5).equals("uetal")) {
 							token = this.tk_quetal;
 							fim = 1;
-							post += 4;
+							post += 5;
 							car_atual = lecar();
 							sbLexema.append("quetal");
 						} else {
