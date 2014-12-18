@@ -782,9 +782,17 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno.setStatus(1);
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_despacho) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.ComandD2();
+			if (mAuxRetorno.getStatus() == 1){
+				if (getInstance().proximoToken() == tk_ponto_e_virgula){
+					consumirTudo();
+					mAuxRetorno.setStatus(1);
+				} else{
+					mAuxRetorno.setStatus(0);
+					mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula no despacho");
+				}
+			}
 		}
 
 		return mAuxRetorno;
@@ -796,13 +804,15 @@ public class Sintatico extends Funcoes {
 		 * if (lexico.proximoToken() == tk_capaz) { if (ComandD3() == 1) {
 		 * return 1; } } return 0;
 		 */
-		// ComandD1 -> capaz ComandD3
+		// ComandD1 -> capaz ComandD3 | &
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_capaz) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			mAuxRetorno = this.ComandD3();
+		} else{
+			mAuxRetorno.setStatus(1);
 		}
 
 		return mAuxRetorno;
@@ -836,7 +846,7 @@ public class Sintatico extends Funcoes {
 		 * { return 1; } } } } } } } else { // VAZIO //TODO } return 0;
 		 */
 		DesktopFrameWork.getInstance().addSintatico("ComandD3");
-		// ComandD3 -> {Cod} | (log){Cod} ComandD1 | &
+		// ComandD3 -> {Cod} | (log){Cod} ComandD1
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
@@ -887,9 +897,6 @@ public class Sintatico extends Funcoes {
 							.setDescricaoErro("Faltou fecha parentes no capaz ComandD3");
 				}
 			}
-		} else {
-			// VAZIO
-			mAuxRetorno.setStatus(1);
 		}
 
 		return mAuxRetorno;
