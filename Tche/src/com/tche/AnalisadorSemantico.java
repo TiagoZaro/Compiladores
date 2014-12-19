@@ -11,7 +11,9 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
  * */
 public class AnalisadorSemantico {
 
-	public static boolean addTable(Tipagem tipagem, String nomeVal) {
+	public static Retorno addTable(Tipagem tipagem, String nomeVal) {
+
+		Retorno retorno = new Retorno();
 
 		// Caso uma váriavel
 		if (tipagem.getTipoEntrada().equals(TipoEntrada.VARIAVEL)) {
@@ -27,10 +29,12 @@ public class AnalisadorSemantico {
 					if (tipagem.getVlrVariavel() != null) {
 						String STR = String.valueOf(tipagem.getVlrVariavel());
 						Integer vlr = Integer.valueOf(STR);
-						tipagem.setVlrVariavel((Object)vlr);
+						tipagem.setVlrVariavel((Object) vlr);
 					}
 				} catch (Exception e) {
-					return false;
+					retorno.setStatus(0);
+					retorno.setDescricaoErro("Erro ao adicionar inteiro!");
+					return retorno;
 				}
 				break;
 
@@ -38,10 +42,19 @@ public class AnalisadorSemantico {
 				try {
 					if (tipagem.getVlrVariavel() != null) {
 
-						tipagem.setVlrVariavel(new Boolean((Boolean) tipagem.getVlrVariavel()));
+						if (tipagem.getVlrVariavel().toString().toUpperCase()
+								.equals("TRUE")) {
+							tipagem.setVlrVariavel(true);
+						} else if (tipagem.getVlrVariavel().toString()
+								.toUpperCase().equals("FALSE")) {
+							tipagem.setVlrVariavel(false);
+						} else
+							tipagem.setVlrVariavel(null);
 					}
 				} catch (Exception e) {
-					return false;
+					retorno.setStatus(0);
+					retorno.setDescricaoErro("Erro ao adicionar boleano!");
+					return retorno;
 				}
 
 				break;
@@ -49,22 +62,29 @@ public class AnalisadorSemantico {
 			case CHAR:
 				try {
 					if (tipagem.getVlrVariavel() != null) {
-						tipagem.setVlrVariavel(Character.valueOf(tipagem.getVlrVariavel().toString().charAt(0)));
+						tipagem.setVlrVariavel(Character.valueOf(tipagem
+								.getVlrVariavel().toString().charAt(0)));
 					}
 				} catch (Exception e) {
-					return false;
+					retorno.setStatus(0);
+					retorno.setDescricaoErro("Erro ao adicionar char!");
+					return retorno;
 				}
 				break;
 
 			default:
-				return false;
+				retorno.setStatus(0);
+				retorno.setDescricaoErro("Erro desconhecido!");
+				return retorno;
 			}
 		} else if (tipagem.getTipoEntrada().equals(TipoEntrada.FUNCAO)) {
 			// Caso função
 		}
 
 		getMapaSimbolos().put(nomeVal, tipagem);
-		return true;
+		retorno.setStatus(1);
+
+		return retorno;
 	}
 
 }

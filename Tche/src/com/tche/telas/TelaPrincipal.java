@@ -1,5 +1,7 @@
 package com.tche.telas;
 
+import javax.swing.JOptionPane;
+
 import com.tche.DesktopFrameWork;
 import com.tche.Retorno;
 import com.tche.ver.Lexico;
@@ -40,10 +42,19 @@ public class TelaPrincipal extends TelaPrincipalLay {
 			DesktopFrameWork.getInstance().addLog("Compilado!");
 		} else if (retorno != null && retorno.getStatus() == 0) {
 
-			if (retorno.getDescricaoErro() == null || retorno.getDescricaoErro().trim().isEmpty())
+			if (retorno.getDescricaoErro() == null
+					|| retorno.getDescricaoErro().trim().isEmpty())
 				DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
 			else
-				DesktopFrameWork.getInstance().addLog(retorno.getDescricaoErro());
+				DesktopFrameWork.getInstance().addLog(
+						retorno.getDescricaoErro());
+		}
+
+		if (retorno != null && retorno.getDescricaoErro().trim().isEmpty()) {
+			JOptionPane.showMessageDialog(null, retorno.getDescricaoErro());
+		} else {
+			JOptionPane.showMessageDialog(null, "Compilado com sucesso!");
+
 		}
 
 	}
@@ -51,7 +62,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	public void addLog(final String log) {
 
 		if (true)
-		return;
+			return;
 		if (log == null | log.trim().isEmpty())
 			return;
 

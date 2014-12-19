@@ -164,27 +164,20 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno.setTipagem(mAuxRetornoTVar.getTipagem());
 				mAuxRetorno.getTipagem().setNomeVar(mAuxRetornoV.getTipagem().getNomeVar());
 				
-				if (AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar())){
+				mAuxRetorno = AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
+				
+				if (mAuxRetorno.getStatus() == 1){
 					mAuxRetorno = this.IProt1();
 
 					if (mAuxRetorno.getStatus() == 1) {
 						if (getInstance().proximoToken() == tk_ponto_e_virgula) {
 							consumirTudo();
 
-							// // Exemplo adiciona na tabela de simbolos
-							// Tipagem t = new Tipagem();
-							// t.setDesNomeTipoVal("Pila");
-							// t.setVlrVariavel(0);
-							// t.setTipoEntrada(TipoEntrada.VARIAVEL);
-							// String nome = "val";
-							//
-							// addTable(t, nome);
 						} else {
 							mAuxRetorno.setStatus(0);
 							mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
 						}
 					}
-
 				} else{
 					mAuxRetorno.setStatus(0);
 				}
