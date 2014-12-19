@@ -243,8 +243,7 @@ public class Sintatico extends Funcoes {
 						}
 					}
 				} else {
-					mAuxRetorno.setStatus(0);
-					mAuxRetorno.setDescricaoErro("Falta o sinal de igual TVet");
+					throw new Exception("Falta o sinal de igual TVet");
 				}
 			}
 		}
@@ -267,14 +266,30 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
 			getInstance().consumirToken();
 			getInstance().consumirLexema();
-//			mAuxRetorno = this.C();
 			
-			mAuxRetorno = this.Ident();
+			try {
+				Tipagem tipagem = new Tipagem();
+				tipagem.setDimensao(Integer.valueOf(getInstance().proximoLexema()));
+				
+				getInstance().consumirToken();
+				getInstance().consumirLexema();
+				
+				mAuxRetorno.setStatus(1);
+				mAuxRetorno.setTipagem(tipagem);
+			} catch (Exception e) {
+				// mAuxRetorno = this.C(); o valor númerico já é tratado na excecao
+				throw new Exception("Dimensão deve ser numérica!");
+			}
+			
+//			mAuxRetorno = this.Ident();
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
 					getInstance().consumirLexema();
 					getInstance().consumirToken();
+					System.out.println(getInstance().proximoLexema());
 					mAuxRetorno = this.IVetDimeLinha();
+					
+					
 				} else {
 					throw new Exception("Faltou fecha colchetes IVetDime");
 				}
@@ -300,8 +315,9 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
-//			mAuxRetorno = this.C();
-			mAuxRetorno = this.Ident();
+			mAuxRetorno = this.C();
+//			mAuxRetorno = this.Ident();
+			
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {					
 					getInstance().consumirLexema();
