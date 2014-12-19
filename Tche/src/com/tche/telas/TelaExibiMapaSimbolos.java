@@ -29,7 +29,8 @@ public class TelaExibiMapaSimbolos extends TelaExibiMapaSimbolosLay {
 
 			item.setNome(k);
 			item.setNomeTipoVal(tipagem.getDesNomeTipoVal().toUpperCase());
-			item.setValorVal(tipagem.getVlrVariavel().toString());
+			if (tipagem.getVlrVariavel() != null)
+				item.setValorVal(tipagem.getVlrVariavel().toString());
 			item.setTipArray(tipagem.getTipoArray());
 			item.setDimensao(tipagem.getDimensao());
 
