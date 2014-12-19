@@ -11,9 +11,16 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
  * */
 public class AnalisadorSemantico {
 
-	public static Retorno addTable(Tipagem tipagem, String nomeVal) {
+	public static Retorno addTable(Tipagem tipagem, String nomeVal)
+			throws Exception {
 
 		Retorno retorno = new Retorno();
+
+		// Verifica se já existe
+		Tipagem tip = TcheGlobal.getMapaSimbolos().get(nomeVal);
+
+		if (tip != null)
+			throw new Exception("Variável já existe!");
 
 		// Caso uma váriavel
 		if (tipagem.getTipoEntrada().equals(TipoEntrada.VARIAVEL)) {

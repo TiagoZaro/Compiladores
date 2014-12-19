@@ -37,24 +37,29 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
 
 		// Efetua a analise seintatica
-		Retorno retorno = mAuxSintatico.Inicio();
-		if (retorno != null && retorno.getStatus() == 1) {
-			DesktopFrameWork.getInstance().addLog("Compilado!");
-		} else if (retorno != null && retorno.getStatus() == 0) {
+		Retorno retorno;
+		try {
+			retorno = mAuxSintatico.Inicio();
+			if (retorno != null && retorno.getStatus() == 1) {
+				DesktopFrameWork.getInstance().addLog("Compilado!");
+			} else if (retorno != null && retorno.getStatus() == 0) {
 
-			if (retorno.getDescricaoErro() == null
-					|| retorno.getDescricaoErro().trim().isEmpty())
-				DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
-			else
-				DesktopFrameWork.getInstance().addLog(
-						retorno.getDescricaoErro());
-		}
+				if (retorno.getDescricaoErro() == null
+						|| retorno.getDescricaoErro().trim().isEmpty())
+					DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
+				else
+					DesktopFrameWork.getInstance().addLog(
+							retorno.getDescricaoErro());
+			}
 
-		if (retorno != null && retorno.getDescricaoErro().trim().isEmpty()) {
-			JOptionPane.showMessageDialog(null, retorno.getDescricaoErro());
-		} else {
-			JOptionPane.showMessageDialog(null, "Compilado com sucesso!");
+			if (retorno != null && !retorno.getDescricaoErro().trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, retorno.getDescricaoErro());
+			} else {
+				JOptionPane.showMessageDialog(null, "Compilado com sucesso!");
 
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
 	}

@@ -5,7 +5,6 @@ import static com.tche.ver.Lexico.getInstance;
 import com.tche.AnalisadorSemantico;
 import com.tche.DesktopFrameWork;
 import com.tche.Retorno;
-import com.tche.TcheGlobal;
 import com.tche.Tipagem;
 import com.tche.TipoEntrada;
 
@@ -15,7 +14,7 @@ public class Sintatico extends Funcoes {
 	Tipagem tipoFunc = null;
 
 	@Override
-	public Retorno Inicio() {
+	public Retorno Inicio() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("Inicio");
 		Retorno mAuxRetorno = new Retorno();
 		mAuxRetorno.setStatus(1);
@@ -55,7 +54,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Q() {		
+	Retorno Q() throws Exception {		
 		DesktopFrameWork.getInstance().addSintatico("Q");
 		// Q -> IVet Q | IProt Q | FuncProt Q | &
 		Retorno mAuxRetorno = null;
@@ -74,7 +73,7 @@ public class Sintatico extends Funcoes {
 		} else {
 			mAuxRetorno = this.IProt();
 			if (mAuxRetorno.getStatus() == 1) {
-				mAuxRetorno = this.Q();
+				mAuxRetorno = this.Q(); // TODO chama ele mesmo e perde a referencia
 			} else {
 				mAuxRetorno = this.FuncProt();
 				if (mAuxRetorno.getStatus() == 1) {
@@ -90,7 +89,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno FuncProt() {
+	Retorno FuncProt() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("FuncProt");
 		/*
 		 * if (lexico.proximoToken() == tk_indiada) { if (V() == 1) { if
@@ -145,7 +144,8 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IProt() {
+	Retorno IProt() throws Exception {
+		
 		DesktopFrameWork.getInstance().addSintatico("IProt");
 		/*
 		 * Retorno mAuxRetorno = new Retorno();
@@ -187,7 +187,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IProt1() {
+	Retorno IProt1() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("IProt1");
 		/*
 		 * if (lexico.proximoToken() == tk_virgula) { if (V() == 1) { if
@@ -213,7 +213,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IVet() {
+	Retorno IVet() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("IVet");
 		/*
 		 * if (TVet() == 1) { if (V() == 1) { if (lexico.proximoToken() ==
@@ -253,7 +253,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IVetDime() {
+	Retorno IVetDime() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("IVetDime");
 		/*
 		 * if (lexico.proximoToken() == tk_abrecolchetes) { if (C() == 1) { if
@@ -268,6 +268,7 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirToken();
 			getInstance().consumirLexema();
 //			mAuxRetorno = this.C();
+			
 			mAuxRetorno = this.Ident();
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
@@ -275,21 +276,18 @@ public class Sintatico extends Funcoes {
 					getInstance().consumirToken();
 					mAuxRetorno = this.IVetDimeLinha();
 				} else {
-					mAuxRetorno.setStatus(0);
-					mAuxRetorno
-							.setDescricaoErro("Faltou fecha colchetes IVetDime");
+					throw new Exception("Faltou fecha colchetes IVetDime");
 				}
 			}
 		} else {
-			mAuxRetorno.setStatus(0);
-			mAuxRetorno.setDescricaoErro("Faltou abre colchetes IVetDime");
+			throw new Exception("Faltou abre colchetes IVetDime");
 		}
 
 		return mAuxRetorno;
 	}
 
 	@Override
-	Retorno IVetDimeLinha() {
+	Retorno IVetDimeLinha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("IVetDimeLinha");
 		/*
 		 * if (lexico.proximoToken() == tk_abrecolchetes) { if (C() == 1) { if
@@ -323,7 +321,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno AProt() {
+	Retorno AProt() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_igual) { if (C() == 1) { return 1; }
 		 * } else { // Vazio //TODO } // TODO Auto-generated method stub return
@@ -346,7 +344,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno M() {
+	Retorno M() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_tche) { if (lexico.proximoToken() ==
 		 * tk_abrechaves) { if (IniCod() == 1) { if (lexico.proximoToken() ==
@@ -389,7 +387,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Func() {
+	Retorno Func() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_indiada) { if (V() == 1) { if
 		 * (lexico.proximoToken() == tk_abreparenteses) { if (Par() == 1) { if
@@ -443,7 +441,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Par() {
+	Retorno Par() throws Exception{
 		/*
 		 * if (ParVet() == 1) { if (MaisPar() == 1) { return 1; } } else if
 		 * (ParVar() == 1) { if (MaisPar() == 1) { return 1; } } else { // VAZIO
@@ -469,7 +467,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno MaisPar() {
+	Retorno MaisPar() throws Exception {
 		/*
 		 * if (lexico.proximoToken() == tk_virgula) { if (MaisPar1() == 1) {
 		 * return 1; } } return 0;
@@ -491,7 +489,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno MaisPar1() {
+	Retorno MaisPar1() throws Exception{
 		/*
 		 * if (ParVet() == 1) { if (MaisPar() == 1) { return 1; } } else if
 		 * (ParVar() == 1) { if (MaisPar() == 1) { return 1; } } else { // VAZIO
@@ -515,7 +513,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ParVet() {
+	Retorno ParVet() throws Exception{
 		/*
 		 * if (TVar() == 1) { if (VVet() == 1) { return 1; } } return 0;
 		 */
@@ -532,7 +530,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ParVar() {
+	Retorno ParVar() throws Exception {
 		/*
 		 * if (TVar() == 1) { if (VVar() == 1) { return 1; } } return 0;
 		 */
@@ -549,7 +547,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno FuncRet() {
+	Retorno FuncRet() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_dois_pontos) { if (T() == 1) { return
 		 * 1; } } else { // VAZIO //TODO } return 0;
@@ -570,7 +568,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IniCod() {
+	Retorno IniCod() throws Exception{
 		/*
 		 * if (ICod() == 1) { if (IniCod() == 1) { return 1; } } else if (Cod()
 		 * == 1) { return 1; } return 0;
@@ -590,7 +588,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ICod() {
+	Retorno ICod() throws Exception{
 		/*
 		 * if (T() == 1) { if (V() == 1) { if (ACod1() == 1) { return 1; } } }
 		 * return 0;
@@ -621,7 +619,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ACod() {
+	Retorno ACod() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_igual) { if (ACod1() == 1) { return
 		 * 1; } } else { // VAZIO //TODO } return 0;
@@ -642,7 +640,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ACod1() {
+	Retorno ACod1() throws Exception {
 		/*
 		 * if (Ident() == 1) { return 1; } else if (Op3() == 1) { return 1; }
 		 * else if (FuncCall() == 1) { return 1; } return 0;
@@ -663,7 +661,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Cod() {
+	Retorno Cod() throws Exception{
 		/*
 		 * if (ComandC() == 1) { if (Cod() == 1) { return 1; } } else if
 		 * (ComandD() == 1) { if (Cod() == 1) { return 1; } } else if (ComandA()
@@ -720,7 +718,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD() {
+	Retorno ComandD() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_quetal) { if (lexico.proximoToken()
 		 * == tk_abreparenteses) { if (Log() == 1) { if (lexico.proximoToken()
@@ -801,7 +799,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD1() {
+	Retorno ComandD1() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_capaz) { if (ComandD3() == 1) {
 		 * return 1; } } return 0;
@@ -821,7 +819,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD2() {
+	Retorno ComandD2() throws Exception{
 		/*
 		 * if (Log() == 1) { return 1; } else { // VAZIO //TODO } return 0;
 		 */
@@ -837,7 +835,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD3() {
+	Retorno ComandD3() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_abrechaves) { if (Cod() == 1) { if
 		 * (lexico.proximoToken() == tk_fechachaves) { return 1; } } } else if
@@ -905,7 +903,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandC() {
+	Retorno ComandC() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_trova) { if (lexico.proximoToken() ==
 		 * tk_abreparenteses) { if (Ident() == 1) { if (lexico.proximoToken() ==
@@ -1039,15 +1037,11 @@ public class Sintatico extends Funcoes {
 									.setDescricaoErro("Faltou o hasta no largatear");
 						}
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou fecha parenteses no largatear");
+						throw new Exception("Faltou fecha parenteses no largatear");
 					}
 				}
 			} else {
-				mAuxRetorno.setStatus(0);
-				mAuxRetorno
-						.setDescricaoErro("Faltou abre parenteses no largatear");
+				throw new Exception("Faltou abre parenteses no largatear");
 			}
 		}
 
@@ -1055,7 +1049,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IniComand() {
+	Retorno IniComand() throws Exception{
 		/*
 		 * if (ComandA() == 1) { return 1; } else if (V() == 1) { return 1; }
 		 * return 0;
@@ -1082,7 +1076,7 @@ public class Sintatico extends Funcoes {
 	}
 	
 	@Override
-	Retorno IniComandLinha() {
+	Retorno IniComandLinha() throws Exception{
 		// IniComand’ -> = ACod1 | &
 		DesktopFrameWork.getInstance().addSintatico("IniComandLinha");
 		
@@ -1101,7 +1095,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandA() {
+	Retorno ComandA() throws Exception{
 		/*
 		 * if (ComandALinha() == 1) { if (lexico.proximoToken() == tk_igual) {
 		 * if (ACod1() == 1) { return 1; } } } else if (lexico.proximoToken() ==
@@ -1137,7 +1131,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandALinha() {
+	Retorno ComandALinha() throws Exception{
 		/*
 		 * if (V() == 1) { return 1; } else if (Vet() == 1) { return 1; } return
 		 * 0;
@@ -1155,7 +1149,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno FuncCall() {
+	Retorno FuncCall() throws Exception{
 		/*
 		 * if (V() == 1) { if (lexico.proximoToken() == tk_abreparenteses) { if
 		 * (FuncPar() == 1) { if (lexico.proximoToken() == tk_fechaparenteses) {
@@ -1176,9 +1170,7 @@ public class Sintatico extends Funcoes {
 						getInstance().consumirToken();
 						getInstance().consumirLexema();
 					} else {
-						
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno.setDescricaoErro("Faltou fecha parenteses na chamada da funcao");
+						throw new Exception("Faltou fecha parenteses na chamada da funcao");
 					}
 				}
 			} else {
@@ -1192,7 +1184,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno FuncPar() {
+	Retorno FuncPar() throws Exception{
 		/*
 		 * if (Ident() == 1) { if (MaisFuncPar() == 1) { return 1; } } return 0;
 		 */
@@ -1209,7 +1201,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno MaisFuncPar() {
+	Retorno MaisFuncPar() throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_virgula) { if (Ident() == 1) { if
 		 * (MaisFuncPar() == 1) { return 1; } } } else { // VAZIO //TODO }
@@ -1236,7 +1228,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Log() {
+	Retorno Log() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Log");
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
@@ -1249,7 +1241,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno LogLinha() {
+	Retorno LogLinha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("LogLinha");
 		// LogLINHA -> && Op1 LogLINHA | || Op1 LogLINHA | &
 		Retorno retorno = new Retorno();		
@@ -1273,7 +1265,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op1() {
+	Retorno Op1() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1");
 		// Op1 -> Op2 Op1’
 		Retorno retorno = new Retorno();
@@ -1287,7 +1279,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op1Linha() {
+	Retorno Op1Linha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1Linha");
 		// Op1’ -> == Op2 Op1’ | != Op2 Op1’ | &
 		Retorno retorno = new Retorno();
@@ -1303,7 +1295,7 @@ public class Sintatico extends Funcoes {
 					retorno = this.Op1Linha();
 				}
 			} else {
-				retorno.setDescricaoErro("eh esperado um sinal de igual.");
+				throw new Exception("eh esperado um sinal de igual.");
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_fatorial) {
 			getInstance().consumirLexema();
@@ -1316,7 +1308,7 @@ public class Sintatico extends Funcoes {
 					retorno = this.Op1Linha();
 				}
 			} else {
-				retorno.setDescricaoErro("Depois do fatorial tem q vir um simbolo de IGUAL.");
+				throw new Exception("Depois do fatorial tem q vir um simbolo de IGUAL.");
 			}
 		} else {
 			// vazio
@@ -1327,7 +1319,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op2() {
+	Retorno Op2() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2");
 		// Op2 -> Op3 Op2’
 		Retorno retorno = new Retorno();
@@ -1341,7 +1333,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op2Linha() {
+	Retorno Op2Linha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2Linha");
 		// Op2’ -> > Op3 Op2’ | < Op3 Op2’ | >= Op3 Op2’ | <= Op3 Op2’ | &
 		Retorno retorno = new Retorno();
@@ -1385,7 +1377,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op3() {
+	Retorno Op3() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op3");
 		// Op3 -> Op4 Op3’
 		Retorno retorno = new Retorno();
@@ -1400,7 +1392,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op3Linha() {
+	Retorno Op3Linha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op3Linha");
 //		Op3’ -> + Op4 Op3’ | - Op4 Op3’ | &
 		Retorno retorno = new Retorno();
@@ -1425,7 +1417,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op4() {
+	Retorno Op4() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op4");
 //		Op4 -> Un Op4’
 		Retorno retorno = new Retorno();
@@ -1439,7 +1431,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op4Linha() {
+	Retorno Op4Linha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op4Linha");
 //		Op4’-> * Un Op4’ | / Un Op4’ | &
 		Retorno retorno = new Retorno();
@@ -1465,7 +1457,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Un() {
+	Retorno Un() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Un");
 		// Un -> -V | +V | !V | true | false | P
 		Retorno retorno = new Retorno();
@@ -1496,7 +1488,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno P() {
+	Retorno P() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("P");
 //		P -> Ident P’ | (Log)
 		Retorno retorno = new Retorno();
@@ -1510,7 +1502,7 @@ public class Sintatico extends Funcoes {
 					retorno.setStatus(1);
 				} else{
 					retorno.setStatus(0);
-					retorno.setDescricaoErro("Faltou fechar o parentese");
+					throw new Exception("Faltou fechar o parentese");
 				}
 			}
 		} else{
@@ -1524,7 +1516,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno PLinha() {
+	Retorno PLinha() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("PLinha");
 //		P’ -> (Log) | &
 		Retorno retorno = new Retorno();
@@ -1537,7 +1529,7 @@ public class Sintatico extends Funcoes {
 					consumirTudo();
 					retorno.setStatus(1);
 				} else {
-					retorno.setDescricaoErro("Faltou fechar parenteses");
+					throw new Exception("Faltou fechar parenteses");
 				}
 			}
 		} else {
@@ -1549,7 +1541,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Ident() {
+	Retorno Ident() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("Ident");
 		// Ident -> V | C 
 		Retorno retorno = new Retorno();
@@ -1565,7 +1557,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno V() {
+	Retorno V() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("V");
 		// V -> VVar | VVet
 /*		Retorno retorno = new Retorno();
@@ -1591,24 +1583,11 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno VVet() {
+	Retorno VVet() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("VVet");
 		// VVet -> VVar Vet | VVar Vet Vet		
 		Retorno retorno = new Retorno();
-		
-		/*retorno = this.VVar(); 
-		if (retorno.getStatus() == 1) {
-			retorno = this.Vet(); //ERRADO
-			
-			if (retorno.getStatus() == 1) {
-				if (this.Vet().getStatus() == 1) {
-					retorno.setStatus(1);
-				}
-				retorno.setStatus(1);
-			}
-		}
-		return retorno;*/
-		
+
 		// VVet -> VVar IVetDime
 		retorno = this.VVar(); 
 		
@@ -1620,37 +1599,37 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Vet() {
+	Retorno Vet() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Vet");
+		
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);
+		
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
+			
 			if (this.Ident().getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
 					getInstance().consumirLexema();
 					getInstance().consumirToken();
 					retorno.setStatus(1);
 				} else {
-					retorno.setDescricaoErro("Faltou fechar colchetes");
+					throw new Exception("Faltou fechar colchetes");
 				}
 			} else {
-				retorno.setDescricaoErro("Faltou identificador");
+				throw new Exception("Faltou identificador");
 			}
 		}
 		return retorno;
 	}
 
 	@Override
-	Retorno VVar() {
+	Retorno VVar() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("VVar");
 		Retorno retorno = new Retorno();
+		
 		if (getInstance().proximoToken() == tk_variavel) {
-
-//			if (tipoVar != null) {
-//				tipoVar.setNomeVar(getInstance().proximoLexema());
-//			}
 			
 			Tipagem mAuxTipagem = new Tipagem();
 			mAuxTipagem.setNomeVar(getInstance().proximoLexema());	
@@ -1664,7 +1643,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno C() {
+	Retorno C() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("C");
 		// C-> num | “ ”
 		Retorno retorno = new Retorno();
@@ -1687,15 +1666,14 @@ public class Sintatico extends Funcoes {
 
 			consumirTudo();
 		} else {
-			retorno.setStatus(0);
-			retorno.setDescricaoErro("eh esperado um numero ou aspas.");
+			throw new Exception("Eh esperado um número ou aspas.");
 		}
 
 		return retorno;
 	}
 
 	@Override
-	Retorno T() {
+	Retorno T() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("T");
 		// T -> TVar | TVet
 		Retorno retorno = TVar();
@@ -1730,7 +1708,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno TVet() {
+	Retorno TVet() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("TVet");
 		// TVet -> borracho TVar | bolicho TVar
 		Retorno retorno = new Retorno();
@@ -1762,7 +1740,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno TVar() {
+	Retorno TVar() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("TVar");
 		Retorno retorno = new Retorno();
 		retorno.setStatus(0);

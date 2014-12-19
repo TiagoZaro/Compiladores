@@ -51,116 +51,115 @@ public abstract class Funcoes {
 	static final int tk_virgula = 86;
 	static final int tk_variavel = 87;
 
+	public abstract Retorno Inicio() throws Exception;
 
-	public abstract Retorno Inicio();
+	abstract Retorno Q() throws Exception;
 
-	abstract Retorno Q();
+	abstract Retorno FuncProt() throws Exception;
 
-	abstract Retorno FuncProt();
+	abstract Retorno IProt() throws Exception;
 
-	abstract Retorno IProt();
+	abstract Retorno IProt1() throws Exception;
 
-	abstract Retorno IProt1();
+	abstract Retorno IVet() throws Exception;
 
-	abstract Retorno IVet();
+	abstract Retorno IVetDime() throws Exception;
 
-	abstract Retorno IVetDime();
+	abstract Retorno IVetDimeLinha() throws Exception;
 
-	abstract Retorno IVetDimeLinha();
+	abstract Retorno AProt() throws Exception;
 
-	abstract Retorno AProt();
+	abstract Retorno M() throws Exception;
 
-	abstract Retorno M();
+	abstract Retorno Func() throws Exception;
 
-	abstract Retorno Func();
+	abstract Retorno Par() throws Exception;
 
-	abstract Retorno Par();
+	abstract Retorno MaisPar() throws Exception;
 
-	abstract Retorno MaisPar();
+	abstract Retorno MaisPar1() throws Exception;
 
-	abstract Retorno MaisPar1();
+	abstract Retorno ParVet() throws Exception;
 
-	abstract Retorno ParVet();
+	abstract Retorno ParVar() throws Exception;
 
-	abstract Retorno ParVar();
+	abstract Retorno FuncRet() throws Exception;
 
-	abstract Retorno FuncRet();
+	abstract Retorno IniCod() throws Exception;
 
-	abstract Retorno IniCod();
+	abstract Retorno ICod() throws Exception;
 
-	abstract Retorno ICod();
+	abstract Retorno ACod() throws Exception;
 
-	abstract Retorno ACod();
+	abstract Retorno ACod1() throws Exception;
 
-	abstract Retorno ACod1();
+	abstract Retorno Cod() throws Exception;
 
-	abstract Retorno Cod();
+	abstract Retorno ComandD() throws Exception;
 
-	abstract Retorno ComandD();
+	abstract Retorno ComandD1() throws Exception;
 
-	abstract Retorno ComandD1();
+	abstract Retorno ComandD2() throws Exception;
 
-	abstract Retorno ComandD2();
+	abstract Retorno ComandD3() throws Exception;
 
-	abstract Retorno ComandD3();
+	abstract Retorno ComandC() throws Exception;
 
-	abstract Retorno ComandC();
+	abstract Retorno IniComand() throws Exception;
 
-	abstract Retorno IniComand();
-	
-	abstract Retorno IniComandLinha();
+	abstract Retorno IniComandLinha() throws Exception;
 
-	abstract Retorno ComandA();
+	abstract Retorno ComandA() throws Exception;
 
-	abstract Retorno ComandALinha();
+	abstract Retorno ComandALinha() throws Exception;
 
-	abstract Retorno FuncCall();
+	abstract Retorno FuncCall() throws Exception;
 
-	abstract Retorno FuncPar();
+	abstract Retorno FuncPar() throws Exception;
 
-	abstract Retorno MaisFuncPar();
+	abstract Retorno MaisFuncPar() throws Exception;
 
-	abstract Retorno Log();
+	abstract Retorno Log() throws Exception;
 
-	abstract Retorno LogLinha();
+	abstract Retorno LogLinha() throws Exception;
 
-	abstract Retorno Op1();
+	abstract Retorno Op1() throws Exception;
 
-	abstract Retorno Op1Linha();
+	abstract Retorno Op1Linha() throws Exception;
 
-	abstract Retorno Op2();
+	abstract Retorno Op2() throws Exception;
 
-	abstract Retorno Op2Linha();
+	abstract Retorno Op2Linha() throws Exception;
 
-	abstract Retorno Op3();
+	abstract Retorno Op3() throws Exception;
 
-	abstract Retorno Op3Linha();
+	abstract Retorno Op3Linha() throws Exception;
 
-	abstract Retorno Op4();
+	abstract Retorno Op4() throws Exception;
 
-	abstract Retorno Op4Linha();
+	abstract Retorno Op4Linha() throws Exception;
 
-	abstract Retorno Un();
+	abstract Retorno Un() throws Exception;
 
-	abstract Retorno P();
+	abstract Retorno P() throws Exception;
 
-	abstract Retorno PLinha();
+	abstract Retorno PLinha() throws Exception;
 
-	abstract Retorno Ident();
+	abstract Retorno Ident() throws Exception;
 
-	abstract Retorno V();
+	abstract Retorno V() throws Exception;
 
-	abstract Retorno VVet();
+	abstract Retorno VVet() throws Exception;
 
-	abstract Retorno Vet();
+	abstract Retorno Vet() throws Exception;
 
-	abstract Retorno VVar();
+	abstract Retorno VVar() throws Exception;
 
-	abstract Retorno C();
+	abstract Retorno C() throws Exception;
 
-	abstract Retorno T();
+	abstract Retorno T() throws Exception;
 
-	abstract Retorno TVet();
+	abstract Retorno TVet() throws Exception;
 
-	abstract Retorno TVar();
+	abstract Retorno TVar() throws Exception;
 }
