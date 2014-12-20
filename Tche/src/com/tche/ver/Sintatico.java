@@ -662,8 +662,7 @@ public class Sintatico extends Funcoes {
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.ACod1();
 		} else {
 			mAuxRetorno.setStatus(1);
@@ -679,16 +678,16 @@ public class Sintatico extends Funcoes {
 		 * else if (FuncCall() == 1) { return 1; } return 0;
 		 */
 
-		// ACod1 -> Ident | Op3 | FuncCall
+		// ACod1 -> Op3 | FuncCall
 		Retorno mAuxRetorno = new Retorno();
 
-		mAuxRetorno = this.Ident();
-		if (mAuxRetorno.getStatus() != 1) {
+//		mAuxRetorno = this.Ident();
+//		if (mAuxRetorno.getStatus() != 1) {
 			mAuxRetorno = this.Op3();
 			if (mAuxRetorno.getStatus() != 1) {
 				mAuxRetorno = this.FuncCall();
 			}
-		}
+//		}
 
 		return mAuxRetorno;
 	}
