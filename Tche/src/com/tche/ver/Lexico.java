@@ -126,7 +126,7 @@ public class Lexico {
 
 	public char lecar() {
 		if (this.post >= this.tamt) {
-			return String.valueOf('z').charAt(0);
+			return String.valueOf('\0').charAt(0);
 		} else {
 			return this.strt.charAt(this.post++);
 		}
@@ -160,7 +160,7 @@ public class Lexico {
 			case 0:
 				p = 0;
 				switch (this.car_atual) {
-				case 'z':
+				case '\0':
 					estado = -1;
 					break;
 				case '+':
@@ -444,7 +444,10 @@ public class Lexico {
 							// erro
 							estado = 101;
 						}
-					}
+					
+				}else if(this.car_atual <= 'z' && this.car_atual >= 'a'){
+				    estado = 101;
+			}
 					else {
 						estado = -2;
 					}
