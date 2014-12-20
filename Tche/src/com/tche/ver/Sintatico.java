@@ -34,14 +34,12 @@ public class Sintatico extends Funcoes {
 						getInstance().consumirToken();
 						getInstance().consumirLexema();
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Falta fecha chaves no querencia");
+						throw new Exception("Falta fecha chaves no querencia");
 					}
 				}
 			} else {
-				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Falta abre chaves no querencia");
+				throw new Exception("Falta abre chaves no querencia");
+
 			}
 
 		}
@@ -155,7 +153,6 @@ public class Sintatico extends Funcoes {
 		 */
 		// IProt -> TVar V IProt1;
 		Retorno mAuxRetorno = new Retorno();
-
 		Retorno mAuxRetornoTVar = this.TVar();
 		if (mAuxRetornoTVar.getStatus() == 1) {
 			Retorno mAuxRetornoV = this.V();
@@ -237,9 +234,7 @@ public class Sintatico extends Funcoes {
 							getInstance().consumirToken();
 							getInstance().consumirLexema();
 						} else {
-							mAuxRetorno.setStatus(0);
-							mAuxRetorno
-									.setDescricaoErro("Falta o ponto e virgula no TVet");
+							throw new Exception("Falta o ponto e virgula no TVet");
 						}
 					}
 				} else {
@@ -351,6 +346,12 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			mAuxRetorno = this.C();
+			
+			Tipagem tip = new Tipagem();
+			tip.setVlrVariavel(mAuxRetorno.getTipagem().getVlrVariavel());
+			mAuxRetorno.setTipagem(tip);
+			
+			// TODO gerar código 3 endereços 
 		} else {
 			// Vazio
 			mAuxRetorno.setStatus(1);
