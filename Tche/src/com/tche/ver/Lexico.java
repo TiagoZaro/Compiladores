@@ -54,6 +54,7 @@ public class Lexico {
 	static final int tk_dois_pontos = 85;
 	static final int tk_virgula = 86;
 	static final int tk_variavel = 87;
+	
 
 	String strt; // string com a sentenca
 	int post, tamt; // posicao atual e tamanho da sentenca
@@ -170,6 +171,9 @@ public class Lexico {
 					break;
 				case '*':
 					estado = 3;
+					break;
+				case '/':
+					estado = 4;//adicionado case para reconhecer divisão
 					break;
 				case '^':
 					estado = 6;
@@ -465,6 +469,12 @@ public class Lexico {
 				this.car_atual = this.lecar();
 				fim = 1;
 				break;
+			case 4:
+				this.token = this.tk_divisao;
+				sbLexema.append(this.car_atual);
+				this.car_atual = this.lecar();
+				fim = 1;
+				break;
 			case 6:
 				this.token = this.tk_potencia;
 				sbLexema.append(this.car_atual);
@@ -559,7 +569,7 @@ public class Lexico {
 				break;
 			case 101:
 				sbLexema.append(car_atual);
-				car_atual = lecar();
+				car_atual = this.lecar();
 				if (!((car_atual >= 'a' && car_atual <= 'z') || (car_atual >= 'A' && car_atual <= 'Z') || (car_atual >= '0' && car_atual <= '9'))) {
 					token = tk_variavel;
 					fim = 1;
