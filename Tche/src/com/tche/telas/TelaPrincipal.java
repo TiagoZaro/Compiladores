@@ -27,6 +27,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		txtTokens.updateUI();
 		txtSintatico.updateUI();
 		this.update(this.getGraphics());
+		TcheGlobal.setMapaSimbolos(null);
 	}
 
 	@Override
