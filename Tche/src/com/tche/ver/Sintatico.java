@@ -5,6 +5,7 @@ import static com.tche.ver.Lexico.getInstance;
 import com.tche.AnalisadorSemantico;
 import com.tche.DesktopFrameWork;
 import com.tche.Retorno;
+import com.tche.TcheGlobal;
 import com.tche.Tipagem;
 import com.tche.TipoEntrada;
 
@@ -1135,28 +1136,34 @@ public class Sintatico extends Funcoes {
 		 * (lexico.proximoToken() == tk_arregar) { if (ComandALinha() == 1) {
 		 * return 1; } } return 0;
 		 */
-		// ComandA -> ComandA’ = ACod1 | aprochegar ComandA’ | arregar ComandA’
+		// ComandA -> V = ACod1 | aprochegar ComandA’ | arregar ComandA’
 		DesktopFrameWork.getInstance().addSintatico("ComandA");
 		Retorno mAuxRetorno = new Retorno();
 
 //		mAuxRetorno = this.ComandALinha();
 		mAuxRetorno = this.V();
-		if (mAuxRetorno.getStatus() == 1) {
+		if (mAuxRetorno.getStatus() == 1) {	
+			Tipagem mAuxTipagem = TcheGlobal.getMapaSimbolos().get(mAuxRetorno.getTipagem().getNomeVar());
+			if (mAuxTipagem == null)
+				throw new Exception("Variavel " + mAuxRetorno.getTipagem().getNomeVar() +" Não Declarada!");			
+			
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				mAuxRetorno = this.ACod1();
+				consumirTudo();
+				Retorno mAuxRetornoACod1 = this.ACod1();
+				
+//				if (mAuxRetornoACod1.getStatus() == 1){
+//					DesktopFrameWork.getInstance().addLog(mAuxTipagem.getNomeVar() + " = " + mAuxRetornoACod1.getTipagem().getVlrVariavel());
+//				}
+				
+				mAuxRetorno = mAuxRetornoACod1;
 			} else {
-				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou o sinal de atribuicao");
+				throw new Exception("Faltou o sinal de atribuicao");
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_aprochegar) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.ComandALinha();
 		} else if (Lexico.getInstance().proximoToken() == tk_arregar) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.ComandALinha();
 		}
 		return mAuxRetorno;
