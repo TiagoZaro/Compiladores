@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import com.tche.DesktopFrameWork;
 import com.tche.Retorno;
+import com.tche.TcheGlobal;
 import com.tche.ver.Lexico;
 import com.tche.ver.Sintatico;
 
@@ -32,6 +33,8 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	public void compilar() {
 		// limparLog();
 
+		TcheGlobal.setMapaSimbolos(null);
+
 		Sintatico mAuxSintatico = new Sintatico();
 
 		Lexico.getInstance().listatokens(txtAreaDesenv.getText());
@@ -44,12 +47,10 @@ public class TelaPrincipal extends TelaPrincipalLay {
 				DesktopFrameWork.getInstance().addLog("Compilado!");
 			} else if (retorno != null && retorno.getStatus() == 0) {
 
-				if (retorno.getDescricaoErro() == null
-						|| retorno.getDescricaoErro().trim().isEmpty())
+				if (retorno.getDescricaoErro() == null || retorno.getDescricaoErro().trim().isEmpty())
 					DesktopFrameWork.getInstance().addLog("Erro desconhecido!");
 				else
-					DesktopFrameWork.getInstance().addLog(
-							retorno.getDescricaoErro());
+					DesktopFrameWork.getInstance().addLog(retorno.getDescricaoErro());
 			}
 
 			if (retorno != null && !retorno.getDescricaoErro().trim().isEmpty()) {
