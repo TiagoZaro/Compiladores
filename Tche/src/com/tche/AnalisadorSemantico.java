@@ -108,6 +108,7 @@ public class AnalisadorSemantico {
 
 		getMapaSimbolos().put(nomeVal, tipagem);
 		retorno.setStatus(1);
+		retorno.setTipagem(tipagem);
 
 		return retorno;
 	}

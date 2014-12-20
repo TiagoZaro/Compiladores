@@ -153,6 +153,7 @@ public class Sintatico extends Funcoes {
 		 */
 		// IProt -> TVar V IProt1;
 		Retorno mAuxRetorno = new Retorno();
+		
 		Retorno mAuxRetornoTVar = this.TVar();
 		if (mAuxRetornoTVar.getStatus() == 1) {
 			Retorno mAuxRetornoV = this.V();
@@ -164,9 +165,12 @@ public class Sintatico extends Funcoes {
 				mAuxRetorno = AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
 				
 				if (mAuxRetorno.getStatus() == 1){
-					mAuxRetorno = this.IProt1();
+					Retorno mAuxRetornoIProt1 = this.IProt1(mAuxRetorno.getTipagem().getDesNomeTipoVal());
 
-					if (mAuxRetorno.getStatus() == 1) {
+					if (mAuxRetornoIProt1.getStatus() == 1) {
+						mAuxRetorno.getTipagem().setVlrVariavel(mAuxRetornoIProt1.getTipagem().getVlrVariavel());
+						AnalisadorSemantico.atualizarValorTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
+						
 						if (getInstance().proximoToken() == tk_ponto_e_virgula) {
 							consumirTudo();
 
@@ -174,6 +178,8 @@ public class Sintatico extends Funcoes {
 							mAuxRetorno.setStatus(0);
 							mAuxRetorno.setDescricaoErro("Faltou o ponto e virgula na inicialização da variavel");
 						}
+					} else{
+						mAuxRetorno = mAuxRetornoIProt1;
 					}
 				} else{
 					mAuxRetorno.setStatus(0);
@@ -184,7 +190,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno IProt1() throws Exception {
+	Retorno IProt1(String pTipoVariavel) throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("IProt1");
 		/*
 		 * if (lexico.proximoToken() == tk_virgula) { if (V() == 1) { if
@@ -195,12 +201,24 @@ public class Sintatico extends Funcoes {
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_virgula) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			mAuxRetorno = this.V();
+			consumirTudo();
+			Retorno mAuxRetornoV = this.V();
 
-			if (mAuxRetorno.getStatus() == 1) {
-				mAuxRetorno = this.IProt1();
+			if (mAuxRetornoV.getStatus() == 1) {
+				
+				mAuxRetorno = mAuxRetornoV;
+				mAuxRetorno.getTipagem().setDesNomeTipoVal(pTipoVariavel);
+				
+				mAuxRetorno = AnalisadorSemantico.addTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
+				
+				Retorno mAuxRetornoIProt1 = this.IProt1(pTipoVariavel);
+				
+				if (mAuxRetornoIProt1.getStatus() == 1){
+					mAuxRetorno.getTipagem().setVlrVariavel(mAuxRetornoIProt1.getTipagem().getVlrVariavel());
+					AnalisadorSemantico.atualizarValorTable(mAuxRetorno.getTipagem(), mAuxRetorno.getTipagem().getNomeVar());
+				} else{
+					mAuxRetorno = mAuxRetornoIProt1;
+				}
 			}
 		} else {
 			mAuxRetorno = this.AProt();
@@ -340,21 +358,19 @@ public class Sintatico extends Funcoes {
 		 */
 		DesktopFrameWork.getInstance().addSintatico("AProt");
 		// AProt -> = C | &
-		Retorno mAuxRetorno = new Retorno();
+		Retorno mAuxRetorno = new Retorno();		
 
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.C();
 			
-			Tipagem tip = new Tipagem();
-			tip.setVlrVariavel(mAuxRetorno.getTipagem().getVlrVariavel());
-			mAuxRetorno.setTipagem(tip);
-			
-			// TODO gerar código 3 endereços 
+//			Tipagem tip = new Tipagem();
+//			tip.setVlrVariavel(mAuxRetorno.getTipagem().getVlrVariavel());
+//			mAuxRetorno.setTipagem(tip);
 		} else {
 			// Vazio
 			mAuxRetorno.setStatus(1);
+			mAuxRetorno.setTipagem(new Tipagem());
 		}
 
 		return mAuxRetorno;
@@ -1654,6 +1670,7 @@ public class Sintatico extends Funcoes {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
 			retorno.setTipagem(mAuxTipagem);
+			retorno.getTipagem().setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setStatus(1);
 		}
 		return retorno;

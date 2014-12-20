@@ -59,7 +59,7 @@ public abstract class Funcoes {
 
 	abstract Retorno IProt() throws Exception;
 
-	abstract Retorno IProt1() throws Exception;
+	abstract Retorno IProt1(String pTipoVariavel) throws Exception;
 
 	abstract Retorno IVet() throws Exception;
 
