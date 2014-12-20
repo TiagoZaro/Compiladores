@@ -10,11 +10,19 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
  * 
  * */
 public class AnalisadorSemantico {
-	
-	public static void atualizarTabela(Tipagem tipagem, String nomeVal)
+
+	public static void atualizarValorTable(Tipagem tipagem, String nomeVal)
 			throws Exception {
 		try {
-			getMapaSimbolos().put(nomeVal, tipagem);
+
+			// Verifica se já existe
+			Tipagem tip = TcheGlobal.getMapaSimbolos().get(nomeVal);
+
+			if (tip != null) {
+				tip.setVlrVariavel(tipagem.getVlrVariavel());
+
+				getMapaSimbolos().put(nomeVal, tipagem);
+			}
 
 		} catch (Exception e) {
 			throw new Exception("Erro ao atualizar tabela de símbolos!");
