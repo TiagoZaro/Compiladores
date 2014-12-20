@@ -10,6 +10,16 @@ import static com.tche.TcheGlobal.getMapaSimbolos;
  * 
  * */
 public class AnalisadorSemantico {
+	
+	public static void atualizarTabela(Tipagem tipagem, String nomeVal)
+			throws Exception {
+		try {
+			getMapaSimbolos().put(nomeVal, tipagem);
+
+		} catch (Exception e) {
+			throw new Exception("Erro ao atualizar tabela de símbolos!");
+		}
+	}
 
 	public static Retorno addTable(Tipagem tipagem, String nomeVal)
 			throws Exception {
