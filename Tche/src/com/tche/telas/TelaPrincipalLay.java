@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -17,7 +20,7 @@ import javax.swing.JTextArea;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-public abstract class TelaPrincipalLay extends JFrame {
+public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 
 	private JMenuBar menuBar;
 
@@ -53,6 +56,7 @@ public abstract class TelaPrincipalLay extends JFrame {
 		init();
 		addEvents();
 		validarSitaxe();
+		addKeyListener(this);
 	}
 
 	private void init() {
@@ -76,7 +80,10 @@ public abstract class TelaPrincipalLay extends JFrame {
 		createMenus();
 
 		JPanel pnlPrincipal = new JPanel();
-		pnlPrincipal.setLayout(new FormLayout("2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu", "2dlu, pref, 2dlu"));
+		pnlPrincipal
+				.setLayout(new FormLayout(
+						"2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu, pref:grow, 2dlu",
+						"2dlu, pref, 2dlu"));
 
 		CellConstraints cc = new CellConstraints();
 		pnlPrincipal.add(getPnlDireita(), cc.xy(4, 2));
@@ -162,6 +169,8 @@ public abstract class TelaPrincipalLay extends JFrame {
 		JScrollPane scrool = new JScrollPane(txtAreaDesenv);
 
 		pnlLateralEsquerda.add(scrool);
+		
+		
 
 		return pnlLateralEsquerda;
 	}
@@ -198,4 +207,26 @@ public abstract class TelaPrincipalLay extends JFrame {
 		pnlSintatico.add(scrool);
 		return pnlSintatico;
 	}
+
+	public void keyPressed(KeyEvent evt) {
+		int keyCode = evt.getKeyCode();
+
+		if (keyCode== KeyEvent.VK_F5)
+			compilar();
+
+	}
+
+	public void keyReleased(KeyAdapter evt) {
+
+	}
+
+	public void keyTyped(KeyEvent evt) {
+		int keyCode = evt.getKeyCode();
+		System.out.println(keyCode);
+	}
+
+	public boolean isFocusTraversable() {
+		return true;
+	}
+
 }

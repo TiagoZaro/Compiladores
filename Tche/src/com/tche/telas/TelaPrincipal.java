@@ -1,5 +1,7 @@
 package com.tche.telas;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.JOptionPane;
 
 import com.tche.DesktopFrameWork;
@@ -123,5 +125,13 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		txtTokens.updateUI();
 		this.update(this.getGraphics());
 	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		
+		
+	}
+	
+	
 
 }
