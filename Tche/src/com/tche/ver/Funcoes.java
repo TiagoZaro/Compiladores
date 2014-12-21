@@ -129,7 +129,7 @@ public abstract class Funcoes {
 
 	abstract Retorno Op2(String pFalse) throws Exception;
 
-	abstract Retorno Op2Linha(String pVariavel) throws Exception;
+	abstract Retorno Op2Linha(String pFalse, String pVariavel) throws Exception;
 
 	abstract Retorno Op3() throws Exception;
 
