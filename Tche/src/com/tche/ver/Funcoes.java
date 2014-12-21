@@ -121,15 +121,15 @@ public abstract class Funcoes {
 
 	abstract Retorno Log(String pFalse) throws Exception;
 
-	abstract Retorno LogLinha(String pFalse) throws Exception;
+	abstract Retorno LogLinha(String pFalse, String pTrue) throws Exception;
 
 	abstract Retorno Op1(String pFalse, String pTrue) throws Exception;
 
-	abstract Retorno Op1Linha(String pFalse, String pVariavel) throws Exception;
+	abstract Retorno Op1Linha(String pFalse, String pTrue, String pVariavel) throws Exception;
 
-	abstract Retorno Op2(String pFalse) throws Exception;
+	abstract Retorno Op2(String pFalse, String pTrue) throws Exception;
 
-	abstract Retorno Op2Linha(String pFalse, String pVariavel) throws Exception;
+	abstract Retorno Op2Linha(String pFalse, String pTrue, String pVariavel) throws Exception;
 
 	abstract Retorno Op3() throws Exception;
 

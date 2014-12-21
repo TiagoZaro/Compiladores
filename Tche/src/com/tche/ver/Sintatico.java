@@ -1275,7 +1275,7 @@ public class Sintatico extends Funcoes {
 		
 		Retorno mAuxRetornoOp1 = this.Op1(pFalse, mAuxTrue); 
 		if (mAuxRetornoOp1.getStatus() == 1) {			
-			Retorno mAuxRetornoLogLinha = this.LogLinha(pFalse);
+			Retorno mAuxRetornoLogLinha = this.LogLinha(pFalse, mAuxTrue);
 			if (mAuxRetornoLogLinha.getStatus() == 1) {
 //				String mAuxC3E 		= mAuxTrue + ":\n";			
 				String mAuxC3E 		= "";
@@ -1296,21 +1296,23 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno LogLinha(String pFalse) throws Exception{
+	Retorno LogLinha(String pFalse, String pTrue) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("LogLinha");
 		// LogLINHA -> && Op1 LogLINHA | || Op1 LogLINHA | &
 		Retorno retorno = new Retorno();		
 
 		if (getInstance().proximoToken() == tk_e_comm){
+			consumirTudo();
 			String mAuxTrue = TcheGlobal.criarLabel();			
 			Retorno mAuxRetornoOp1 = Op1(pFalse, mAuxTrue);
 			if (mAuxRetornoOp1.getStatus() == 1){
-			Retorno mAuxRetornoLogLinha = LogLinha("teste");
+				Retorno mAuxRetornoLogLinha = LogLinha(pFalse, mAuxTrue);
 				if (mAuxRetornoLogLinha.getStatus() == 1){
 					String mAuxC3E = mAuxTrue + ":\n";
+					mAuxC3E = "";
 					
 					retorno = mAuxRetornoOp1.clone();
-					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo());
+					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo() + mAuxRetornoLogLinha.getCodigo());
 				} else{
 					retorno = mAuxRetornoLogLinha;
 				}
@@ -1318,10 +1320,23 @@ public class Sintatico extends Funcoes {
 				retorno = mAuxRetornoOp1;
 			}
 		} else if (getInstance().proximoToken() == tk_barras){
-//			retorno = Op1();
-//			if (retorno.getStatus() == 1){
-//				retorno = LogLinha();
-//			}
+			consumirTudo();
+			String mAuxFalse = TcheGlobal.criarLabel();			
+			Retorno mAuxRetornoOp1 = Op1(mAuxFalse, pTrue);
+			if (mAuxRetornoOp1.getStatus() == 1){
+				Retorno mAuxRetornoLogLinha = LogLinha(mAuxFalse, pTrue);
+				if (mAuxRetornoLogLinha.getStatus() == 1){
+					String mAuxC3E = mAuxFalse + ":\n";
+//					mAuxC3E = "";
+					
+					retorno = mAuxRetornoOp1.clone();
+					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo() + mAuxRetornoLogLinha.getCodigo());
+				} else{
+					retorno = mAuxRetornoLogLinha;
+				}
+			} else{
+				retorno = mAuxRetornoOp1;
+			}
 		} else{		
 //			VAZIO
 			retorno.setStatus(1);
@@ -1337,9 +1352,9 @@ public class Sintatico extends Funcoes {
 		// Op1 -> Op2 Op1’
 		Retorno retorno = new Retorno();
 		
-		Retorno retornoOp2 = this.Op2(pFalse); 
+		Retorno retornoOp2 = this.Op2(pFalse, pTrue); 
 		if (retornoOp2.getStatus() == 1) {			
-			Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
+			Retorno retornoOp1Linha = this.Op1Linha(pFalse, pTrue, retornoOp2.getTipagem().getNomeVar());
 			if (retornoOp1Linha.getStatus() == 1){
 				retorno = retornoOp1Linha.clone();
 				retorno.setCodigo(retornoOp2.getCodigo() + retornoOp1Linha.getCodigo());
@@ -1355,7 +1370,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op1Linha(String pFalse, String pVariavel) throws Exception{
+	Retorno Op1Linha(String pFalse, String pTrue, String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1Linha");
 		// Op1’ -> == Op2 Op1’ | != Op2 Op1’ | &
 		Retorno retorno 	= new Retorno();
@@ -1365,14 +1380,15 @@ public class Sintatico extends Funcoes {
 			consumirTudo();
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				consumirTudo();
-				Retorno retornoOp2 = this.Op2(pFalse); 				
+				Retorno retornoOp2 = this.Op2(pFalse, pTrue); 				
 				if (retornoOp2.getStatus() == 1) {	
 					String mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "if " + pVariavel + " == " + retornoOp2.getTipagem().getNomeVar() + "goto " + mAuxTrue + "\n" +
 										"goto " + pFalse + "\n" +
 										mAuxTrue + ":\n";
 					
-					Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
+					Retorno retornoOp1Linha = this.Op1Linha(pFalse, pTrue, retornoOp2.getTipagem().getNomeVar());
 					
 					if (retornoOp1Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp1Linha.getCodigo();
@@ -1392,14 +1408,15 @@ public class Sintatico extends Funcoes {
 			consumirTudo();
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				consumirTudo();
-				Retorno retornoOp2 = this.Op2(pFalse); 				
+				Retorno retornoOp2 = this.Op2(pFalse, pTrue); 				
 				if (retornoOp2.getStatus() == 1) {	
 					String mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "if " + pVariavel + " != " + retornoOp2.getTipagem().getNomeVar() + "goto " + mAuxTrue + "\n" +
 										"goto " + pFalse + "\n" +
 										mAuxTrue + ":\n";
 					
-					Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
+					Retorno retornoOp1Linha = this.Op1Linha(pFalse, pTrue, retornoOp2.getTipagem().getNomeVar());
 					
 					if (retornoOp1Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp1Linha.getCodigo();
@@ -1427,14 +1444,14 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op2(String pFalse) throws Exception{
+	Retorno Op2(String pFalse, String pTrue) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2");
 		// Op2 -> Op3 Op2’
 		Retorno retorno = new Retorno();
 		
 		Retorno retornoOp3 = this.Op3(); 
 		if (retornoOp3.getStatus() == 1) {
-			Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+			Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 			if(retornoOp2Linha.getStatus() == 1){ 
 				retorno = retornoOp2Linha.clone();
 				retorno.setCodigo(retornoOp3.getCodigo() + retornoOp2Linha.getCodigo());
@@ -1448,7 +1465,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op2Linha(String pFalse, String pVariavel) throws Exception{
+	Retorno Op2Linha(String pFalse, String pTrue, String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2Linha");
 		// Op2’ -> > Op3 Op2’ | < Op3 Op2’ | >= Op3 Op2’ | <= Op3 Op2’ | &
 		Retorno retorno 	= new Retorno();
@@ -1467,11 +1484,12 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3 = this.Op3(); 
 				if (retornoOp3.getStatus() == 1) {
 					mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "if " + pVariavel + " >= " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
 										"goto " 	+ pFalse 	+ "\n" +					
 										mAuxTrue 	+ ":" 		+ "\n";
 					
-					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 					
 					if (retornoOp2Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp2Linha.getCodigo();
@@ -1488,11 +1506,12 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3 = this.Op3(); 
 				if (retornoOp3.getStatus() == 1) {
 					mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "if " + pVariavel + " <= " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
 										"goto " 	+ pFalse 	+ "\n" +					
 										mAuxTrue 	+ ":" 		+ "\n";
 					
-					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 					
 					if (retornoOp2Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp2Linha.getCodigo();
@@ -1509,7 +1528,8 @@ public class Sintatico extends Funcoes {
 				consumirTudo();
 				Retorno retornoOp3 = this.Op3(); 
 				if (retornoOp3.getStatus() == 1) {
-					mAuxTrue = TcheGlobal.criarLabel();
+//					mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "";
 					String mAuxC3E = "if " + pVariavel + " > " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue;		
 					mAuxCodigo += mAuxC3E + "\n";
@@ -1520,7 +1540,7 @@ public class Sintatico extends Funcoes {
 					mAuxC3E = mAuxTrue + ":";
 					mAuxCodigo += mAuxC3E + "\n";
 					
-					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 					
 					if (retornoOp2Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp2Linha.getCodigo();
@@ -1536,11 +1556,12 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3 = this.Op3(); 
 				if (retornoOp3.getStatus() == 1) {
 					mAuxTrue = TcheGlobal.criarLabel();
+					mAuxTrue = pTrue;
 					String mAuxCodigo = "if " + pVariavel + " < " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
 										"goto " 	+ pFalse 	+ "\n" +					
 										mAuxTrue 	+ ":" 		+ "\n";
 					
-					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 					
 					if (retornoOp2Linha.getStatus() == 1){
 						mAuxCodigo += retornoOp2Linha.getCodigo();
