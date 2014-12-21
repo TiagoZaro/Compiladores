@@ -89,12 +89,13 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		if (C3E == null | C3E.trim().isEmpty())
 			return;
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(txtAreaLog.getText());
-		sb.append("\n");
-		sb.append(C3E);
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(txtAreaLog.getText());
+//		sb.append("\n");
+//		sb.append(C3E);
 
-		txtAreaLog.setText(sb.toString());
+//		txtAreaLog.setText(sb.toString());
+		txtAreaLog.setText(C3E);
 		txtAreaLog.updateUI();
 		this.update(this.getGraphics());
 	}
