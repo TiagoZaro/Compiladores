@@ -49,6 +49,7 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.M();
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -412,6 +413,7 @@ public class Sintatico extends Funcoes {
 			throw new Exception("Faltou o Tche!!!");
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -608,6 +610,7 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno = this.Cod("");
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -627,14 +630,13 @@ public class Sintatico extends Funcoes {
 						getInstance().consumirLexema();
 						getInstance().consumirToken();
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou o ponto e vírgula na inicialização da variavel");
+						throw new Exception("Faltou o ponto e vírgula na inicialização da variavel");
 					}
 				}
 			}
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -693,8 +695,7 @@ public class Sintatico extends Funcoes {
 			Retorno mAuxRetornoCod = this.Cod("");
 			if (mAuxRetornoCod.getStatus() == 1){
 				mAuxRetorno = mAuxRetornoCod.clone();
-				mAuxRetorno.setCodigo(	mAuxRetornoComandC.getCodigo() 	+ "\n" +
-										mAuxRetornoCod.getCodigo() 		+ "\n");
+				mAuxRetorno.setCodigo(mAuxRetornoComandC.getCodigo() + mAuxRetornoCod.getCodigo());
 			} else{
 				mAuxRetorno = mAuxRetornoCod;
 			}
@@ -706,8 +707,7 @@ public class Sintatico extends Funcoes {
 					Retorno mAuxRetornoCod = this.Cod("");
 					if (mAuxRetornoCod.getStatus() == 1){
 						mAuxRetorno = mAuxRetornoCod.clone();
-						mAuxRetorno.setCodigo(	mAuxRetornoComandA.getCodigo() 	+ "\n" +
-												mAuxRetornoCod.getCodigo() 		+ "\n");		
+						mAuxRetorno.setCodigo(mAuxRetornoComandA.getCodigo() + mAuxRetornoCod.getCodigo());		
 					} else{
 						mAuxRetorno = mAuxRetornoCod;
 					}
@@ -753,6 +753,7 @@ public class Sintatico extends Funcoes {
 			}
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -798,7 +799,6 @@ public class Sintatico extends Funcoes {
 										
 										mAuxRetorno = mAuxRetornoComandD1.clone();
 										mAuxRetorno.setCodigo(mAuxCodigo);
-										DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 									} else{
 										mAuxRetorno = mAuxRetornoComandD1;
 									}									
@@ -840,6 +840,7 @@ public class Sintatico extends Funcoes {
 			}
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -860,6 +861,7 @@ public class Sintatico extends Funcoes {
 			mAuxRetorno.setStatus(1);
 		}
 
+		
 		return mAuxRetorno;
 	}
 
@@ -941,7 +943,6 @@ public class Sintatico extends Funcoes {
 									
 									mAuxRetorno = mAuxRetornoComandD1.clone();
 									mAuxRetorno.setCodigo(mAuxCodigo);
-									DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 								} else{
 									mAuxRetorno = mAuxRetornoComandD1;
 								}
@@ -962,6 +963,7 @@ public class Sintatico extends Funcoes {
 			}
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -1091,6 +1093,7 @@ public class Sintatico extends Funcoes {
 			}
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -1165,7 +1168,6 @@ public class Sintatico extends Funcoes {
 					
 					mAuxRetorno = mAuxRetornoACod1.clone();
 					mAuxRetorno.setCodigo(mAuxCodigo);
-					DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 				}
 				
 				mAuxRetorno = mAuxRetornoACod1;
@@ -1179,6 +1181,8 @@ public class Sintatico extends Funcoes {
 			consumirTudo();
 			mAuxRetorno = this.ComandALinha();
 		}
+		
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -1290,15 +1294,12 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetornoOp1.getStatus() == 1) {			
 			Retorno mAuxRetornoLogLinha = this.LogLinha(pFalse);
 			if (mAuxRetornoLogLinha.getStatus() == 1) {
-				String mAuxC3E 		= mAuxTrue + ":";				
+				String mAuxC3E 		= mAuxTrue + ":\n";				
 //				DesktopFrameWork.getInstance().addC3E(mAuxC3E);
-				String mAuxCodigo 	= 	mAuxRetornoOp1.getCodigo() 	+ "\n" + 
-										mAuxC3E 					+ "\n" +
-										mAuxRetornoLogLinha			+ "\n";
+				String mAuxCodigo 	= 	mAuxRetornoOp1.getCodigo() + mAuxC3E + mAuxRetornoLogLinha.getCodigo();
 				
 				retorno = mAuxRetornoLogLinha.clone();
 				retorno.setCodigo(mAuxCodigo);
-				DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 			} else{
 				retorno = mAuxRetornoLogLinha;
 			}
@@ -1306,6 +1307,7 @@ public class Sintatico extends Funcoes {
 			retorno = mAuxRetornoOp1;
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1341,6 +1343,7 @@ public class Sintatico extends Funcoes {
 			retorno.setStatus(1);
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1363,6 +1366,7 @@ public class Sintatico extends Funcoes {
 			retorno = retornoOp2;
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1406,6 +1410,7 @@ public class Sintatico extends Funcoes {
 			retorno.setStatus(1);
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1426,6 +1431,7 @@ public class Sintatico extends Funcoes {
 			retorno = retornoOp3;
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1484,7 +1490,6 @@ public class Sintatico extends Funcoes {
 						
 						retorno = retornoOp2Linha.clone();
 						retorno.setCodigo(mAuxCodigo);
-						DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 					} else{
 						retorno = retornoOp2Linha;
 					}
@@ -1498,6 +1503,7 @@ public class Sintatico extends Funcoes {
 			}
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1523,6 +1529,7 @@ public class Sintatico extends Funcoes {
 			retorno = retornoOp4;
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1547,7 +1554,6 @@ public class Sintatico extends Funcoes {
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
-					DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 				} else{
 					retorno = retornoOp3Linha;
 				}				
@@ -1568,7 +1574,6 @@ public class Sintatico extends Funcoes {
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
-					DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 				} else{
 					retorno = retornoOp3Linha;
 				}				
@@ -1581,6 +1586,8 @@ public class Sintatico extends Funcoes {
 			retorno.setTipagem(mAuxTipagem);
 			retorno.setStatus(1);
 		}
+		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1605,6 +1612,7 @@ public class Sintatico extends Funcoes {
 			retorno = retornoUn;
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1617,10 +1625,6 @@ public class Sintatico extends Funcoes {
 		
 		if (Lexico.getInstance().proximoToken() == tk_mult) {
 			consumirTudo();
-			/*retorno = this.Un();
-			if (retorno.getStatus() == 1) {
-				retorno = this.Op4Linha();
-			}*/
 			Retorno retornoUn = this.Un();
 			
 			if (retornoUn.getStatus() == 1) {
@@ -1633,8 +1637,6 @@ public class Sintatico extends Funcoes {
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
-					
-					DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 				} else{
 					retorno = mAuxRetornoOp4Linha;
 				}
@@ -1655,8 +1657,6 @@ public class Sintatico extends Funcoes {
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
-					
-					DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 				} else{
 					retorno = mAuxRetornoOp4Linha;
 				}
@@ -1670,6 +1670,7 @@ public class Sintatico extends Funcoes {
 			retorno.setStatus(1);
 		}			
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1692,7 +1693,6 @@ public class Sintatico extends Funcoes {
 				retorno.setTipagem(mAuxTipagem);
 				retorno.setCodigo(mAuxCodigo);
 				retorno.setStatus(1);
-				DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 			}
 		} else if (getInstance().proximoToken() == tk_adicao){
 			consumirTudo();
@@ -1707,7 +1707,6 @@ public class Sintatico extends Funcoes {
 				retorno.setTipagem(mAuxTipagem);
 				retorno.setCodigo(mAuxCodigo);
 				retorno.setStatus(1);
-				DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 			}
 		} else if (getInstance().proximoToken() == tk_fatorial){
 			consumirTudo();
@@ -1722,7 +1721,6 @@ public class Sintatico extends Funcoes {
 				retorno.setTipagem(mAuxTipagem);
 				retorno.setCodigo(mAuxCodigo);
 				retorno.setStatus(1);
-				DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 			}
 		} else if (getInstance().proximoToken() == tk_true){
 			consumirTudo();			
@@ -1738,6 +1736,7 @@ public class Sintatico extends Funcoes {
 			retorno = P();
 		}
 		
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
@@ -1794,6 +1793,7 @@ public class Sintatico extends Funcoes {
 //			retorno.setStatus(1);
 		}
 
+		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
 		return retorno;
 	}
 
