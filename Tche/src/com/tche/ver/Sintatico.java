@@ -866,8 +866,8 @@ public class Sintatico extends Funcoes {
 		Retorno mAuxRetornoLog = this.Log(mAuxFalse);
 		if (mAuxRetornoLog.getStatus() == 1) {			
 			String mAuxCodigo = mAuxRetornoLog.getCodigo()	+
-								"goto " + pNext 			+
-								mAuxFalse + ":";
+								"goto " + pNext + "\n"		+
+								mAuxFalse + ":\n";
 			
 			mAuxRetorno = mAuxRetornoLog.clone();
 			mAuxRetorno.setCodigo(mAuxCodigo);
