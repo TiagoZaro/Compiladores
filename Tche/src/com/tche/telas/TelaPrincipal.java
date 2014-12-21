@@ -145,7 +145,5 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 }
