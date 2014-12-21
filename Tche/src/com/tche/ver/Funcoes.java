@@ -89,19 +89,19 @@ public abstract class Funcoes {
 
 	abstract Retorno ICod() throws Exception;
 
-	abstract Retorno ACod() throws Exception;
+	abstract Retorno ACod(String pVariavel) throws Exception;
 
 	abstract Retorno ACod1() throws Exception;
 
-	abstract Retorno Cod() throws Exception;
+	abstract Retorno Cod(String pNext) throws Exception;
 
-	abstract Retorno ComandD() throws Exception;
+	abstract Retorno ComandD(String pNext) throws Exception;
 
-	abstract Retorno ComandD1() throws Exception;
+	abstract Retorno ComandD1(String pNext) throws Exception;
 
-	abstract Retorno ComandD2() throws Exception;
+	abstract Retorno ComandD2(String pNext) throws Exception;
 
-	abstract Retorno ComandD3() throws Exception;
+	abstract Retorno ComandD3(String pNext) throws Exception;
 
 	abstract Retorno ComandC() throws Exception;
 
@@ -119,25 +119,25 @@ public abstract class Funcoes {
 
 	abstract Retorno MaisFuncPar() throws Exception;
 
-	abstract Retorno Log() throws Exception;
+	abstract Retorno Log(String pFalse) throws Exception;
 
-	abstract Retorno LogLinha() throws Exception;
+	abstract Retorno LogLinha(String pFalse) throws Exception;
 
-	abstract Retorno Op1() throws Exception;
+	abstract Retorno Op1(String pFalse, String pTrue) throws Exception;
 
-	abstract Retorno Op1Linha() throws Exception;
+	abstract Retorno Op1Linha(String pVariavel) throws Exception;
 
-	abstract Retorno Op2() throws Exception;
+	abstract Retorno Op2(String pFalse) throws Exception;
 
-	abstract Retorno Op2Linha() throws Exception;
+	abstract Retorno Op2Linha(String pVariavel) throws Exception;
 
 	abstract Retorno Op3() throws Exception;
 
-	abstract Retorno Op3Linha() throws Exception;
+	abstract Retorno Op3Linha(String pVariavel) throws Exception;
 
 	abstract Retorno Op4() throws Exception;
 
-	abstract Retorno Op4Linha() throws Exception;
+	abstract Retorno Op4Linha(String pVariavel) throws Exception;
 
 	abstract Retorno Un() throws Exception;
 

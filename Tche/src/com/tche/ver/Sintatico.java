@@ -379,42 +379,37 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno M() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_tche) { if (lexico.proximoToken() ==
-		 * tk_abrechaves) { if (IniCod() == 1) { if (lexico.proximoToken() ==
-		 * tk_fechachaves) { if (Func() == 1) { return 1; } } } } } return 0;
-		 */
 		DesktopFrameWork.getInstance().addSintatico("M");
 		// M -> tche{ IniCod } Func
 		Retorno mAuxRetorno = new Retorno();
 
 		if (getInstance().proximoToken() == tk_tche) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 
 			if (getInstance().proximoToken() == tk_abrechaves) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				mAuxRetorno = this.IniCod();
-				if (mAuxRetorno.getStatus() == 1) { // TODO 1) VERIFICAR PQ NAO
-													// RETORNA 1
+				consumirTudo();
+				Retorno mAuxRetornoIniCod = this.IniCod();
+				if (mAuxRetornoIniCod.getStatus() == 1) { 
 					if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
-						getInstance().consumirLexema();
-						getInstance().consumirToken();
-						mAuxRetorno = this.Func();
+						consumirTudo();
+						Retorno mAuxRetornoFunc = this.Func();
+						if (mAuxRetornoFunc.getStatus() == 1){
+							mAuxRetorno = mAuxRetornoFunc.clone();
+							mAuxRetorno.setCodigo(mAuxRetornoIniCod.getCodigo() + mAuxRetornoFunc.getCodigo());
+						} else{
+							mAuxRetorno = mAuxRetornoFunc;
+						}
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou fecha chaves do tche");
+						throw new Exception("Faltou fecha chaves do tche");
 					}
+				} else{
+					mAuxRetorno = mAuxRetornoIniCod;
 				}
 			} else {
-				mAuxRetorno.setStatus(0);
-				mAuxRetorno.setDescricaoErro("Faltou abre chaves do tche");
+				throw new Exception("Faltou abre chaves do tche");
 			}
 		} else {
-			mAuxRetorno.setStatus(0);
-			mAuxRetorno.setDescricaoErro("Faltou o Tche!!!");
+			throw new Exception("Faltou o Tche!!!");
 		}
 
 		return mAuxRetorno;
@@ -422,15 +417,6 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno Func() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_indiada) { if (V() == 1) { if
-		 * (lexico.proximoToken() == tk_abreparenteses) { if (Par() == 1) { if
-		 * (lexico.proximoToken() == tk_fechaparenteses) { if (FuncRet() == 1) {
-		 * if (lexico.proximoToken() == tk_abrechaves) { if (IniCod() == 1) { if
-		 * (lexico.proximoToken() == tk_fechachaves) { if (Func() == 1) { return
-		 * 1; } } } } } } } } } } else { // VAZIO //TODO } // TODO
-		 * Auto-generated method stub return 0;
-		 */
 		DesktopFrameWork.getInstance().addSintatico("Func");
 		// Func -> indiada V (Par) FuncRet { IniCod } Func | &
 		Retorno mAuxRetorno = new Retorno();
@@ -603,19 +589,18 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno IniCod() throws Exception{
-		/*
-		 * if (ICod() == 1) { if (IniCod() == 1) { return 1; } } else if (Cod()
-		 * == 1) { return 1; } return 0;
-		 */
 		DesktopFrameWork.getInstance().addSintatico("IniCod");
 		// IniCod -> ICod IniCod | Cod
 		Retorno mAuxRetorno = new Retorno();
 
-		mAuxRetorno = this.ICod();
-		if (mAuxRetorno.getStatus() == 1) {
-			mAuxRetorno = this.IniCod();
+		Retorno mAuxRetornoICod = this.ICod();
+		if (mAuxRetornoICod.getStatus() == 1) {
+			Retorno mAuxRetornoIniCod = this.IniCod();
+			
+			mAuxRetorno = mAuxRetornoIniCod.clone();
+			mAuxRetorno.setCodigo(mAuxRetornoICod.getCodigo() + mAuxRetornoIniCod.getCodigo());
 		} else {
-			mAuxRetorno = this.Cod();
+			mAuxRetorno = this.Cod("");
 		}
 
 		return mAuxRetorno;
@@ -623,10 +608,6 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno ICod() throws Exception{
-		/*
-		 * if (T() == 1) { if (V() == 1) { if (ACod1() == 1) { return 1; } } }
-		 * return 0;
-		 */
 		DesktopFrameWork.getInstance().addSintatico("ICod");
 		// ICod -> T V ACod;
 		Retorno mAuxRetorno = new Retorno();
@@ -635,7 +616,7 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetorno.getStatus() == 1) {
 			mAuxRetorno = this.V();
 			if (mAuxRetorno.getStatus() == 1) {
-				mAuxRetorno = this.ACod();
+				mAuxRetorno = this.ACod(mAuxRetorno.getTipagem().getNomeVar());
 				if (mAuxRetorno.getStatus() == 1) {
 					if (getInstance().proximoToken() == tk_ponto_e_virgula) {
 						getInstance().consumirLexema();
@@ -653,18 +634,22 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ACod() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_igual) { if (ACod1() == 1) { return
-		 * 1; } } else { // VAZIO //TODO } return 0;
-		 */
+	Retorno ACod(String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("ACod");
 		// ACod -> = ACod1 | &
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
 			consumirTudo();
-			mAuxRetorno = this.ACod1();
+			Retorno mAuxRetornoACod1 = this.ACod1();
+			if (mAuxRetornoACod1.getStatus() == 1){
+				String mAuxC3E 		= pVariavel + " := " + mAuxRetornoACod1.getTipagem().getNomeVar();
+				String mAuxCodigo 	= mAuxRetornoACod1.getCodigo() + mAuxC3E;
+				
+				DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+				mAuxRetorno = mAuxRetornoACod1.clone();
+				mAuxRetorno.setCodigo(mAuxCodigo);
+			}
 		} else {
 			mAuxRetorno.setStatus(1);
 		}
@@ -674,72 +659,89 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno ACod1() throws Exception {
-		/*
-		 * if (Ident() == 1) { return 1; } else if (Op3() == 1) { return 1; }
-		 * else if (FuncCall() == 1) { return 1; } return 0;
-		 */
-
+		DesktopFrameWork.getInstance().addSintatico("ACod1");
 		// ACod1 -> Op3 | FuncCall
 		Retorno mAuxRetorno = new Retorno();
-
-//		mAuxRetorno = this.Ident();
-//		if (mAuxRetorno.getStatus() != 1) {
-			mAuxRetorno = this.Op3();
-			if (mAuxRetorno.getStatus() != 1) {
-				mAuxRetorno = this.FuncCall();
-			}
-//		}
+		
+		Retorno mAuxRetornoOp3 = Op3();
+		if (mAuxRetornoOp3.getStatus() == 1){
+			mAuxRetorno = mAuxRetornoOp3.clone();
+			mAuxRetorno.setCodigo(mAuxRetornoOp3.getCodigo());
+		} else{
+			Retorno mAuxRetornoFuncCall = FuncCall();
+			mAuxRetorno = mAuxRetornoFuncCall.clone();
+			mAuxRetorno.setCodigo(mAuxRetornoFuncCall.getCodigo());
+		}
 
 		return mAuxRetorno;
 	}
 
 	@Override
-	Retorno Cod() throws Exception{
-		/*
-		 * if (ComandC() == 1) { if (Cod() == 1) { return 1; } } else if
-		 * (ComandD() == 1) { if (Cod() == 1) { return 1; } } else if (ComandA()
-		 * == 1) { if (lexico.proximoToken() == tk_ponto_e_virgula) { if (Cod()
-		 * == 1) { return 1; } } } else if (FuncCall() == 1) { if
-		 * (lexico.proximoToken() == tk_ponto_e_virgula) { if (Cod() == 1) {
-		 * return 1; } } } else { // VAZIO //TODO }
-		 * 
-		 * return 0;
-		 */
+	Retorno Cod(String pNext) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Cod");
 		// Cod -> ComandC Cod | ComandD Cod | ComandA; Cod | FuncCall; Cod | &
 		Retorno mAuxRetorno = new Retorno();
 
-		mAuxRetorno = this.ComandC();
-		if (mAuxRetorno.getStatus() == 1) {
-			mAuxRetorno = this.Cod();
-		} else {
-			mAuxRetorno = this.ComandD();
-			if (mAuxRetorno.getStatus() == 1) {
-				mAuxRetorno = this.Cod();
-			} else {
-				mAuxRetorno = this.ComandA();
-				if (mAuxRetorno.getStatus() == 1) {
-					if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
-						getInstance().consumirLexema();
-						getInstance().consumirToken();
-						mAuxRetorno = this.Cod();
-					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou ponto e virgula ComandA");
+		Retorno mAuxRetornoComandC = this.ComandC();
+		if (mAuxRetornoComandC.getStatus() == 1) {
+			Retorno mAuxRetornoCod = this.Cod("");
+			if (mAuxRetornoCod.getStatus() == 1){
+				mAuxRetorno = mAuxRetornoCod.clone();
+				mAuxRetorno.setCodigo(	mAuxRetornoComandC.getCodigo() 	+ "\n" +
+										mAuxRetornoCod.getCodigo() 		+ "\n");
+			} else{
+				mAuxRetorno = mAuxRetornoCod;
+			}
+		} else {				
+			Retorno mAuxRetornoComandA = this.ComandA();
+			if (mAuxRetornoComandA.getStatus() == 1) {
+				if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
+					consumirTudo();
+					Retorno mAuxRetornoCod = this.Cod("");
+					if (mAuxRetornoCod.getStatus() == 1){
+						mAuxRetorno = mAuxRetornoCod.clone();
+						mAuxRetorno.setCodigo(	mAuxRetornoComandA.getCodigo() 	+ "\n" +
+												mAuxRetornoCod.getCodigo() 		+ "\n");		
+					} else{
+						mAuxRetorno = mAuxRetornoCod;
 					}
 				} else {
-					mAuxRetorno = this.FuncCall();
-					if (mAuxRetorno.getStatus() == 1) {
-						if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
-							getInstance().consumirLexema();
-							getInstance().consumirToken();
-							mAuxRetorno = this.Cod();
-						} else {
-							mAuxRetorno.setStatus(0);
-							mAuxRetorno
-									.setDescricaoErro("Faltou ponto e virgula FuncCall");
+					throw new Exception("Faltou ponto e virgula ComandA");
+				}
+			} else {
+				Retorno mAuxRetornoFuncCall = this.FuncCall();
+				if (mAuxRetornoFuncCall.getStatus() == 1) {
+					if (Lexico.getInstance().proximoToken() == tk_ponto_e_virgula) {
+						consumirTudo();
+						Retorno mAuxRetornoCod = this.Cod("");
+						if (mAuxRetornoCod.getStatus() == 1){
+							mAuxRetorno = mAuxRetornoCod.clone();
+							mAuxRetorno.setCodigo(	mAuxRetornoFuncCall.getCodigo() + "\n" + 
+													mAuxRetornoCod.getCodigo() 		+ "\n");	
+						} else{
+							mAuxRetorno = mAuxRetornoCod;
 						}
+					} else {
+						throw new Exception("Faltou ponto e virgula FuncCall");
+					}
+				} else {
+					String mAuxNext = TcheGlobal.criarLabel();
+					Retorno mAuxRetornoComandD = this.ComandD(mAuxNext);
+					if (mAuxRetornoComandD.getStatus() == 1) {
+						Retorno mAuxRetornoCod = this.Cod(mAuxNext);
+						
+						if (mAuxRetornoCod.getStatus() == 1){
+							String mAuxC3E = mAuxNext + ":";	
+							
+							mAuxRetorno = mAuxRetornoCod.clone();
+							mAuxRetorno.setCodigo(mAuxRetornoComandD.getCodigo() 	+ "\n" +
+													mAuxC3E 						+ "\n" +
+													mAuxRetornoCod.getCodigo() 		+ "\n");
+							mAuxRetorno.setCodigo(mAuxC3E);
+							mAuxRetorno.setCodigo(mAuxRetornoCod.getCodigo());
+						} else{
+							mAuxRetorno = mAuxRetornoCod;
+						}				
 					} else {
 						mAuxRetorno.setStatus(1);
 					}
@@ -751,62 +753,65 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_quetal) { if (lexico.proximoToken()
-		 * == tk_abreparenteses) { if (Log() == 1) { if (lexico.proximoToken()
-		 * == tk_fechaparenteses) { if (lexico.proximoToken() == tk_abrechaves)
-		 * { if (Cod() == 1) { if (lexico.proximoToken() == tk_fechachaves) { if
-		 * (ComandD1() == 1) { return 1; } } } } } } } } else if
-		 * (lexico.proximoToken() == tk_xispa) { if (lexico.proximoToken() ==
-		 * tk_ponto_e_virgula) { return 1; } } else if (lexico.proximoToken() ==
-		 * tk_despacho) { if (ComandD2() == 1) { return 1; } } return 0;
-		 */
+	Retorno ComandD(String pNext) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("ComandD");
 		// ComandD -> quetal(Log){Cod} ComandD1 | xispa; | despacho ComandD2;
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_quetal) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				mAuxRetorno = this.Log();
-				if (mAuxRetorno.getStatus() == 1) {
+				consumirTudo();
+				
+				String mAuxFalse = TcheGlobal.criarLabel();				
+				Retorno mAuxRetornoLog = this.Log(mAuxFalse);
+				
+				if (mAuxRetornoLog.getStatus() == 1) {
 					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
-						getInstance().consumirLexema();
-						getInstance().consumirToken();
+						consumirTudo();
 						if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
-							getInstance().consumirLexema();
-							getInstance().consumirToken();
-							mAuxRetorno = this.Cod();
-							if (mAuxRetorno.getStatus() == 1) {
+							consumirTudo();
+							
+							Retorno mAuxRetornoCod = this.Cod(pNext);
+							if (mAuxRetornoCod.getStatus() == 1) {
 								if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
-									getInstance().consumirLexema();
-									getInstance().consumirToken();
-									mAuxRetorno = this.ComandD1();
+									consumirTudo();
+									
+									Retorno mAuxRetornoComandD1 = this.ComandD1(pNext);
+									if (mAuxRetornoComandD1.getStatus() == 1){
+										
+										String mAuxCodigo = mAuxRetornoLog.getCodigo() + mAuxRetornoCod.getCodigo();
+										String mAuxC3E = "goto " + pNext;
+										DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+										
+										mAuxCodigo += mAuxC3E;
+										mAuxC3E = mAuxFalse + ":";
+										DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+										
+										mAuxCodigo += mAuxC3E + mAuxRetornoComandD1.getCodigo();	
+										
+										mAuxRetorno = mAuxRetornoComandD1.clone();
+										mAuxRetorno.setCodigo(mAuxCodigo);
+									} else{
+										mAuxRetorno = mAuxRetornoComandD1;
+									}									
 								} else {
-									mAuxRetorno.setStatus(0);
-									mAuxRetorno
-											.setDescricaoErro("Faltou fehca chaves no quetal");
+									throw new Exception("Faltou fehca chaves no quetal");
 								}
+							} else{
+								mAuxRetorno = mAuxRetornoCod;
 							}
 						} else {
-							mAuxRetorno.setStatus(0);
-							mAuxRetorno
-									.setDescricaoErro("Faltou abre chaves no quetal");
+							throw new Exception("Faltou abre chaves no quetal");
 						}
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou o fecha parenteses no quetal");
+						throw new Exception("Faltou o fecha parenteses no quetal");
 					}
-				}
+				} else{
+					mAuxRetorno = mAuxRetornoLog;
+				}					
 			} else {
-				mAuxRetorno.setStatus(0);
-				mAuxRetorno
-						.setDescricaoErro("Faltou abre parenteses no quetal");
+				throw new Exception("Faltou abre parenteses no quetal");
 			}
 		} else if (getInstance().proximoToken() == tk_xispa) {
 			consumirTudo();
@@ -816,7 +821,7 @@ public class Sintatico extends Funcoes {
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_despacho) {
 			consumirTudo();
-			mAuxRetorno = this.ComandD2();
+			mAuxRetorno = this.ComandD2(pNext);
 			if (mAuxRetorno.getStatus() == 1){
 				if (getInstance().proximoToken() == tk_ponto_e_virgula){
 					consumirTudo();
@@ -832,7 +837,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD1() throws Exception{
+	Retorno ComandD1(String pNext) throws Exception{
 		/*
 		 * if (lexico.proximoToken() == tk_capaz) { if (ComandD3() == 1) {
 		 * return 1; } } return 0;
@@ -843,7 +848,7 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_capaz) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
-			mAuxRetorno = this.ComandD3();
+			mAuxRetorno = this.ComandD3(pNext);
 		} else{
 			mAuxRetorno.setStatus(1);
 		}
@@ -852,14 +857,28 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD2() throws Exception{
+	Retorno ComandD2(String pNext) throws Exception{
 		/*
 		 * if (Log() == 1) { return 1; } else { // VAZIO //TODO } return 0;
 		 */
 		// ComandD2 -> log | &
 		Retorno mAuxRetorno = new Retorno();
-		mAuxRetorno = this.Log();
-		if (mAuxRetorno.getStatus() != 1) {
+		String mAuxFalse = TcheGlobal.criarLabel();
+		
+		Retorno mAuxRetornoLog = this.Log(mAuxFalse);
+		if (mAuxRetornoLog.getStatus() == 1) {			
+			String mAuxCodigo = mAuxRetornoLog.getCodigo();
+			String mAuxC3E = "goto " + pNext;
+			DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+			mAuxCodigo += mAuxC3E;
+			
+			mAuxC3E = mAuxFalse + ":";
+			DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+			mAuxCodigo += mAuxC3E;
+			
+			mAuxRetorno = mAuxRetornoLog.clone();
+			mAuxRetorno.setCodigo(mAuxCodigo);			
+		} else{
 			// REPRESENTA O VAZIO
 			mAuxRetorno.setStatus(1);
 		}
@@ -868,16 +887,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ComandD3() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_abrechaves) { if (Cod() == 1) { if
-		 * (lexico.proximoToken() == tk_fechachaves) { return 1; } } } else if
-		 * (lexico.proximoToken() == tk_abreparenteses) { if (Log() == 1) { if
-		 * (lexico.proximoToken() == tk_fechaparenteses) { if
-		 * (lexico.proximoToken() == tk_abreparenteses) { if (Cod() == 1) { if
-		 * (lexico.proximoToken() == tk_fechaparenteses) { if (ComandD1() == 1)
-		 * { return 1; } } } } } } } else { // VAZIO //TODO } return 0;
-		 */
+	Retorno ComandD3(String pNext) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("ComandD3");
 		// ComandD3 -> {Cod} | (log){Cod} ComandD1
 		Retorno mAuxRetorno = new Retorno();
@@ -885,7 +895,7 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
 			getInstance().consumirLexema();
 			getInstance().consumirToken();
-			mAuxRetorno = this.Cod();
+			mAuxRetorno = this.Cod(pNext);
 			if (mAuxRetorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
 					getInstance().consumirLexema();
@@ -897,38 +907,49 @@ public class Sintatico extends Funcoes {
 				}
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			mAuxRetorno = this.Log();
-			if (mAuxRetorno.getStatus() == 1) {
+			consumirTudo();
+			String mAuxFalse = TcheGlobal.criarLabel();			
+			Retorno mAuxRetornoLog = this.Log(mAuxFalse);
+			
+			if (mAuxRetornoLog.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
-					getInstance().consumirLexema();
-					getInstance().consumirToken();
+					consumirTudo();
 					if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
-						getInstance().consumirLexema();
-						getInstance().consumirToken();
-						mAuxRetorno = this.Cod();
-						if (mAuxRetorno.getStatus() == 1) {
+						consumirTudo();
+						
+						Retorno mAuxRetornoCod = this.Cod(pNext);
+						if (mAuxRetornoCod.getStatus() == 1) {
 							if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
-								getInstance().consumirLexema();
-								getInstance().consumirToken();
-								mAuxRetorno = this.ComandD1();
+								consumirTudo();
+								Retorno mAuxRetornoComandD1 = this.ComandD1(pNext);
+								if (mAuxRetornoComandD1.getStatus() == 1){
+									String mAuxC3E = "goto " + pNext;
+									DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+									String mAuxCodigo = mAuxRetornoLog.getCodigo() + mAuxRetornoCod.getCodigo() + mAuxC3E;
+									
+									mAuxC3E = mAuxFalse + ":";
+									DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+									mAuxCodigo += mAuxC3E + mAuxRetornoComandD1.getCodigo();
+									
+									mAuxRetorno = mAuxRetornoComandD1.clone();
+									mAuxRetorno.setCodigo(mAuxCodigo);
+								} else{
+									mAuxRetorno = mAuxRetornoComandD1;
+								}
 							} else {
-								mAuxRetorno.setStatus(0);
-								mAuxRetorno
-										.setDescricaoErro("Faltou fecha chaves no capaz ComandD3");
+								throw new Exception("Faltou fecha chaves no capaz ComandD3");
 							}
+						} else{
+							mAuxRetorno = mAuxRetornoCod;
 						}
 					} else {
-						mAuxRetorno.setStatus(0);
-						mAuxRetorno
-								.setDescricaoErro("Faltou abre chaves no capaz ComandD3");
-					}
+						throw new Exception("Faltou abre chaves no capaz ComandD3");
+					} 
 				} else {
-					mAuxRetorno.setStatus(0);
-					mAuxRetorno
-							.setDescricaoErro("Faltou fecha parentes no capaz ComandD3");
+					throw new Exception("Faltou fecha parentes no capaz ComandD3");
 				}
+			} else{
+				mAuxRetorno = mAuxRetornoLog;
 			}
 		}
 
@@ -937,23 +958,6 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno ComandC() throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_trova) { if (lexico.proximoToken() ==
-		 * tk_abreparenteses) { if (Ident() == 1) { if (lexico.proximoToken() ==
-		 * tk_fechaparenteses) { if (lexico.proximoToken() ==
-		 * tk_ponto_e_virgula) { return 1; } } } } } else if
-		 * (lexico.proximoToken() == tk_voltear) { if (lexico.proximoToken() ==
-		 * tk_abreparenteses) { if (Log() == 1) { if (lexico.proximoToken() ==
-		 * tk_fechaparenteses) { if (lexico.proximoToken() == tk_abrechaves) {
-		 * if (Cod() == 1) { if (lexico.proximoToken() == tk_fechachaves) {
-		 * return 1; } } } } } } } else if (lexico.proximoToken() ==
-		 * tk_largatear) { if (lexico.proximoToken() == tk_abreparenteses) { if
-		 * (IniComand() == 1) { if (lexico.proximoToken() == tk_fechaparenteses)
-		 * { if (lexico.proximoToken() == tk_hasta) { if (Ident() == 1) { if
-		 * (lexico.proximoToken() == tk_abrechaves) { if (Cod() == 1) { if
-		 * (lexico.proximoToken() == tk_fechachaves) { return 1; } } } } } } } }
-		 * } return 0;
-		 */
 		DesktopFrameWork.getInstance().addSintatico("ComandC");
 		// ComandC -> trova(Ident); | voltear(Log){Cod} | largatear (IniComand)
 		// hasta Ident {Cod}
@@ -993,7 +997,7 @@ public class Sintatico extends Funcoes {
 			if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
-				mAuxRetorno = this.Log();
+				mAuxRetorno = this.Log("");
 				if (mAuxRetorno.getStatus() == 1) {
 					if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
 						getInstance().consumirLexema();
@@ -1001,7 +1005,7 @@ public class Sintatico extends Funcoes {
 						if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
 							getInstance().consumirLexema();
 							getInstance().consumirToken();
-							mAuxRetorno = this.Cod();
+							mAuxRetorno = this.Cod("");
 							if (mAuxRetorno.getStatus() == 1) {
 								if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
 									getInstance().consumirLexema();
@@ -1047,7 +1051,7 @@ public class Sintatico extends Funcoes {
 								if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
 									getInstance().consumirLexema();
 									getInstance().consumirToken();
-									mAuxRetorno = this.Cod();
+									mAuxRetorno = this.Cod("");
 									if (mAuxRetorno.getStatus() == 1) {
 										if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
 											getInstance().consumirLexema();
@@ -1129,15 +1133,8 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno ComandA() throws Exception{
-		/*
-		 * if (ComandALinha() == 1) { if (lexico.proximoToken() == tk_igual) {
-		 * if (ACod1() == 1) { return 1; } } } else if (lexico.proximoToken() ==
-		 * tk_aprochegar) { if (ComandALinha() == 1) { return 1; } } else if
-		 * (lexico.proximoToken() == tk_arregar) { if (ComandALinha() == 1) {
-		 * return 1; } } return 0;
-		 */
-		// ComandA -> V = ACod1 | aprochegar ComandA’ | arregar ComandA’
 		DesktopFrameWork.getInstance().addSintatico("ComandA");
+		// ComandA -> V = ACod1 | aprochegar ComandA’ | arregar ComandA’
 		Retorno mAuxRetorno = new Retorno();
 
 //		mAuxRetorno = this.ComandALinha();
@@ -1151,9 +1148,15 @@ public class Sintatico extends Funcoes {
 				consumirTudo();
 				Retorno mAuxRetornoACod1 = this.ACod1();
 				
-//				if (mAuxRetornoACod1.getStatus() == 1){
-//					DesktopFrameWork.getInstance().addLog(mAuxTipagem.getNomeVar() + " = " + mAuxRetornoACod1.getTipagem().getVlrVariavel());
-//				}
+				if (mAuxRetornoACod1.getStatus() == 1){
+					String mAuxC3E 		= mAuxTipagem.getNomeVar() + " := " + mAuxRetornoACod1.getTipagem().getNomeVar();
+					String mAuxCodigo 	= mAuxRetornoACod1.getCodigo() + mAuxC3E;
+					
+					DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+					
+					mAuxRetorno = mAuxRetornoACod1.clone();
+					mAuxRetorno.setCodigo(mAuxCodigo);
+				}
 				
 				mAuxRetorno = mAuxRetornoACod1;
 			} else {
@@ -1267,34 +1270,59 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Log() throws Exception{
+	Retorno Log(String pFalse) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Log");
-		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
-		if (this.Op1().getStatus() == 1) {
-			if (this.LogLinha().getStatus() == 1) {
-				retorno.setStatus(1);
+//		Log -> Op1 Log’
+		Retorno retorno = new Retorno();		
+		String mAuxTrue = TcheGlobal.criarLabel();
+		
+		Retorno mAuxRetornoOp1 = this.Op1(pFalse, mAuxTrue); 
+		if (mAuxRetornoOp1.getStatus() == 1) {			
+			Retorno mAuxRetornoLogLinha = this.LogLinha(pFalse);
+			if (mAuxRetornoLogLinha.getStatus() == 1) {
+				String mAuxC3E 		= mAuxTrue + ":";				
+				DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+				String mAuxCodigo 	= mAuxRetornoOp1.getCodigo() + mAuxC3E + mAuxRetornoLogLinha;
+				
+				retorno = mAuxRetornoLogLinha.clone();
+				retorno.setCodigo(mAuxCodigo);
+			} else{
+				retorno = mAuxRetornoLogLinha;
 			}
+		} else{
+			retorno = mAuxRetornoOp1;
 		}
+		
 		return retorno;
 	}
 
 	@Override
-	Retorno LogLinha() throws Exception{
+	Retorno LogLinha(String pFalse) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("LogLinha");
 		// LogLINHA -> && Op1 LogLINHA | || Op1 LogLINHA | &
 		Retorno retorno = new Retorno();		
 
 		if (getInstance().proximoToken() == tk_e_comm){
-			retorno = Op1();
-			if (retorno.getStatus() == 1){
-				retorno = LogLinha();
+			String mAuxTrue = TcheGlobal.criarLabel();			
+			Retorno mAuxRetornoOp1 = Op1(pFalse, mAuxTrue);
+			if (mAuxRetornoOp1.getStatus() == 1){
+			Retorno mAuxRetornoLogLinha = LogLinha("teste");
+				if (mAuxRetornoLogLinha.getStatus() == 1){
+					String mAuxC3E = mAuxTrue + ":";
+					
+					retorno = mAuxRetornoOp1.clone();
+					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo());
+				} else{
+					retorno = mAuxRetornoLogLinha;
+				}
+			} else{
+				retorno = mAuxRetornoOp1;
 			}
 		} else if (getInstance().proximoToken() == tk_barras){
-			retorno = Op1();
-			if (retorno.getStatus() == 1){
-				retorno = LogLinha();
-			}
+//			retorno = Op1();
+//			if (retorno.getStatus() == 1){
+//				retorno = LogLinha();
+//			}
 		} else{		
 //			VAZIO
 			retorno.setStatus(1);
@@ -1304,24 +1332,33 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op1() throws Exception{
+	Retorno Op1(String pFalse, String pTrue) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1");
 		// Op1 -> Op2 Op1’
 		Retorno retorno = new Retorno();
 		
-		retorno = this.Op2(); 
-		if (retorno.getStatus() == 1) {
-			retorno = this.Op1Linha();
+		Retorno retornoOp2 = this.Op2(pFalse); 
+		if (retornoOp2.getStatus() == 1) {			
+			Retorno retornoOp1Linha = this.Op1Linha(retornoOp2.getTipagem().getNomeVar());
+			if (retornoOp1Linha.getStatus() == 1){
+				retorno = retornoOp1Linha.clone();
+				retorno.setCodigo(retornoOp1Linha.getCodigo());
+			} else{
+				retorno = retornoOp1Linha;
+			}
+		} else{
+			retorno = retornoOp2;
 		}
 		
 		return retorno;
 	}
 
 	@Override
-	Retorno Op1Linha() throws Exception{
+	Retorno Op1Linha(String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1Linha");
 		// Op1’ -> == Op2 Op1’ | != Op2 Op1’ | &
-		Retorno retorno = new Retorno();
+		Retorno retorno 	= new Retorno();
+		Tipagem mAuxTipagem = new Tipagem();
 		
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
 			getInstance().consumirLexema();
@@ -1329,9 +1366,9 @@ public class Sintatico extends Funcoes {
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
-				retorno = this.Op2(); 				
+				retorno = this.Op2(""); 				
 				if (retorno.getStatus() == 1) {
-					retorno = this.Op1Linha();
+					retorno = this.Op1Linha("");
 				}
 			} else {
 				throw new Exception("eh esperado um sinal de igual.");
@@ -1342,15 +1379,17 @@ public class Sintatico extends Funcoes {
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
 				getInstance().consumirLexema();
 				getInstance().consumirToken();
-				retorno = this.Op2(); 
+				retorno = this.Op2(""); 
 				if (retorno.getStatus() == 1) {
-					retorno = this.Op1Linha();
+					retorno = this.Op1Linha("");
 				}
 			} else {
 				throw new Exception("Depois do fatorial tem q vir um simbolo de IGUAL.");
 			}
 		} else {
 			// vazio
+			mAuxTipagem.setNomeVar(pVariavel);
+			retorno.setTipagem(mAuxTipagem);
 			retorno.setStatus(1);
 		}
 		
@@ -1358,26 +1397,37 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op2() throws Exception{
+	Retorno Op2(String pFalse) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2");
 		// Op2 -> Op3 Op2’
 		Retorno retorno = new Retorno();
 		
-		retorno = this.Op3(); 
-		if (retorno.getStatus() == 1) {
-			retorno = this.Op2Linha();
+		Retorno retornoOp3 = this.Op3(); 
+		if (retornoOp3.getStatus() == 1) {
+			Retorno retornoOp2Linha = this.Op2Linha(retornoOp3.getTipagem().getNomeVar());
+			retorno = retornoOp2Linha;
+//			if(retornoOp2Linha.getStatus() == 1){ 
+//				retorno = 
+//			}
+		} else{
+			retorno = retornoOp3;
 		}
 		
 		return retorno;
 	}
 
 	@Override
-	Retorno Op2Linha() throws Exception{
+	Retorno Op2Linha(String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op2Linha");
 		// Op2’ -> > Op3 Op2’ | < Op3 Op2’ | >= Op3 Op2’ | <= Op3 Op2’ | &
-		Retorno retorno = new Retorno();
+		Retorno retorno 	= new Retorno();
+		Tipagem mAuxTipagem = new Tipagem();
+		String mAuxTrue 	= "";
+		String mAuxFalse 	= "";
 		
 //		VAZIO
+		mAuxTipagem.setNomeVar(pVariavel);
+		retorno.setTipagem(mAuxTipagem);
 		retorno.setStatus(1); 
 
 		if (getInstance().lookAhead() == tk_igual){
@@ -1386,28 +1436,47 @@ public class Sintatico extends Funcoes {
 				consumirTudo(); // consome o igual
 				retorno = this.Op3(); 
 				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha();
+					retorno = this.Op2Linha("");
 				} 
 			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
 				consumirTudo();
 				consumirTudo(); // consome o igual
 				retorno = this.Op3(); 
 				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha();
+					retorno = this.Op2Linha("");
 				} 
 			}
 		} else{
 			if (Lexico.getInstance().proximoToken() == tk_maior) {
 				consumirTudo();
-				retorno = this.Op3(); 
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha();
+				Retorno retornoOp3 = this.Op3(); 
+				if (retornoOp3.getStatus() == 1) {
+					mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "";
+					String mAuxC3E = "if " + pVariavel + " > " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue;
+					DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+					
+					mAuxCodigo += mAuxC3E;
+					mAuxC3E = "goto " + mAuxFalse;
+					DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+					
+					mAuxCodigo += mAuxC3E;
+					mAuxC3E = mAuxTrue + ":";
+					DesktopFrameWork.getInstance().addC3E(mAuxC3E);
+					
+					Retorno retornoOp2Linha = this.Op2Linha(retornoOp3.getTipagem().getNomeVar());
+					
+					if (retornoOp2Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp2Linha.getCodigo();
+					} else{
+						retorno = retornoOp2Linha;
+					}
 				} 
 			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
 				consumirTudo();
 				retorno = this.Op3(); 
 				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha();
+					retorno = this.Op2Linha("");
 				} 
 			}
 		}
@@ -1421,35 +1490,76 @@ public class Sintatico extends Funcoes {
 		// Op3 -> Op4 Op3’
 		Retorno retorno = new Retorno();
 		
-		retorno = this.Op4();
+		Retorno retornoOp4 = this.Op4();
 		
-		if (retorno.getStatus() == 1) {
-			retorno = this.Op3Linha();
+		if (retornoOp4.getStatus() == 1) {
+			Retorno retornoOp3Linha = this.Op3Linha(retornoOp4.getTipagem().getNomeVar());
+			if (retornoOp3Linha.getStatus() == 1){
+				String mAuxCodigo = retornoOp4.getCodigo() + retornoOp3Linha.getCodigo();
+				
+				retorno = retornoOp3Linha.clone();
+				retorno.setCodigo(mAuxCodigo);
+			} else{
+				retorno = retornoOp3Linha;
+			}
+		} else{
+			retorno = retornoOp4;
 		}
 		
 		return retorno;
 	}
 
 	@Override
-	Retorno Op3Linha() throws Exception{
+	Retorno Op3Linha(String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op3Linha");
 //		Op3’ -> + Op4 Op3’ | - Op4 Op3’ | &
-		Retorno retorno = new Retorno();
+		Retorno retorno 	= new Retorno();
+		Tipagem mAuxTipagem = new Tipagem();
 		
 		if (Lexico.getInstance().proximoToken() == tk_adicao) {
 			consumirTudo();
-			retorno = this.Op4(); 
-			if (retorno.getStatus() == 1) {
-				retorno = this.Op3Linha();
+			Retorno retornoOp4 = this.Op4(); 
+			
+			if (retornoOp4.getStatus() == 1) {
+				String mAuxTemp = TcheGlobal.criarTmp();
+				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
+				
+				if (retornoOp3Linha.getStatus() == 1){
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar();
+					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					retorno.setTipagem(retornoOp3Linha.getTipagem());
+					retorno.setCodigo(mAuxCodigo);
+					retorno.setStatus(1);
+				} else{
+					retorno = retornoOp3Linha;
+				}				
+			} else{
+				retorno = retornoOp4;
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_subtr) {
 			consumirTudo();
-			retorno = this.Op4(); 
-			if (retorno.getStatus() == 1) {
-				retorno = this.Op3Linha();						
+			Retorno retornoOp4 = this.Op4(); 
+			
+			if (retornoOp4.getStatus() == 1) {
+				String mAuxTemp = TcheGlobal.criarTmp();
+				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
+				
+				if (retornoOp3Linha.getStatus() == 1){
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar();
+					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					retorno.setTipagem(retornoOp3Linha.getTipagem());
+					retorno.setCodigo(mAuxCodigo);
+					retorno.setStatus(1);
+				} else{
+					retorno = retornoOp3Linha;
+				}				
+			} else{
+				retorno = retornoOp4;
 			}
 		} else {
 			// VAZIO
+			mAuxTipagem.setNomeVar(pVariavel);
+			retorno.setTipagem(mAuxTipagem);
 			retorno.setStatus(1);
 		}
 		return retorno;
@@ -1461,34 +1571,79 @@ public class Sintatico extends Funcoes {
 //		Op4 -> Un Op4’
 		Retorno retorno = new Retorno();
 		
-		retorno = Un();
-		if (retorno.getStatus() == 1) {
-			retorno = Op4Linha();
+		Retorno retornoUn = Un();
+		if (retornoUn.getStatus() == 1) {
+			Retorno retornoOp4Linha = Op4Linha(retornoUn.getTipagem().getNomeVar());
+			
+			if (retornoOp4Linha.getStatus() == 1){
+				String mAuxCodigoAtual = retornoUn.getCodigo() + retornoOp4Linha.getCodigo();
+				retorno = retornoOp4Linha.clone();
+				retorno.setCodigo(mAuxCodigoAtual);
+			} else{
+				retorno = retornoOp4Linha;
+			}
+		} else{
+			retorno = retornoUn;
 		}
 		
 		return retorno;
 	}
 
 	@Override
-	Retorno Op4Linha() throws Exception{
+	Retorno Op4Linha(String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op4Linha");
 //		Op4’-> * Un Op4’ | / Un Op4’ | &
-		Retorno retorno = new Retorno();
+		Retorno retorno 	= new Retorno();
+		Tipagem mAuxTipagem = new Tipagem();
 		
 		if (Lexico.getInstance().proximoToken() == tk_mult) {
 			consumirTudo();
-			retorno = this.Un();
+			/*retorno = this.Un();
 			if (retorno.getStatus() == 1) {
 				retorno = this.Op4Linha();
+			}*/
+			Retorno retornoUn = this.Un();
+			
+			if (retornoUn.getStatus() == 1) {
+				String mAuxTemp = TcheGlobal.criarTmp();
+				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
+				
+				if (mAuxRetornoOp4Linha.getStatus() == 1){
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " * " + retornoUn.getTipagem().getNomeVar();
+					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
+					retorno.setCodigo(mAuxCodigo);
+					retorno.setStatus(1);
+				} else{
+					retorno = mAuxRetornoOp4Linha;
+				}
+			} else{
+				retorno = retornoUn;
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_divisao) {
 			consumirTudo();
-			retorno = this.Un(); 
-			if (retorno.getStatus() == 1) {
-				retorno = this.Op4Linha();
+			Retorno retornoUn = this.Un();
+			
+			if (retornoUn.getStatus() == 1) {
+				String mAuxTemp = TcheGlobal.criarTmp();
+				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
+				
+				if (mAuxRetornoOp4Linha.getStatus() == 1){
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " / " + retornoUn.getTipagem().getNomeVar();
+					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
+					retorno.setCodigo(mAuxCodigo);
+					retorno.setStatus(1);
+				} else{
+					retorno = mAuxRetornoOp4Linha;
+				}
+			} else{
+				retorno = retornoUn;
 			}
 		} else{
-//			VAZIO
+//			VAZIO			
+			mAuxTipagem.setNomeVar(pVariavel);
+			retorno.setTipagem(mAuxTipagem);
 			retorno.setStatus(1);
 		}			
 		
@@ -1502,22 +1657,56 @@ public class Sintatico extends Funcoes {
 		Retorno retorno = new Retorno();
 		
 		if (Lexico.getInstance().proximoToken() == tk_subtr) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			if (this.V().getStatus() == 1) {
+			consumirTudo();
+			Retorno retornoV = V();
+			
+			if (retornoV.getStatus() == 1){
+				Tipagem mAuxTipagem = new Tipagem();
+				mAuxTipagem.setNomeVar(TcheGlobal.criarTmp());
+				String mAuxCodigo = mAuxTipagem.getNomeVar() + " := minus " + retornoV.getTipagem().getNomeVar();
+				DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+				
+				retorno.setTipagem(mAuxTipagem);
+				retorno.setCodigo(mAuxCodigo);
 				retorno.setStatus(1);
 			}
 		} else if (getInstance().proximoToken() == tk_adicao){
 			consumirTudo();
-			retorno = V();
+			Retorno retornoV = V();
+			
+			if (retornoV.getStatus() == 1){
+				Tipagem mAuxTipagem = new Tipagem();
+				mAuxTipagem.setNomeVar(TcheGlobal.criarTmp());
+				String mAuxCodigo = mAuxTipagem.getNomeVar() + " := plus " + retornoV.getTipagem().getNomeVar();
+				DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+				
+				retorno.setTipagem(mAuxTipagem);
+				retorno.setCodigo(mAuxCodigo);
+				retorno.setStatus(1);
+			}
 		} else if (getInstance().proximoToken() == tk_fatorial){
 			consumirTudo();
-			retorno = V();
+			Retorno retornoV = V();
+			
+			if (retornoV.getStatus() == 1){
+				Tipagem mAuxTipagem = new Tipagem();
+				mAuxTipagem.setNomeVar(TcheGlobal.criarTmp());
+				String mAuxCodigo = mAuxTipagem.getNomeVar() + " := invert " + retornoV.getTipagem().getNomeVar();
+				DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+				
+				retorno.setTipagem(mAuxTipagem);
+				retorno.setCodigo(mAuxCodigo);
+				retorno.setStatus(1);
+			}
 		} else if (getInstance().proximoToken() == tk_true){
-			consumirTudo();
+			consumirTudo();			
+			Tipagem mAuxTipagem = new Tipagem();
+			mAuxTipagem.setVlrVariavel("true");
 			retorno.setStatus(1);
 		} else if (getInstance().proximoToken() == tk_false){
 			consumirTudo();
+			Tipagem mAuxTipagem = new Tipagem();
+			mAuxTipagem.setVlrVariavel("false");
 			retorno.setStatus(1);
 		} else {
 			retorno = P();
@@ -1534,20 +1723,23 @@ public class Sintatico extends Funcoes {
 		
 		if (getInstance().proximoToken() == tk_abreparenteses) {
 			consumirTudo();
-			retorno = this.Log();
+			retorno = this.Log("");
 			if (retorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
 					consumirTudo();
 					retorno.setStatus(1);
 				} else{
-					retorno.setStatus(0);
 					throw new Exception("Faltou fechar o parentese");
 				}
 			}
 		} else{
 			retorno = this.Ident(); 
 			if (retorno.getStatus() == 1) {
-				retorno = this.PLinha();
+				Retorno retornoPLinha = this.PLinha();
+				
+				if (retornoPLinha.getStatus() == 1){
+					retorno = retornoPLinha;
+				}
 			}
 		}
 		
@@ -1562,7 +1754,7 @@ public class Sintatico extends Funcoes {
 		
 		if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
 			consumirTudo();
-			retorno = this.Log(); 
+			retorno = this.Log(""); 
 			if (retorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
 					consumirTudo();
@@ -1573,7 +1765,7 @@ public class Sintatico extends Funcoes {
 			}
 		} else {
 //			VAZIO
-			retorno.setStatus(1);
+//			retorno.setStatus(1);
 		}
 
 		return retorno;
@@ -1586,9 +1778,7 @@ public class Sintatico extends Funcoes {
 		Retorno retorno = new Retorno();
 		
 		retorno = this.V();
-		if (retorno.getStatus() == 1) {
-			
-		} else{
+		if (retorno.getStatus() != 1){
 			retorno = this.C();
 		}
 	
@@ -1599,16 +1789,6 @@ public class Sintatico extends Funcoes {
 	Retorno V() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("V");
 		// V -> VVar | VVet
-/*		Retorno retorno = new Retorno();
-
-		retorno = this.VVar();
-		if (retorno.getStatus() == 1) {
-			retorno.setStatus(1);
-		} else {
-			retorno = this.VVet();
-		}
-
-		return retorno;*/
 		
 		Retorno retorno = new Retorno();
 
@@ -1624,10 +1804,9 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno VVet() throws Exception {
 		DesktopFrameWork.getInstance().addSintatico("VVet");
-		// VVet -> VVar Vet | VVar Vet Vet		
+		// VVet -> VVar IVetDime
 		Retorno retorno = new Retorno();
 
-		// VVet -> VVar IVetDime
 		retorno = this.VVar(); 
 		
 		if (retorno.getStatus() == 1) {
@@ -1640,44 +1819,44 @@ public class Sintatico extends Funcoes {
 	@Override
 	Retorno Vet() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Vet");
-		
+//		Vet -> [Ident]
 		Retorno retorno = new Retorno();
-		retorno.setStatus(0);
 		
 		if (Lexico.getInstance().proximoToken() == tk_abrecolchetes) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			
-			if (this.Ident().getStatus() == 1) {
+			retorno = this.Ident();
+			if (retorno.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechecolchetes) {
-					getInstance().consumirLexema();
-					getInstance().consumirToken();
+					consumirTudo();
 					retorno.setStatus(1);
 				} else {
 					throw new Exception("Faltou fechar colchetes");
 				}
 			} else {
-				throw new Exception("Faltou identificador");
+				throw new Exception("Faltou identificador para o vetor");
 			}
+		} else{
+			throw new Exception("Faltou Abrir o Colchetes");
 		}
+		
 		return retorno;
 	}
 
 	@Override
 	Retorno VVar() throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("VVar");
+//		VVar -> id
 		Retorno retorno = new Retorno();
 		
-		if (getInstance().proximoToken() == tk_variavel) {
-			
+		if (getInstance().proximoToken() == tk_variavel) {			
 			Tipagem mAuxTipagem = new Tipagem();
-			mAuxTipagem.setNomeVar(getInstance().proximoLexema());	
-			
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			mAuxTipagem.setNomeVar(getInstance().proximoLexema());
 			retorno.setTipagem(mAuxTipagem);
 			retorno.getTipagem().setTipoEntrada(TipoEntrada.VARIAVEL);
 			retorno.setStatus(1);
+			
+			consumirTudo();
 		}
 		return retorno;
 	}
@@ -1691,16 +1870,17 @@ public class Sintatico extends Funcoes {
 		if (Lexico.getInstance().proximoToken() == tk_numero) {
 			
 			Tipagem tipagem = new Tipagem();
-			tipagem.setVlrVariavel(getInstance().proximoLexema());
+//			tipagem.setVlrVariavel(getInstance().proximoLexema());
+			tipagem.setNomeVar(getInstance().proximoLexema());
 			retorno.setTipagem(tipagem);
-
 			retorno.setStatus(1);
 
 			consumirTudo();
 		} else if (Lexico.getInstance().proximoToken() == tk_apas) {
 			
 			Tipagem tipagem = new Tipagem();
-			tipagem.setVlrVariavel(getInstance().proximoLexema());
+//			tipagem.setVlrVariavel(getInstance().proximoLexema());
+			tipagem.setNomeVar(getInstance().proximoLexema());
 			retorno.setTipagem(tipagem);
 			retorno.setStatus(1);
 
@@ -1718,32 +1898,9 @@ public class Sintatico extends Funcoes {
 		// T -> TVar | TVet
 		Retorno retorno = TVar();
 
-		// nome val vvar
-		// valor dela no c
-		// se for variavel no tvar
-
-		boolean isVar = retorno.getStatus() == 1;
-		boolean isVetor = false;
-
-		if (isVar) {
-			retorno = TVet();
-			if (retorno.getStatus() == 1) {
-				isVetor = true;
-			}
-		}
-
-		if (!isVar && !isVetor) {
-			retorno.setStatus(0);
-			retorno.setDescricaoErro("Não é variável nem vetor");
-		} else {
-			retorno.setStatus(1);
-		}
-
-		if (isVar || isVetor) {
-			if (tipoVar != null)
-				tipoVar.setTipoEntrada(TipoEntrada.VARIAVEL);
-		}
-
+		if (retorno.getStatus() != 1)
+			retorno = TVet();				
+		
 		return retorno;
 	}
 

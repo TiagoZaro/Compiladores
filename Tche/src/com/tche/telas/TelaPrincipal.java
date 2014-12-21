@@ -85,6 +85,20 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		this.update(this.getGraphics());
 		// this.update(getRootPane().getGraphics());
 	}
+	
+	public void addC3E(final String C3E){
+		if (C3E == null | C3E.trim().isEmpty())
+			return;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(txtAreaLog.getText());
+		sb.append("\n");
+		sb.append(C3E);
+
+		txtAreaLog.setText(sb.toString());
+		txtAreaLog.updateUI();
+		this.update(this.getGraphics());
+	}
 
 	private void limparLog() {
 		txtAreaLog.setText("");
