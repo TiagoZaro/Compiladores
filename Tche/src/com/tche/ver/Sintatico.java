@@ -1168,9 +1168,9 @@ public class Sintatico extends Funcoes {
 					
 					mAuxRetorno = mAuxRetornoACod1.clone();
 					mAuxRetorno.setCodigo(mAuxCodigo);
+				} else{				
+					mAuxRetorno = mAuxRetornoACod1;
 				}
-				
-				mAuxRetorno = mAuxRetornoACod1;
 			} else {
 				throw new Exception("Faltou o sinal de atribuicao");
 			}
@@ -1294,7 +1294,8 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetornoOp1.getStatus() == 1) {			
 			Retorno mAuxRetornoLogLinha = this.LogLinha(pFalse);
 			if (mAuxRetornoLogLinha.getStatus() == 1) {
-				String mAuxC3E 		= mAuxTrue + ":\n";				
+//				String mAuxC3E 		= mAuxTrue + ":\n";			
+				String mAuxC3E 		= "";
 //				DesktopFrameWork.getInstance().addC3E(mAuxC3E);
 				String mAuxCodigo 	= 	mAuxRetornoOp1.getCodigo() + mAuxC3E + mAuxRetornoLogLinha.getCodigo();
 				
