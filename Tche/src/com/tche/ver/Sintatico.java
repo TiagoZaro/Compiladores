@@ -1339,7 +1339,7 @@ public class Sintatico extends Funcoes {
 		
 		Retorno retornoOp2 = this.Op2(pFalse); 
 		if (retornoOp2.getStatus() == 1) {			
-			Retorno retornoOp1Linha = this.Op1Linha(retornoOp2.getTipagem().getNomeVar());
+			Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
 			if (retornoOp1Linha.getStatus() == 1){
 				retorno = retornoOp1Linha.clone();
 				retorno.setCodigo(retornoOp2.getCodigo() + retornoOp1Linha.getCodigo());
@@ -1355,34 +1355,62 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno Op1Linha(String pVariavel) throws Exception{
+	Retorno Op1Linha(String pFalse, String pVariavel) throws Exception{
 		DesktopFrameWork.getInstance().addSintatico("Op1Linha");
 		// Op1’ -> == Op2 Op1’ | != Op2 Op1’ | &
 		Retorno retorno 	= new Retorno();
 		Tipagem mAuxTipagem = new Tipagem();
 		
 		if (Lexico.getInstance().proximoToken() == tk_igual) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				retorno = this.Op2(""); 				
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op1Linha("");
+				consumirTudo();
+				Retorno retornoOp2 = this.Op2(pFalse); 				
+				if (retornoOp2.getStatus() == 1) {	
+					String mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "if " + pVariavel + " == " + retornoOp2.getTipagem().getNomeVar() + "goto " + mAuxTrue + "\n" +
+										"goto " + pFalse + "\n" +
+										mAuxTrue + ":\n";
+					
+					Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
+					
+					if (retornoOp1Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp1Linha.getCodigo();
+						
+						retorno = retornoOp1Linha.clone();
+						retorno.setCodigo(mAuxCodigo);
+					} else{
+						retorno = retornoOp1Linha;
+					}
+				} else{
+					retorno = retornoOp2;
 				}
 			} else {
 				throw new Exception("eh esperado um sinal de igual.");
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_fatorial) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			if (Lexico.getInstance().proximoToken() == tk_igual) {
-				getInstance().consumirLexema();
-				getInstance().consumirToken();
-				retorno = this.Op2(""); 
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op1Linha("");
+				consumirTudo();
+				Retorno retornoOp2 = this.Op2(pFalse); 				
+				if (retornoOp2.getStatus() == 1) {	
+					String mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "if " + pVariavel + " != " + retornoOp2.getTipagem().getNomeVar() + "goto " + mAuxTrue + "\n" +
+										"goto " + pFalse + "\n" +
+										mAuxTrue + ":\n";
+					
+					Retorno retornoOp1Linha = this.Op1Linha(pFalse, retornoOp2.getTipagem().getNomeVar());
+					
+					if (retornoOp1Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp1Linha.getCodigo();
+						
+						retorno = retornoOp1Linha.clone();
+						retorno.setCodigo(mAuxCodigo);
+					} else{
+						retorno = retornoOp1Linha;
+					}
+				} else{
+					retorno = retornoOp2;
 				}
 			} else {
 				throw new Exception("Depois do fatorial tem q vir um simbolo de IGUAL.");
