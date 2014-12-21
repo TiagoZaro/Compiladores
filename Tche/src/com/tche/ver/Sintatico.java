@@ -783,15 +783,17 @@ public class Sintatico extends Funcoes {
 									Retorno mAuxRetornoComandD1 = this.ComandD1(pNext);
 									if (mAuxRetornoComandD1.getStatus() == 1){
 										
-										String mAuxCodigo = mAuxRetornoLog.getCodigo() + mAuxRetornoCod.getCodigo();
+										String mAuxCodigo = mAuxRetornoLog.getCodigo() 	+ "\n" + 
+															mAuxRetornoCod.getCodigo()	+ "\n";
 										String mAuxC3E = "goto " + pNext;
 										DesktopFrameWork.getInstance().addC3E(mAuxC3E);
 										
-										mAuxCodigo += mAuxC3E;
+										mAuxCodigo += mAuxC3E + "\n";
 										mAuxC3E = mAuxFalse + ":";
 										DesktopFrameWork.getInstance().addC3E(mAuxC3E);
 										
-										mAuxCodigo += mAuxC3E + mAuxRetornoComandD1.getCodigo();	
+										mAuxCodigo += 	mAuxC3E 						+ "\n" + 
+														mAuxRetornoComandD1.getCodigo() + "\n";	
 										
 										mAuxRetorno = mAuxRetornoComandD1.clone();
 										mAuxRetorno.setCodigo(mAuxCodigo);
