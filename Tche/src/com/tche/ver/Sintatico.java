@@ -842,53 +842,41 @@ public class Sintatico extends Funcoes {
 
 	@Override
 	Retorno ComandD1(String pNext) throws Exception{
-		/*
-		 * if (lexico.proximoToken() == tk_capaz) { if (ComandD3() == 1) {
-		 * return 1; } } return 0;
-		 */
+		DesktopFrameWork.getInstance().addSintatico("ComandD1");
 		// ComandD1 -> capaz ComandD3 | &
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_capaz) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
+			consumirTudo();
 			mAuxRetorno = this.ComandD3(pNext);
 		} else{
 			mAuxRetorno.setStatus(1);
 		}
-
 		
 		return mAuxRetorno;
 	}
 
 	@Override
 	Retorno ComandD2(String pNext) throws Exception{
-		/*
-		 * if (Log() == 1) { return 1; } else { // VAZIO //TODO } return 0;
-		 */
+		DesktopFrameWork.getInstance().addSintatico("ComandD2");
 		// ComandD2 -> log | &
 		Retorno mAuxRetorno = new Retorno();
 		String mAuxFalse = TcheGlobal.criarLabel();
 		
 		Retorno mAuxRetornoLog = this.Log(mAuxFalse);
 		if (mAuxRetornoLog.getStatus() == 1) {			
-			String mAuxCodigo = mAuxRetornoLog.getCodigo();
-			String mAuxC3E = "goto " + pNext;
-//			DesktopFrameWork.getInstance().addC3E(mAuxC3E);
-			mAuxCodigo += mAuxC3E;
-			
-			mAuxC3E = mAuxFalse + ":";
-//			DesktopFrameWork.getInstance().addC3E(mAuxC3E);
-			mAuxCodigo += mAuxC3E;
+			String mAuxCodigo = mAuxRetornoLog.getCodigo()	+
+								"goto " + pNext 			+
+								mAuxFalse + ":";
 			
 			mAuxRetorno = mAuxRetornoLog.clone();
-			mAuxRetorno.setCodigo(mAuxCodigo);			
-			DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
+			mAuxRetorno.setCodigo(mAuxCodigo);
 		} else{
 			// REPRESENTA O VAZIO
 			mAuxRetorno.setStatus(1);
 		}
 
+		DesktopFrameWork.getInstance().addC3E(mAuxRetorno.getCodigo());
 		return mAuxRetorno;
 	}
 
@@ -899,18 +887,19 @@ public class Sintatico extends Funcoes {
 		Retorno mAuxRetorno = new Retorno();
 
 		if (Lexico.getInstance().proximoToken() == tk_abrechaves) {
-			getInstance().consumirLexema();
-			getInstance().consumirToken();
-			mAuxRetorno = this.Cod(pNext);
-			if (mAuxRetorno.getStatus() == 1) {
+			consumirTudo();
+			Retorno mAuxRetornoCod = this.Cod(pNext);
+			if (mAuxRetornoCod.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechachaves) {
-					getInstance().consumirLexema();
-					getInstance().consumirToken();					
+					consumirTudo();		
+					
+					mAuxRetorno = mAuxRetornoCod.clone();
+					mAuxRetorno.setCodigo(mAuxRetornoCod.getCodigo());
 				} else{
-					mAuxRetorno.setStatus(0);
-					mAuxRetorno
-							.setDescricaoErro("Falta fecha chaves no capaz ComandD3");
+					throw new Exception("Falta fecha chaves no capaz ComandD3");
 				}
+			} else{
+				mAuxRetorno = mAuxRetornoCod;
 			}
 		} else if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
 			consumirTudo();
@@ -929,13 +918,11 @@ public class Sintatico extends Funcoes {
 								consumirTudo();
 								Retorno mAuxRetornoComandD1 = this.ComandD1(pNext);
 								if (mAuxRetornoComandD1.getStatus() == 1){
-									String mAuxC3E = "goto " + pNext;
-//									DesktopFrameWork.getInstance().addC3E(mAuxC3E);
-									String mAuxCodigo = mAuxRetornoLog.getCodigo() + mAuxRetornoCod.getCodigo() + mAuxC3E;
-									
-									mAuxC3E = mAuxFalse + ":";
-//									DesktopFrameWork.getInstance().addC3E(mAuxC3E);
-									mAuxCodigo += mAuxC3E + mAuxRetornoComandD1.getCodigo();
+									String mAuxCodigo = mAuxRetornoLog.getCodigo() 	+ 
+														mAuxRetornoCod.getCodigo() 	+
+														"goto " + pNext + "\n"		+
+														mAuxFalse + ":" + "\n"		+
+														mAuxRetornoComandD1.getCodigo();
 									
 									mAuxRetorno = mAuxRetornoComandD1.clone();
 									mAuxRetorno.setCodigo(mAuxCodigo);
@@ -1449,17 +1436,45 @@ public class Sintatico extends Funcoes {
 			if (Lexico.getInstance().proximoToken() == tk_maior) {
 				consumirTudo();
 				consumirTudo(); // consome o igual
-				retorno = this.Op3(); 
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha("", "");
-				} 
+				Retorno retornoOp3 = this.Op3(); 
+				if (retornoOp3.getStatus() == 1) {
+					mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "if " + pVariavel + " >= " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
+										"goto " 	+ pFalse 	+ "\n" +					
+										mAuxTrue 	+ ":" 		+ "\n";
+					
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					
+					if (retornoOp2Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp2Linha.getCodigo();
+						
+						retorno = retornoOp2Linha.clone();
+						retorno.setCodigo(mAuxCodigo);
+					} else{
+						retorno = retornoOp2Linha;
+					}
+				}  
 			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
 				consumirTudo();
 				consumirTudo(); // consome o igual
-				retorno = this.Op3(); 
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha("", "");
-				} 
+				Retorno retornoOp3 = this.Op3(); 
+				if (retornoOp3.getStatus() == 1) {
+					mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "if " + pVariavel + " <= " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
+										"goto " 	+ pFalse 	+ "\n" +					
+										mAuxTrue 	+ ":" 		+ "\n";
+					
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					
+					if (retornoOp2Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp2Linha.getCodigo();
+						
+						retorno = retornoOp2Linha.clone();
+						retorno.setCodigo(mAuxCodigo);
+					} else{
+						retorno = retornoOp2Linha;
+					}
+				}  
 			}
 		} else{
 			if (Lexico.getInstance().proximoToken() == tk_maior) {
@@ -1468,16 +1483,13 @@ public class Sintatico extends Funcoes {
 				if (retornoOp3.getStatus() == 1) {
 					mAuxTrue = TcheGlobal.criarLabel();
 					String mAuxCodigo = "";
-					String mAuxC3E = "if " + pVariavel + " > " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue;
-//					DesktopFrameWork.getInstance().addC3E(mAuxC3E);					
+					String mAuxC3E = "if " + pVariavel + " > " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue;		
 					mAuxCodigo += mAuxC3E + "\n";
 					
-					mAuxC3E = "goto " + pFalse;
-//					DesktopFrameWork.getInstance().addC3E(mAuxC3E);					
+					mAuxC3E = "goto " + pFalse;				
 					mAuxCodigo += mAuxC3E + "\n";
 					
 					mAuxC3E = mAuxTrue + ":";
-//					DesktopFrameWork.getInstance().addC3E(mAuxC3E);
 					mAuxCodigo += mAuxC3E + "\n";
 					
 					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
@@ -1493,10 +1505,24 @@ public class Sintatico extends Funcoes {
 				} 
 			} else if (Lexico.getInstance().proximoToken() == tk_menor) {
 				consumirTudo();
-				retorno = this.Op3(); 
-				if (retorno.getStatus() == 1) {
-					retorno = this.Op2Linha("", "");
-				} 
+				Retorno retornoOp3 = this.Op3(); 
+				if (retornoOp3.getStatus() == 1) {
+					mAuxTrue = TcheGlobal.criarLabel();
+					String mAuxCodigo = "if " + pVariavel + " < " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
+										"goto " 	+ pFalse 	+ "\n" +					
+										mAuxTrue 	+ ":" 		+ "\n";
+					
+					Retorno retornoOp2Linha = this.Op2Linha(pFalse, retornoOp3.getTipagem().getNomeVar());
+					
+					if (retornoOp2Linha.getStatus() == 1){
+						mAuxCodigo += retornoOp2Linha.getCodigo();
+						
+						retorno = retornoOp2Linha.clone();
+						retorno.setCodigo(mAuxCodigo);
+					} else{
+						retorno = retornoOp2Linha;
+					}
+				}  
 			}
 		}
 		
@@ -1546,9 +1572,8 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
 				
 				if (retornoOp3Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n";
-					mAuxCodigo += retornoOp3Linha.getCodigo();
-//					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n" +
+										retornoOp3Linha.getCodigo();
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
@@ -1567,8 +1592,8 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
 				
 				if (retornoOp3Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar() + "\n";
-//					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar() + "\n" +
+										retornoOp3Linha.getCodigo();
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
