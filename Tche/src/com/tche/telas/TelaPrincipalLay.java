@@ -7,7 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.EventListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -56,7 +60,7 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 		init();
 		addEvents();
 		validarSitaxe();
-		addKeyListener(this);
+
 	}
 
 	private void init() {
@@ -115,7 +119,7 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 		menuItemSair = new JMenuItem("Sair");
 		menuItemNovo = new JMenuItem("Novo");
 
-		menuItemCompilar = new JMenuItem("Compilar");
+		menuItemCompilar = new JMenuItem("Compilar - F5");
 		menuUtil.add(menuItemCompilar);
 
 		menuItemMapaSimbolos = new JMenuItem("Mapa de Símbolos");
@@ -144,6 +148,16 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 			}
 		});
 
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "Compilar");
+
+		getRootPane().getActionMap().put("Compilar", new AbstractAction() {
+
+			public void actionPerformed(ActionEvent e) {
+				TelaPrincipalLay.this.compilar();
+			}
+		});
+
 		menuItemMapaSimbolos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -157,6 +171,7 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 				TelaPrincipalLay.this.novoArquivo();
 			}
 		});
+
 	}
 
 	private JPanel getPnlEsquerdo() {
@@ -169,8 +184,6 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 		JScrollPane scrool = new JScrollPane(txtAreaDesenv);
 
 		pnlLateralEsquerda.add(scrool);
-		
-		
 
 		return pnlLateralEsquerda;
 	}
@@ -208,25 +221,18 @@ public abstract class TelaPrincipalLay extends JFrame implements KeyListener {
 		return pnlSintatico;
 	}
 
-	public void keyPressed(KeyEvent evt) {
-		int keyCode = evt.getKeyCode();
-
-		if (keyCode== KeyEvent.VK_F5)
-			compilar();
+	public void keyPressed(KeyEvent e) {
 
 	}
 
-	public void keyReleased(KeyAdapter evt) {
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
 
 	}
 
-	public void keyTyped(KeyEvent evt) {
-		int keyCode = evt.getKeyCode();
-		System.out.println(keyCode);
-	}
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
 
-	public boolean isFocusTraversable() {
-		return true;
 	}
 
 }

@@ -127,11 +127,9 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 }
