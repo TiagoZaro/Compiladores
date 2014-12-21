@@ -601,8 +601,7 @@ public class Sintatico extends Funcoes {
 			
 			if (mAuxRetornoIniCod.getStatus() == 1){
 				mAuxRetorno = mAuxRetornoIniCod.clone();
-				mAuxRetorno.setCodigo(	mAuxRetornoICod.getCodigo() 	+ "\n" + 
-										mAuxRetornoIniCod.getCodigo() 	+ "\n");
+				mAuxRetorno.setCodigo(mAuxRetornoICod.getCodigo() + mAuxRetornoIniCod.getCodigo());
 			} else{
 				mAuxRetorno = mAuxRetornoIniCod;
 			}
@@ -722,8 +721,7 @@ public class Sintatico extends Funcoes {
 						Retorno mAuxRetornoCod = this.Cod("");
 						if (mAuxRetornoCod.getStatus() == 1){
 							mAuxRetorno = mAuxRetornoCod.clone();
-							mAuxRetorno.setCodigo(	mAuxRetornoFuncCall.getCodigo() + "\n" + 
-													mAuxRetornoCod.getCodigo() 		+ "\n");	
+							mAuxRetorno.setCodigo(mAuxRetornoFuncCall.getCodigo() + mAuxRetornoCod.getCodigo());	
 						} else{
 							mAuxRetorno = mAuxRetornoCod;
 						}
@@ -737,12 +735,10 @@ public class Sintatico extends Funcoes {
 						Retorno mAuxRetornoCod = this.Cod(mAuxNext);
 						
 						if (mAuxRetornoCod.getStatus() == 1){
-							String mAuxC3E = mAuxNext + ":";	
+							String mAuxC3E = mAuxNext + ":\n";	
 							
 							mAuxRetorno = mAuxRetornoCod.clone();
-							mAuxRetorno.setCodigo(mAuxRetornoComandD.getCodigo() 	+ "\n" +
-													mAuxC3E 						+ "\n" +
-													mAuxRetornoCod.getCodigo() 		+ "\n");
+							mAuxRetorno.setCodigo(mAuxRetornoComandD.getCodigo() + mAuxC3E + mAuxRetornoCod.getCodigo());
 						} else{
 							mAuxRetorno = mAuxRetornoCod;
 						}				
@@ -1324,10 +1320,10 @@ public class Sintatico extends Funcoes {
 			if (mAuxRetornoOp1.getStatus() == 1){
 			Retorno mAuxRetornoLogLinha = LogLinha("teste");
 				if (mAuxRetornoLogLinha.getStatus() == 1){
-					String mAuxC3E = mAuxTrue + ":";
+					String mAuxC3E = mAuxTrue + ":\n";
 					
 					retorno = mAuxRetornoOp1.clone();
-					retorno.setCodigo(mAuxC3E + "\n" + mAuxRetornoOp1.getCodigo() + "\n");
+					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo());
 				} else{
 					retorno = mAuxRetornoLogLinha;
 				}
@@ -1551,6 +1547,7 @@ public class Sintatico extends Funcoes {
 				
 				if (retornoOp3Linha.getStatus() == 1){
 					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n";
+					mAuxCodigo += retornoOp3Linha.getCodigo();
 //					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
