@@ -634,7 +634,7 @@ public class Sintatico extends Funcoes {
 	}
 
 	@Override
-	Retorno ACod(String pVariavel) throws Exception{
+	Retorno ACod(String pVariavel) throws Exception{ 
 		DesktopFrameWork.getInstance().addSintatico("ACod");
 		// ACod -> = ACod1 | &
 		Retorno mAuxRetorno = new Retorno();
