@@ -1330,7 +1330,7 @@ public class Sintatico extends Funcoes {
 //					mAuxC3E = "";
 					
 					retorno = mAuxRetornoOp1.clone();
-					retorno.setCodigo(mAuxC3E + mAuxRetornoOp1.getCodigo() + mAuxRetornoLogLinha.getCodigo());
+					retorno.setCodigo(mAuxRetornoOp1.getCodigo() + mAuxC3E + mAuxRetornoLogLinha.getCodigo());
 				} else{
 					retorno = mAuxRetornoLogLinha;
 				}
@@ -1557,9 +1557,10 @@ public class Sintatico extends Funcoes {
 				if (retornoOp3.getStatus() == 1) {
 					mAuxTrue = TcheGlobal.criarLabel();
 					mAuxTrue = pTrue;
-					String mAuxCodigo = "if " + pVariavel + " < " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
-										"goto " 	+ pFalse 	+ "\n" +					
-										mAuxTrue 	+ ":" 		+ "\n";
+					String mAuxCodigo = retornoOp3.getCodigo() +
+										"if " + pVariavel + " < " + retornoOp3.getTipagem().getNomeVar() + " goto " + mAuxTrue + "\n" +					
+										"goto " 	+ pFalse 	+ "\n";					
+//										mAuxTrue 	+ ":" 		+ "\n";
 					
 					Retorno retornoOp2Linha = this.Op2Linha(pFalse, pTrue, retornoOp3.getTipagem().getNomeVar());
 					
@@ -1622,6 +1623,7 @@ public class Sintatico extends Funcoes {
 				
 				if (retornoOp3Linha.getStatus() == 1){
 					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n" +
+										retornoOp4.getCodigo() +
 										retornoOp3Linha.getCodigo();
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
@@ -1642,7 +1644,9 @@ public class Sintatico extends Funcoes {
 				
 				if (retornoOp3Linha.getStatus() == 1){
 					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar() + "\n" +
+										retornoOp4.getCodigo() +
 										retornoOp3Linha.getCodigo();
+					
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
