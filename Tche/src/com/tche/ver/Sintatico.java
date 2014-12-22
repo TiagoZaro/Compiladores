@@ -1622,8 +1622,8 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
 				
 				if (retornoOp3Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n" +
-										retornoOp4.getCodigo() +
+					String mAuxCodigo = retornoOp4.getCodigo() +
+										mAuxTemp + " := " + pVariavel + " + " + retornoOp4.getTipagem().getNomeVar() + "\n" +										
 										retornoOp3Linha.getCodigo();
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
@@ -1643,8 +1643,8 @@ public class Sintatico extends Funcoes {
 				Retorno retornoOp3Linha = this.Op3Linha(mAuxTemp);	
 				
 				if (retornoOp3Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar() + "\n" +
-										retornoOp4.getCodigo() +
+					String mAuxCodigo =	retornoOp4.getCodigo() + 
+										mAuxTemp + " := " + pVariavel + " - " + retornoOp4.getTipagem().getNomeVar() + "\n" +										
 										retornoOp3Linha.getCodigo();
 					
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
@@ -1709,8 +1709,9 @@ public class Sintatico extends Funcoes {
 				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
 				
 				if (mAuxRetornoOp4Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " * " + retornoUn.getTipagem().getNomeVar() + "\n" +
-							mAuxRetornoOp4Linha.getCodigo();
+					String mAuxCodigo = retornoUn.getCodigo() +
+										mAuxTemp + " := " + pVariavel + " * " + retornoUn.getTipagem().getNomeVar() + "\n" +										
+										mAuxRetornoOp4Linha.getCodigo();
 //					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
@@ -1730,8 +1731,9 @@ public class Sintatico extends Funcoes {
 				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
 				
 				if (mAuxRetornoOp4Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " / " + retornoUn.getTipagem().getNomeVar() + "\n" +
-							mAuxRetornoOp4Linha.getCodigo();
+					String mAuxCodigo =	retornoUn.getCodigo() + 
+										mAuxTemp + " := " + pVariavel + " / " + retornoUn.getTipagem().getNomeVar() + "\n" +										
+										mAuxRetornoOp4Linha.getCodigo();
 //					DesktopFrameWork.getInstance().addC3E(mAuxCodigo); //teste
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
