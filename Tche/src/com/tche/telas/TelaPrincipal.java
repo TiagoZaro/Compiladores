@@ -59,8 +59,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 			if (retorno != null && !retorno.getDescricaoErro().trim().isEmpty()) {
 				JOptionPane.showMessageDialog(null, retorno.getDescricaoErro());
 			} else {
-				JOptionPane.showMessageDialog(null, "Compilado com sucesso!");
-
+				JOptionPane.showMessageDialog(null, "Compilado com sucesso! \n" + retorno.getCodigo());
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

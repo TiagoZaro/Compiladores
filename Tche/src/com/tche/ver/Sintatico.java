@@ -597,8 +597,13 @@ public class Sintatico extends Funcoes {
 		if (mAuxRetornoICod.getStatus() == 1) {
 			Retorno mAuxRetornoIniCod = this.IniCod();
 			
-			mAuxRetorno = mAuxRetornoIniCod.clone();
-			mAuxRetorno.setCodigo(mAuxRetornoICod.getCodigo() + mAuxRetornoIniCod.getCodigo());
+			if (mAuxRetornoIniCod.getStatus() == 1){
+				mAuxRetorno = mAuxRetornoIniCod.clone();
+				mAuxRetorno.setCodigo(	mAuxRetornoICod.getCodigo() 	+ "\n" + 
+										mAuxRetornoIniCod.getCodigo() 	+ "\n");
+			} else{
+				mAuxRetorno = mAuxRetornoIniCod;
+			}
 		} else {
 			mAuxRetorno = this.Cod("");
 		}
@@ -737,8 +742,6 @@ public class Sintatico extends Funcoes {
 							mAuxRetorno.setCodigo(mAuxRetornoComandD.getCodigo() 	+ "\n" +
 													mAuxC3E 						+ "\n" +
 													mAuxRetornoCod.getCodigo() 		+ "\n");
-							mAuxRetorno.setCodigo(mAuxC3E);
-							mAuxRetorno.setCodigo(mAuxRetornoCod.getCodigo());
 						} else{
 							mAuxRetorno = mAuxRetornoCod;
 						}				
