@@ -1649,6 +1649,7 @@ public class Sintatico extends Funcoes {
 					
 					retorno.setTipagem(retornoOp3Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
+					
 					retorno.setStatus(1);
 				} else{
 					retorno = retornoOp3Linha;
@@ -1708,7 +1709,8 @@ public class Sintatico extends Funcoes {
 				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
 				
 				if (mAuxRetornoOp4Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " * " + retornoUn.getTipagem().getNomeVar() + "\n";
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " * " + retornoUn.getTipagem().getNomeVar() + "\n" +
+							mAuxRetornoOp4Linha.getCodigo();
 //					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
@@ -1728,11 +1730,13 @@ public class Sintatico extends Funcoes {
 				Retorno mAuxRetornoOp4Linha = this.Op4Linha(mAuxTemp);
 				
 				if (mAuxRetornoOp4Linha.getStatus() == 1){
-					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " / " + retornoUn.getTipagem().getNomeVar() + "\n";
-//					DesktopFrameWork.getInstance().addC3E(mAuxCodigo);
+					String mAuxCodigo = mAuxTemp + " := " + pVariavel + " / " + retornoUn.getTipagem().getNomeVar() + "\n" +
+							mAuxRetornoOp4Linha.getCodigo();
+//					DesktopFrameWork.getInstance().addC3E(mAuxCodigo); //teste
 					retorno.setTipagem(mAuxRetornoOp4Linha.getTipagem());
 					retorno.setCodigo(mAuxCodigo);
 					retorno.setStatus(1);
+					
 				} else{
 					retorno = mAuxRetornoOp4Linha;
 				}
