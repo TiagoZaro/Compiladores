@@ -36,7 +36,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	public void compilar() {
 		// limparLog();
 
-		TcheGlobal.setMapaSimbolos(null);
+		TcheGlobal.clean();
 
 		Sintatico mAuxSintatico = new Sintatico();
 
@@ -84,8 +84,8 @@ public class TelaPrincipal extends TelaPrincipalLay {
 		this.update(this.getGraphics());
 		// this.update(getRootPane().getGraphics());
 	}
-	
-	public void addC3E(final String C3E){
+
+	public void addC3E(final String C3E) {
 		if (C3E == null | C3E.trim().isEmpty())
 			return;
 
@@ -142,7 +142,7 @@ public class TelaPrincipal extends TelaPrincipalLay {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
