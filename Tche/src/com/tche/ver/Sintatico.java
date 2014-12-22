@@ -1282,7 +1282,8 @@ public class Sintatico extends Funcoes {
 //				DesktopFrameWork.getInstance().addC3E(mAuxC3E);
 				String mAuxCodigo 	= 	mAuxRetornoOp1.getCodigo() + mAuxC3E + mAuxRetornoLogLinha.getCodigo();
 				
-				retorno = mAuxRetornoLogLinha.clone();
+//				retorno = mAuxRetornoLogLinha.clone();
+				retorno = mAuxRetornoOp1.clone();
 				retorno.setCodigo(mAuxCodigo);
 			} else{
 				retorno = mAuxRetornoLogLinha;
@@ -1830,23 +1831,32 @@ public class Sintatico extends Funcoes {
 		
 		if (getInstance().proximoToken() == tk_abreparenteses) {
 			consumirTudo();
-			retorno = this.Log("");
-			if (retorno.getStatus() == 1) {
+			Retorno retornoLog = this.Log("");
+			if (retornoLog.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
 					consumirTudo();
-					retorno.setStatus(1);
+					
+					retorno = retornoLog.clone();
+					retorno.setCodigo(retornoLog.getCodigo());
 				} else{
 					throw new Exception("Faltou fechar o parentese");
 				}
+			} else{
+				retorno = retornoLog;
 			}
 		} else{
-			retorno = this.Ident(); 
+			Retorno retornoIdent = this.Ident(); 
 			if (retorno.getStatus() == 1) {
 				Retorno retornoPLinha = this.PLinha();
 				
 				if (retornoPLinha.getStatus() == 1){
+					retorno = retornoPLinha.clone();
+					retorno.setCodigo(retornoPLinha.getCodigo());
+				} else{
 					retorno = retornoPLinha;
 				}
+			} else{
+				retorno = retornoIdent;
 			}
 		}
 		
@@ -1861,18 +1871,23 @@ public class Sintatico extends Funcoes {
 		
 		if (Lexico.getInstance().proximoToken() == tk_abreparenteses) {
 			consumirTudo();
-			retorno = this.Log(""); 
-			if (retorno.getStatus() == 1) {
+			Retorno retornoLog = this.Log(""); 
+			if (retornoLog.getStatus() == 1) {
 				if (Lexico.getInstance().proximoToken() == tk_fechaparenteses) {
 					consumirTudo();
+					
+					retorno = retornoLog.clone();
 					retorno.setStatus(1);
+					retorno.setCodigo(retornoLog.getCodigo());
 				} else {
 					throw new Exception("Faltou fechar parenteses");
 				}
+			} else{
+				retorno = retornoLog;
 			}
 		} else {
 //			VAZIO
-//			retorno.setStatus(1);
+			retorno.setStatus(1);
 		}
 
 		DesktopFrameWork.getInstance().addC3E(retorno.getCodigo());
